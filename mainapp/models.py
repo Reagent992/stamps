@@ -14,6 +14,17 @@ class Group(models.Model):
     )
     published = models.BooleanField()
 
+    def min_price(self):
+        """
+        Самый дешевый товар в группе.
+        # TODO: Ужасный способ.
+        """
+        min_price = None
+        for stamp in self.stamps.all():
+            if min_price is None or stamp.price < min_price:
+                min_price = stamp.price
+        return min_price
+
     class Meta:
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'

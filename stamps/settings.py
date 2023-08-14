@@ -32,10 +32,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Installed_libs:
+    # Libs:
     'sorl.thumbnail',
     # Apps:
     'mainapp.apps.MainappConfig',
+    'about.apps.AboutConfig',
 ]
 
 MIDDLEWARE = [

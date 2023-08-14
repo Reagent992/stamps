@@ -20,6 +20,8 @@
                     <!-- Product price-->
                     {% if its_stamps %}
                         {{ item.price }} ₽
+                    {% else %}
+                        От {{ item.min_price }} ₽
                     {% endif %}
                 </div>
             </div>
@@ -29,7 +31,7 @@
                 <div class="text-center">
                     <a class="btn btn-outline-dark mt-auto"
                             {% if not its_stamps %}
-                                href="{% url 'mainapp:stamps' item.slug %}">Подробнее о группе </a>
+                       href="{% url 'mainapp:stamps' item.slug %}">Подробнее о группе </a>
                             {% else %}
                                 href="{% url 'mainapp:item_details' item.group.slug item.slug %}">Подробнее о печати</a>
                             {% endif %}
