@@ -4,8 +4,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('mainapp.urls', namespace='mainapp')),
+    path('about/', include('about.urls', namespace='about')),
     path('admin/', admin.site.urls),
+    path('', include('mainapp.urls', namespace='mainapp')),
 ]
 
 if settings.DEBUG:

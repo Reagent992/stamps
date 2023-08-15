@@ -160,3 +160,5 @@ env
 /media/*
 /static/
 /static/*
+/about/migrations/
+*/migrations/*

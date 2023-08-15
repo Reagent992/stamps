@@ -10,7 +10,7 @@ class Group(models.Model):
         upload_to='group_pics/',
         blank=False,
         help_text='Загрузить картинку',
-        # TODO: default=''  Добавить заглушку
+        # TODO: default=''  Добавить картинку-заглушку.
     )
     published = models.BooleanField()
 
@@ -26,6 +26,7 @@ class Group(models.Model):
         return min_price
 
     class Meta:
+        ordering = ['title']
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
 
@@ -53,6 +54,7 @@ class Stamp(models.Model):
         upload_to='stamps/',
         blank=False,
         help_text='Загрузить картинку',
+        # TODO: default=''  Добавить картинку-заглушку.
     )
     created = models.DateTimeField(
         verbose_name='Дата создания',

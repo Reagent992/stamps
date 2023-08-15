@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block  content %}
+
+    <div class="container">
+        <div class="row  my-3">
+            <div class="col-xl-4">
+                <h3>Наши контакты</h3>
+                <p>Свяжитесь с нами по телефону или по электронной почте:</p>
+                <ul>
+                    {% for phone_obj in  phone_list %}
+                        <li>{{ phone_obj.name }}: <a href="tel:{{ phone_obj.phone }}">{{ phone_obj.phone }}</a></li>
+                    {% endfor %}
+                    <p></p>
+                    {% for email_obj in  email_list %}
+                        <li>{{ email_obj.name }}: <a href="mailto:{{ email_obj.email }}">{{ email_obj.email }}</a></li>
+                    {% endfor %}
+                </ul>
+                <p>Мессенджеры:</p>
+                <ul>
+                    {% for phone in message_list %}
+                        <li><i class="bi bi-whatsapp"><a href="https://wa.me/{{ phone }}"
+                                                         target="_blank">WhatsApp</a></i></li>
+                        <li><i class="bi bi-telephone-plus"><a href="viber://chat/?number=%2B{{ phone }}"
+                                                               target="_blank">Viber</a></i></li>
+                    {% endfor %}
+                    {% for telegram in telegram %}
+                        <li><i class="bi bi-telegram"><a href="https://t.me/{{ telegram }}" target="_blank">Telegram</a></i>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col-xl-8" style="height: 400px;">
+                <h3>Мы находимся по адресу:</h3>
+
+                {% for map in map_list %}
+                    {{ map.map|safe }}
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="row">
+            <h3>Ссылки:</h3>
+        </div>
+        <div class="row  py-3 my-3">
+            {% for social in social_link_list %}
+                <div class="col-xl-3">
+                    <a href="{{ social.double_gis }}" target="_blank">
+                        <img src="{% static  'assets/2gis_logo.svg' %}" class="img" height="50"
+                             alt="картинка с логотипом 2GIS">
+                    </a>
+                </div>
+                <div class="col-xl-3">
+                    <a href="{{ social.vk }}" target="_blank">
+                        <img src="{% static  'assets/VK Text Logo.svg' %}" class="img" height="50"
+                             alt="картинка с логотипом VK">
+                    </a>
+                </div>
+            {% endfor %}
+            <div class="col-xl-9">
+            </div>
+        </div>
+    </div>
+{% endblock %}
