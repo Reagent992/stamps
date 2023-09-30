@@ -1,69 +1,54 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
+from django.views.generic import DetailView, ListView
 
-from mainapp.models import Stamp, Group
+from core.mixins import PageTitleViewMixin
+from mainapp.models import Group, Stamp
 
 User = get_user_model()
 
 
-def get_paginated_page(request, queryset):
-    """Пагинатор, выводит по 10 постов на странице."""
-    paginator = Paginator(queryset, settings.POSTS_PER_PAGE)
-    page_number = request.GET.get('page')
-    return paginator.get_page(page_number)
+class Index(PageTitleViewMixin, ListView):
+    """Главная страница, группы печатей."""
+
+    queryset = Group.objects.filter(published=True)
+    template_name = 'mainapp/index.html'
+    paginate_by = settings.PAGINATION_AMOUNT
+    title = settings.INDEX_TITLE
 
 
-def index(request):
-    """Главная страница. Выводит список типов печатей(групп)."""
-    groups = Group.objects.all()
-    page_obj = get_paginated_page(request, groups)
-    template = 'mainapp/index.html'
+class GroupedStamps(PageTitleViewMixin, ListView):
+    """Печати отфильтрованные оп группе."""
 
-    context = {
-        'title': 'Заголовок',
-        'page_obj': page_obj,
-    }
-    return render(request, template, context)
+    template_name = 'mainapp/index.html'
+    paginate_by = settings.PAGINATION_AMOUNT
 
+    def get_queryset(self):
+        self.group = get_object_or_404(Group, slug=self.kwargs['group'])
+        return Stamp.objects.filter(group=self.group)
 
-def stamps(request, slug):
-    """Страница с печатями(после выбора группы)."""
-    group = get_object_or_404(Group, slug=slug)
-    all_stamps = Stamp.objects.filter(group=group)
-    page_obj = get_paginated_page(request, all_stamps)
-    template = 'mainapp/index.html'
+    def get_title(self):
+        return self.group.title
 
-    breadcrumbs = [
-        {'title': 'Главная', 'url': '/'},
-        {'title': group.title, 'url': f'/{group}/'},
-    ]
-
-    context = {
-        'title': 'Заголовок',
-        'page_obj': page_obj,
-        'its_stamps': True,
-        'breadcrumbs': breadcrumbs,
-    }
-    return render(request, template, context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'slug': self.group,
+            'its_stamps': True,
+        })
+        return context
 
 
-def item_details(request, group, slug_item):
-    """Подробности о товаре."""
-    item = Stamp.objects.get(slug=slug_item)
-    template = 'mainapp/item_details.html'
-    group_obj = Group.objects.get(slug=group)
+class StampDetail(PageTitleViewMixin, DetailView):
+    """Подробности о печати."""
 
-    breadcrumbs = [
-        {'title': 'Главная', 'url': '/'},
-        {'title': group_obj.title, 'url': f'/{group}/'},
-        {'title': item.title, 'url': request.path},
-    ]
+    template_name = 'mainapp/item_details.html'
+    context_object_name = 'page_obj'
 
-    context = {
-        'title': item.__str__(),
-        'page_obj': item,
-        'breadcrumbs': breadcrumbs,
-    }
-    return render(request, template, context)
+    def get_object(self, queryset=None):
+        self.item = Stamp.objects.get(slug=self.kwargs['slug_item'])
+        return self.item
+
+    def get_title(self):
+        return self.item.__str__()

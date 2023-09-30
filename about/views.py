@@ -1,28 +1,25 @@
-from django.shortcuts import render
-from django.views.decorators.cache import cache_page
+from django.conf import settings
+from django.views.generic import TemplateView
 
-from about.models import ContactPhone, ContactEmail, ContactYandexMap, \
-    ContactSocial, ContactMessage, ContactTelegram
+from about.models import (ContactEmail, ContactMessage, ContactPhone,
+                          ContactSocial, ContactTelegram, ContactYandexMap)
+from core.mixins import PageTitleViewMixin
 
 
-@cache_page(60 * 60)
-def contacts(request):
-    template = 'about/contacts.html'
+class Contacts(PageTitleViewMixin, TemplateView):
+    """Страница контактов."""
 
-    contact_phones = ContactPhone.objects.filter(published=True)
-    contact_emails = ContactEmail.objects.filter(published=True)
-    contact_map = ContactYandexMap.objects.filter(published=True)
-    contact_links = ContactSocial.objects.filter(published=True)
-    contact_message = ContactMessage.objects.filter(published=True)
-    telegram = ContactTelegram.objects.filter(published=True)
+    template_name = 'about/contacts.html'
+    title = settings.ABOUT_CONTACTS
 
-    context = {
-        'title': 'Контакты',
-        'phone_list': contact_phones,
-        'email_list': contact_emails,
-        'map_list': contact_map,
-        'social_link_list': contact_links,
-        'message_list': contact_message,
-        'telegram': telegram
-    }
-    return render(request, template, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'phone_list': ContactPhone.objects.filter(published=True),
+            'email_list': ContactEmail.objects.filter(published=True),
+            'map_list': ContactYandexMap.objects.filter(published=True),
+            'social_link_list': ContactSocial.objects.filter(published=True),
+            'message_list': ContactMessage.objects.filter(published=True),
+            'telegram': ContactTelegram.objects.filter(published=True)
+        })
+        return context

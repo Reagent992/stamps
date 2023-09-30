@@ -5,8 +5,8 @@ from mainapp import views
 app_name = 'mainapp'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<slug:slug>/', views.stamps, name='stamps'),
-    path('<slug:group>/<slug:slug_item>/', views.item_details,
+    path('', views.Index.as_view(), name='index'),
+    path('<slug:group>/', views.GroupedStamps.as_view(), name='stamps'),
+    path('<slug:group>/<slug:slug_item>/', views.StampDetail.as_view(),
          name='item_details'),
 ]

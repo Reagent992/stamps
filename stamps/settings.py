@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Libs:
     'sorl.thumbnail',
+    "view_breadcrumbs",
     # Apps:
     'mainapp.apps.MainappConfig',
     'about.apps.AboutConfig',
@@ -111,17 +112,21 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-"""CUSTOM CONSTANTS:"""
+# ---------------------------CUSTOM CONSTANTS----------------------------------
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-POSTS_PER_PAGE = 10
 # folder for users images
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-CACHES = {
+CACHES = {  # FIXME каджись не используется.
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+BREADCRUMBS_TEMPLATE = "templates/includes/breadcrumbs.html"
+PAGINATION_AMOUNT = 4
+# ------------------------------------TITLE------------------------------------
+END_OF_ALL_TITLES = ' - Печати-Архангельск.рф'
+INDEX_TITLE = 'Главная страница'
+ABOUT_CONTACTS = 'Контакты'

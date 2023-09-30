@@ -8,16 +8,16 @@ class Group(models.Model):
     image = models.ImageField(
         verbose_name='Картинка',
         upload_to='group_pics/',
-        blank=False,
         help_text='Загрузить картинку',
         # TODO: default=''  Добавить картинку-заглушку.
     )
     published = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def min_price(self):
         """
         Самый дешевый товар в группе.
-        # TODO: Ужасный способ.
+        # FIXME: Ужасный способ.
         """
         min_price = None
         for stamp in self.stamps.all():
@@ -26,7 +26,7 @@ class Group(models.Model):
         return min_price
 
     class Meta:
-        ordering = ['title']
+        ordering = ('-created_at',)
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
 
@@ -40,8 +40,6 @@ class Stamp(models.Model):
         to=Group,
         on_delete=models.RESTRICT,
         related_name='stamps',
-        blank=False,
-        null=True,
         verbose_name='Группа',
         help_text='Группа, к которой будет относиться штамп',
     )
@@ -52,7 +50,6 @@ class Stamp(models.Model):
     image = models.ImageField(
         verbose_name='Картинка',
         upload_to='stamps/',
-        blank=False,
         help_text='Загрузить картинку',
         # TODO: default=''  Добавить картинку-заглушку.
     )
@@ -64,7 +61,7 @@ class Stamp(models.Model):
     published = models.BooleanField()
 
     class Meta:
-        ordering = ['-created']
+        ordering = ('-created',)
         verbose_name = 'Печать'
         verbose_name_plural = 'Печати'
         constraints = [
