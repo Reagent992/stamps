@@ -1,4 +1,5 @@
 {% load static %}
+{% load view_breadcrumbs %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -22,6 +23,11 @@
 </head>
 <body>
 {% include 'includes/header.html' %}
+<div class="container text-center">
+    {% block breadcrumbs %}
+        {% render_breadcrumbs %}
+    {% endblock %}
+</div>
 {% block content %}{% endblock %}
 {% include 'includes/footer.html' %}
 </body>

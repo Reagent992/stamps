@@ -30,7 +30,7 @@ class Group(models.Model):
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.title
 
 
