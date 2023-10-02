@@ -240,4 +240,4 @@ env
 /about/migrations/
 */migrations/*
 /mainapp/migrations/
-.idea
+/printy/migrations/

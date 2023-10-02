@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # Apps:
     'mainapp.apps.MainappConfig',
     'about.apps.AboutConfig',
+    'printy.apps.PrintyConfig',
 ]
 
 MIDDLEWARE = [
