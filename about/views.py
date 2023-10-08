@@ -10,7 +10,7 @@ class Contacts(PageTitleViewMixin, TemplateView):
     """Страница контактов."""
 
     template_name = 'about/contacts.html'
-    title = settings.ABOUT_CONTACTS
+    title = settings.ABOUT_CONTACTS_TITLE
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

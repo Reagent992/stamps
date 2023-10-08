@@ -6,6 +6,7 @@ class AbstrcatGroupModel(models.Model):
     pic_upload_place = ''
 
     title = models.CharField(
+        unique=True,
         max_length=200,
         help_text='Название группы'
     )
@@ -41,7 +42,10 @@ class AbstractItemModel(models.Model):
         max_length=200,
         help_text='Название'
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(
+        unique=True,
+        help_text='Уникальный текстовый идентификатор предмета'
+    )
     description = models.TextField(
         help_text='Описание'
     )

@@ -125,4 +125,9 @@ BREADCRUMBS_HOME_LABEL = 'Главная страница'
 # ------------------------------------TITLE------------------------------------
 END_OF_ALL_TITLES = ' - Печати-Архангельск.рф'
 INDEX_TITLE = 'Главная страница'
-ABOUT_CONTACTS = 'Контакты'
+ABOUT_CONTACTS_TITLE = 'Контакты'
+PRINTY_TITLE = 'Группы оснасток'
+# -----------------------BREADCRUMBS-HOME-LABLE--------------------------------
+PRINTY_LABLE = 'Группы оснасток'
+# -----------------------BREADCRUMBS-PATH--------------------------------------
+PRINTY_PATH = '/printy/'

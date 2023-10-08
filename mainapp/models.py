@@ -3,7 +3,7 @@ from django.db import models
 from core.abstract_models import AbstractItemModel, AbstrcatGroupModel
 
 
-class Group(AbstrcatGroupModel):
+class StampGroup(AbstrcatGroupModel):
     """Группы печатей."""
     pic_upload_place = 'group_pics/'
 
@@ -32,7 +32,7 @@ class Stamp(AbstractItemModel):
     pic_upload_place = 'stamps/'
 
     group = models.ForeignKey(
-        to=Group,
+        to=StampGroup,
         on_delete=models.RESTRICT,
         related_name='stamps',
         verbose_name='Группа',

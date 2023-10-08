@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from mainapp.models import Group, Stamp
+from mainapp.models import Stamp, StampGroup
 
 # @admin.register(Group)
 # class PostAdmin(admin.ModelAdmin):
@@ -8,5 +8,5 @@ from mainapp.models import Group, Stamp
 #     search_fields = ('title', 'slug',)
 #     empty_value_display = '-пусто-'
 
-admin.site.register(Group)
+admin.site.register(StampGroup)
 admin.site.register(Stamp)

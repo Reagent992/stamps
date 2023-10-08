@@ -1,45 +1,45 @@
 {% block  content %}
-    {% load thumbnail %}
-    {% if item.published %}
-    <div class="col mb-5">
-        <div class="card h-100">
-            <!-- Product image-->
-            {% thumbnail item.image "250x250" crop="center" format="PNG" as im %}
-                <img class="card-img-bottom" src="{{ im.url }}"
-                        {#                     width="{{ im.width }}" height="{{ im.height }}" alt="stamp picture"/>#}
-                     alt="stamp picture"/>
-            {% empty %}
-                <p>No image</p> <!-- # TODO: Сделать картинку-заглушку.-->
-            {% endthumbnail %}
+  {% load thumbnail %}
+  <div class="col mb-5">
+    <div class="card h-100">
+      {#  Product image  #}
+      {% thumbnail item.image "250x250" crop="center" format="PNG" as im %}
+        <img class="card-img-bottom" src="{{ im.url }}" alt="stamp picture"/>
+      {% empty %}
+        <p>No image</p> <!-- # TODO: Сделать картинку-заглушку.-->
+      {% endthumbnail %}
 
-            <!-- Product details-->
-            <div class="card-body p-4">
-                <div class="text-center">
-                    <!-- Product name-->
-                    <h5 class="fw-bolder">{{ item.title }}</h5>
-                    <!-- Product price-->
-                    {% if its_stamps %}
-                        {{ item.price }} ₽
-                    {% else %}
-                        От {{ item.min_price }} ₽
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                    <a class="btn btn-outline-dark mt-auto"
-                            {% if not its_stamps %}
-                       href="{% url 'mainapp:stamps' item.slug %}">Подробнее о группе </a>
-                            {% else %}
-                                href="{% url 'mainapp:item_details' item.group.slug item.slug %}">Подробнее о печати</a>
-                            {% endif %}
-                </div>
-            </div>
+      {# Product details #}
+      <div class="card-body p-4">
+        <div class="text-center">
+          {# Product name #}
+          <h5 class="fw-bolder">{{ item.title }}</h5>
+          {# Product price #}
+          {% if its_stamps %}
+            {{ item.price }} ₽
+          {% else %}
+            От {{ item.min_price }} ₽
+          {% endif %}
         </div>
-    </div>
-    {% endif %}
+      </div>
 
+      {# Product actions #}
+      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+        <div class="text-center">
+          <a class="btn btn-outline-dark mt-auto"
+              {# Current view selection #}
+              {% if PrintyGroupsView %}
+             href="{% url 'printy:printys' item.slug %}">Подробнее о группе
+              {% elif PrintyGroupContentView %}
+                href="{% url 'printy:printy_details' item.group.slug item.slug %}">Подробнее о оснастке
+              {% elif GroupedStampsView %}
+                href="{% url 'mainapp:item_details' item.group.slug item.slug %}">Подробнее о печати
+              {% elif IndexView %}
+                href="{% url 'mainapp:stamps' item.slug %}">Подробнее о группе
+              {% endif %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

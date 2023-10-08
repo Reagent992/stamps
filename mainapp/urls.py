@@ -1,12 +1,12 @@
 from django.urls import path
 
-from mainapp.views import GroupedStamps, Index, StampDetail
+from mainapp.views import GroupedStampsView, StampDetailView, StampGroupView
 
 app_name = 'mainapp'
 
 urlpatterns = [
-    path('', Index.as_view(), name='index'),
-    path('<slug:group>/', GroupedStamps.as_view(), name='stamps'),
-    path('<slug:group>/<slug:slug_item>/', StampDetail.as_view(),
+    path('', StampGroupView.as_view(), name='index'),
+    path('<slug:group>/', GroupedStampsView.as_view(), name='stamps'),
+    path('<slug:group>/<slug:slug_item>/', StampDetailView.as_view(),
          name='item_details'),
 ]
