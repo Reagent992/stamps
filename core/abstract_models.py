@@ -6,6 +6,7 @@ class AbstrcatGroupModel(models.Model):
     pic_upload_place = ''
 
     title = models.CharField(
+        verbose_name='Заголовок',
         unique=True,
         max_length=200,
         help_text='Название группы'
@@ -20,7 +21,8 @@ class AbstrcatGroupModel(models.Model):
         help_text='Загрузить картинку',
     )
     published = models.BooleanField(
-        help_text='Включение и выключение отображение на сайте'
+        verbose_name='Опубликованно',
+        help_text='Включение и выключение отображения на сайте'
     )
     created = models.DateTimeField(
         verbose_name='Дата создания',
@@ -39,30 +41,29 @@ class AbstractItemModel(models.Model):
     pic_upload_place = ''
 
     title = models.CharField(
+        verbose_name='Заголовок',
         max_length=200,
-        help_text='Название'
     )
     slug = models.SlugField(
         unique=True,
-        help_text='Уникальный текстовый идентификатор предмета'
     )
     description = models.TextField(
-        help_text='Описание'
+        verbose_name='Описание',
     )
     price = models.PositiveIntegerField(
-        help_text='Цена'
+        verbose_name='Цена'
     )
     created = models.DateTimeField(
         verbose_name='Дата создания',
         auto_now_add=True
     )
     published = models.BooleanField(
+        verbose_name='Опубликованно',
         help_text='Включение и выключение отображение на сайте'
     )
     image = models.ImageField(
         verbose_name='Картинка',
         upload_to=pic_upload_place,
-        help_text='Загрузить картинку',
     )
 
     class Meta:
