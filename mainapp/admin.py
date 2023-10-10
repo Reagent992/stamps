@@ -6,8 +6,9 @@ from mainapp.models import Stamp, StampGroup
 
 @admin.register(StampGroup)
 class PostAdmin(admin.ModelAdmin):
-    exclude = ('slug',)
-    list_display = ('title', 'published', 'created', 'image_tumbnail')
+    exclude = ('slug', 'min_group_price')
+    list_display = (
+        'title', 'published', 'created', 'min_group_price', 'image_tumbnail')
     search_fields = ('title',)
     empty_value_display = '-пусто-'
     ordering = ('-created',)

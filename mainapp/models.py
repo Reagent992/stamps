@@ -17,18 +17,9 @@ class StampGroup(AbstrcatGroupModel):
     def __str__(self):
         return self.title
 
-    def min_price(self):
-        """
-        Самый дешевый товар в группе.
-        # FIXME: Переделать.
-        """
-        min_price = None
-        for stamp in self.stamps.all():
-            if min_price is None or stamp.price < min_price:
-                min_price = stamp.price
-        return min_price
-
     def get_admin_url(self):
+        # TODO: это можно перенести в файл админки?
+        """Получение ссылки на модель. Для админки."""
         url = reverse('admin:%s_%s_change' % (
             self._meta.app_label, self._meta.model_name), args=[self.pk])
         return mark_safe('<a href="{}">{}</a>'.format(url, self.title))
@@ -57,3 +48,4 @@ class Stamp(AbstractItemModel):
 
     def __str__(self):
         return self.title
+

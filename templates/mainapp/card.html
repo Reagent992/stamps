@@ -14,11 +14,11 @@
         <div class="text-center">
           {# Product name #}
           <h5 class="fw-bolder">{{ item.title }}</h5>
-          {# Product price #}
-          {% if its_stamps %}
-            {{ item.price }} ₽
+          {# Product price  #}
+          {% if IndexView %}
+            От {{ item.min_group_price }} ₽
           {% else %}
-            От {{ item.min_price }} ₽
+            {{ item.price }} ₽
           {% endif %}
         </div>
       </div>

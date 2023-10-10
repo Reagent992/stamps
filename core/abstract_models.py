@@ -28,6 +28,10 @@ class AbstrcatGroupModel(models.Model):
         verbose_name='Дата создания',
         auto_now_add=True
     )
+    min_group_price = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Минимальная цена'
+    )
 
     class Meta:
         abstract = True
