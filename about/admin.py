@@ -1,8 +1,14 @@
 from django.contrib import admin
 
-from about.models import (ContactPhone, ContactEmail, ContactSocial,
-                          ContactMessage, ContactYandexMap, ContactAddress,
-                          ContactTelegram)
+from about.models import (
+    ContactAddress,
+    ContactEmail,
+    ContactMessage,
+    ContactPhone,
+    ContactSocial,
+    ContactTelegram,
+    ContactYandexMap,
+)
 
 admin.site.register(ContactPhone)
 admin.site.register(ContactEmail)

@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 
 User = get_user_model()
 
@@ -16,7 +16,7 @@ class UrlsTests(TestCase):
     def test_urls_guest(self):
         """Страницы доступные любому пользователю"""
         url_status_dict = {
-            '/': HTTPStatus.OK,
+            "/": HTTPStatus.OK,
         }
         for url, status in url_status_dict.items():
             with self.subTest(url=url, status=status):

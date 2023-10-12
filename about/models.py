@@ -31,6 +31,7 @@ class ContactSocial(models.Model):
 
 class ContactMessage(models.Model):
     """Viber, What Up link."""
+
     name = models.CharField(max_length=200)
     phone = models.CharField(max_length=16)
     published = models.BooleanField()
@@ -41,6 +42,7 @@ class ContactMessage(models.Model):
 
 class ContactTelegram(models.Model):
     """Текстовая часть ссылки на Telegram."""
+
     name = models.CharField(max_length=200)
     tg_name = models.CharField(max_length=30)
     published = models.BooleanField()

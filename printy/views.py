@@ -13,7 +13,7 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
 
     model = PrintyGroup
     queryset = PrintyGroup.objects.filter(published=True)
-    template_name = 'mainapp/index.html'
+    template_name = "mainapp/index.html"
     paginate_by = settings.PAGINATION_AMOUNT
     title = settings.PRINTY_TITLE
     home_label = settings.PRINTY_LABLE
@@ -21,21 +21,22 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
 
     def get_context_data(self, **kwargs):
         """Передаем название View в шаблон."""
-        return {**super().get_context_data(**kwargs), 'PrintyGroupsView': True}
+        return {**super().get_context_data(**kwargs), "PrintyGroupsView": True}
 
 
 class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
     """Оснастки отфильтрованные по группе."""
 
     model = PrintyGroup
-    template_name = 'mainapp/index.html'
+    template_name = "mainapp/index.html"
     paginate_by = settings.PAGINATION_AMOUNT
     home_path = settings.PRINTY_PATH
     home_label = settings.PRINTY_LABLE
 
     def get_queryset(self):
-        self.printy_group = get_object_or_404(PrintyGroup,
-                                              slug=self.kwargs['printy_group'])
+        self.printy_group = get_object_or_404(
+            PrintyGroup, slug=self.kwargs["printy_group"]
+        )
         return Printy.objects.filter(group=self.printy_group, published=True)
 
     def get_title(self):
@@ -44,27 +45,29 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """Передаем название View в шаблон."""
-        return {**super().get_context_data(**kwargs),
-                'PrintyGroupContentView': True}
+        return {
+            **super().get_context_data(**kwargs),
+            "PrintyGroupContentView": True,
+        }
 
     @cached_property
     def crumbs(self):
         """Breadcrumbs."""
-        return [(self.printy_group.title, reverse_lazy('printy:printys'))]
+        return [(self.printy_group.title, reverse_lazy("printy:printys"))]
 
 
 class PrintyView(TitleBreadcrumbsMixin, DetailView):
     """Подробости об оснастке."""
 
     model = Printy
-    template_name = 'mainapp/item_details.html'
+    template_name = "mainapp/item_details.html"
     home_path = settings.PRINTY_PATH
     home_label = settings.PRINTY_LABLE
 
     def get_object(self, queryset=None):
         return Printy.objects.get(
-            slug=self.kwargs['printy_item'],
-            published=True)
+            slug=self.kwargs["printy_item"], published=True
+        )
 
     def get_title(self):
         """Заголовок вкладки."""
@@ -72,16 +75,22 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         """Запись выбранной оснастки в сессию."""
-        self.request.session['printy_item'] = self.object.slug
+        self.request.session["printy_item"] = self.object.slug
         return super().get_context_data(**kwargs)
 
     @cached_property
     def crumbs(self):
         """Breadcrumbs."""
-        printy_group = get_object_or_404(PrintyGroup,
-                                         slug=self.kwargs['printy_group'])
-        return [(printy_group.title,
-                 reverse_lazy('printy:printys',
-                              kwargs={'printy_group': printy_group.slug})),
-                (self.object.title,
-                 reverse_lazy('printy:printy_details'))]
+        printy_group = get_object_or_404(
+            PrintyGroup, slug=self.kwargs["printy_group"]
+        )
+        return [
+            (
+                printy_group.title,
+                reverse_lazy(
+                    "printy:printys",
+                    kwargs={"printy_group": printy_group.slug},
+                ),
+            ),
+            (self.object.title, reverse_lazy("printy:printy_details")),
+        ]

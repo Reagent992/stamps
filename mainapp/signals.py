@@ -1,5 +1,5 @@
 from django.db.models import Min
-from django.db.models.signals import (post_delete, post_save, pre_save)
+from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 from slugify import slugify
 
@@ -22,9 +22,11 @@ def stamp_create_pre_save(sender, instance, *args, **kwargs):
 
 def update_min_price(instance):
     """Обновление минимальной цены."""
-    new_group_price = Stamp.objects.filter(
-        group=instance.group, published=True).aggregate(Min('price')).get(
-        'price__min')
+    new_group_price = (
+        Stamp.objects.filter(group=instance.group, published=True)
+        .aggregate(Min("price"))
+        .get("price__min")
+    )
     if new_group_price:
         instance.group.min_group_price = new_group_price
     else:
