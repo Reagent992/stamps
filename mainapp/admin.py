@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from mainapp.models import Stamp, StampGroup
@@ -75,4 +76,8 @@ class StampAdmin(admin.ModelAdmin):
     @admin.display(description="Группа")
     def group_link(self, obj):
         """Поле группы - ссылка на редактированние группы."""
-        return obj.group.get_admin_url()
+        url = reverse(
+            "admin:%s_%s_change" % (obj._meta.app_label, obj._meta.model_name),
+            args=[obj.pk],
+        )
+        return mark_safe('<a href="{}">{}</a>'.format(url, obj.title))
