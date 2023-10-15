@@ -1,19 +1,23 @@
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django import forms
 from django.contrib import admin
 
-from about.models import (
-    ContactAddress,
-    ContactEmail,
-    ContactMessage,
-    ContactPhone,
-    ContactSocial,
-    ContactTelegram,
-    ContactYandexMap,
-)
+from about.models import Contact, ContactYandexMap
 
-admin.site.register(ContactPhone)
-admin.site.register(ContactEmail)
-admin.site.register(ContactSocial)
-admin.site.register(ContactMessage)
 admin.site.register(ContactYandexMap)
-admin.site.register(ContactAddress)
-admin.site.register(ContactTelegram)
+
+
+class PostAdminForm(forms.ModelForm):
+    contants = forms.CharField(widget=CKEditorUploadingWidget())
+    links = forms.CharField(widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = Contact
+        fields = "__all__"
+
+
+class PostAdmin(admin.ModelAdmin):
+    form = PostAdminForm
+
+
+admin.site.register(Contact, PostAdmin)

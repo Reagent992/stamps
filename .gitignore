@@ -242,3 +242,7 @@ env
 /mainapp/migrations/
 /printy/migrations/
 runserver.py
+collected_static
+collected_static/
+collected_static/*
+*/collected_static/*
