@@ -1,54 +1,20 @@
 from django.db import models
+from django_ckeditor_5.fields import CKEditor5Field
 
 
-class ContactPhone(models.Model):
-    name = models.CharField(max_length=200)
-    phone = models.CharField(max_length=16)
-    published = models.BooleanField()
+class Contact(models.Model):
+    contacts = CKEditor5Field("Контакты", config_name="extends")
+    links = CKEditor5Field("Ссылки", config_name="extends")
+    published = models.BooleanField(
+        verbose_name="Опубликованно",
+        help_text="Включение и выключение отображения на сайте",
+    )
 
-    def __str__(self):
-        return self.phone
+    class Meta:
+        verbose_name_plural = "Контакты"
 
-
-class ContactEmail(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.EmailField()
-    published = models.BooleanField()
-
-    def __str__(self):
-        return self.email
-
-
-class ContactSocial(models.Model):
-    name = models.CharField(max_length=200)
-    vk = models.URLField()
-    double_gis = models.URLField()
-    published = models.BooleanField()
-
-    def __str__(self):
-        return self.name
-
-
-class ContactMessage(models.Model):
-    """Viber, What Up link."""
-
-    name = models.CharField(max_length=200)
-    phone = models.CharField(max_length=16)
-    published = models.BooleanField()
-
-    def __str__(self):
-        return self.phone
-
-
-class ContactTelegram(models.Model):
-    """Текстовая часть ссылки на Telegram."""
-
-    name = models.CharField(max_length=200)
-    tg_name = models.CharField(max_length=30)
-    published = models.BooleanField()
-
-    def __str__(self):
-        return self.tg_name
+    def __str__(self) -> str:
+        return 'Редактирование страницы "Контакты"'
 
 
 class ContactYandexMap(models.Model):
@@ -58,12 +24,3 @@ class ContactYandexMap(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ContactAddress(models.Model):
-    name = models.CharField(max_length=200)
-    address = models.TextField()
-    published = models.BooleanField()
-
-    def __str__(self):
-        return self.address
