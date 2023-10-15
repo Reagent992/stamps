@@ -4,6 +4,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path(
+        "ckeditor5/",
+        include("django_ckeditor_5.urls"),
+        name="ck_editor_5_upload_file",
+    ),
     path("about/", include("about.urls", namespace="about")),
     path("admin/", admin.site.urls),
     path("printy/", include("printy.urls", namespace="printy")),
