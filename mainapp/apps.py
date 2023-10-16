@@ -8,3 +8,4 @@ class MainappConfig(AppConfig):
 
     def ready(self):
         """Добавление signals.py."""
+        import mainapp.signals  # noqa
