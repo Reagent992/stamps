@@ -16,17 +16,6 @@ class PrintyGroup(AbstrcatGroupModel):
     def __str__(self):
         return self.title
 
-    def min_price(self):
-        """
-        Самый дешевый товар в группе.
-        # FIXME: Переделать.
-        """
-        min_price = None
-        for printy in self.printy.all():
-            if min_price is None or printy.price < min_price:
-                min_price = printy.price
-        return min_price
-
 
 class Printy(AbstractItemModel):
     """Оснаска."""

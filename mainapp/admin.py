@@ -77,7 +77,8 @@ class StampAdmin(admin.ModelAdmin):
     def group_link(self, obj):
         """Поле группы - ссылка на редактированние группы."""
         url = reverse(
-            "admin:%s_%s_change" % (obj._meta.app_label, obj._meta.model_name),
-            args=[obj.pk],
+            "admin:%s_%s_change"
+            % (obj.group._meta.app_label, obj.group._meta.model_name),
+            args=[obj.group.pk],
         )
-        return mark_safe('<a href="{}">{}</a>'.format(url, obj.title))
+        return mark_safe('<a href="{}">{}</a>'.format(url, obj.group.title))
