@@ -41,4 +41,4 @@ class Printy(AbstractItemModel):
         ]
 
     def __str__(self):
-        return self.title
+        return f"{self.title} | {self.group.title}"

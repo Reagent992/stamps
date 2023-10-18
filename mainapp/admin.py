@@ -43,7 +43,9 @@ class StampAdmin(admin.ModelAdmin):
         "published",
         "image",
         "image_preview",
+        "printy",
     )
+    filter_horizontal = ("printy",)
     exclude = ("slug",)
     autocomplete_fields = ("group",)
     list_display = (
