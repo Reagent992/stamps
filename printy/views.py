@@ -5,6 +5,8 @@ from django.utils.functional import cached_property
 from django.views.generic import DetailView, ListView
 
 from core.mixins import TitleBreadcrumbsMixin
+from core.views_helpers import get_stamp_obj
+from mainapp.models import Stamp
 from printy.models import Printy, PrintyGroup
 
 
@@ -18,6 +20,18 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
     title = settings.PRINTY_TITLE
     home_label = settings.PRINTY_LABLE
     crumbs = []
+
+    def get_queryset(self):
+        """Выводим только подходящие для выбранной печати оснастки или все."""
+        stamp_obj: Stamp = get_stamp_obj(self, Stamp)
+        if stamp_obj:
+            list_of_group_ids = stamp_obj.printy.values_list(
+                "group", flat=True
+            ).distinct()
+            return PrintyGroup.objects.filter(
+                id__in=list_of_group_ids, published=True
+            )
+        return super().get_queryset()
 
     def get_context_data(self, **kwargs):
         """Передаем название View в шаблон."""
@@ -34,9 +48,15 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
     home_label = settings.PRINTY_LABLE
 
     def get_queryset(self):
+        """Выводим только подходящие для выбранной печати оснастки или все."""
         self.printy_group = get_object_or_404(
             PrintyGroup, slug=self.kwargs["printy_group"]
         )
+        stamp_obj: Stamp = get_stamp_obj(self, Stamp)
+        if stamp_obj:
+            return stamp_obj.printy.filter(
+                group=self.printy_group, published=True
+            )
         return Printy.objects.filter(group=self.printy_group, published=True)
 
     def get_title(self):
@@ -65,8 +85,18 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
     home_label = settings.PRINTY_LABLE
 
     def get_object(self, queryset=None):
-        return Printy.objects.get(
-            slug=self.kwargs["printy_item"], published=True
+        """Оснастка с проверкой на пригодность к выбранной печати."""
+        stamp_obj: Stamp = get_stamp_obj(self, Stamp)
+        if stamp_obj:
+            # TODO: нужна кнопка
+            # "выбранная оснастка не подходит для выбранной печати" вместо 404.
+            return get_object_or_404(
+                stamp_obj.printy,
+                slug=self.kwargs["printy_item"],
+                published=True,
+            )
+        return get_object_or_404(
+            Printy, slug=self.kwargs["printy_item"], published=True
         )
 
     def get_title(self):
@@ -75,7 +105,7 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         """Запись выбранной оснастки в сессию."""
-        self.request.session["printy_item"] = self.object.slug
+        self.request.session["printy"] = self.object.id
         return super().get_context_data(**kwargs)
 
     @cached_property
