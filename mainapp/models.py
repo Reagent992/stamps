@@ -31,7 +31,13 @@ class Stamp(AbstractItemModel):
     )
 
     printy = models.ManyToManyField(
-        to=Printy, blank=True, related_name="printy", verbose_name="Оснастка"
+        to=Printy,
+        related_name="printy",
+        verbose_name="Оснастка",
+        blank=False,
+        error_messages=(
+            "Печать должна быть привязанна хотя бы к одной оснастке."
+        ),
     )
 
     class Meta:
