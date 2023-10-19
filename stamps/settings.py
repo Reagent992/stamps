@@ -16,11 +16,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Libs:
+    # ---------------------------Libs-----------------------------------------
     'sorl.thumbnail',
     'view_breadcrumbs',
     'django_ckeditor_5',
-    # Apps:
+    # ---------------------------Apps-----------------------------------------
     'mainapp.apps.MainappConfig',
     'about.apps.AboutConfig',
     'printy.apps.PrintyConfig',
@@ -50,6 +50,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.year.year',
             ],
         },
     },
