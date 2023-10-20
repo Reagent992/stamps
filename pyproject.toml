@@ -21,6 +21,7 @@ django-view-breadcrumbs = "^2.4.1"
 pillow = "^10.0.1"
 pre-commit = "^3.5.0"
 django-ckeditor-5 = "^0.2.10"
+environs = {extras = ["django"], version = "^9.5.0"}
 
 [tool.poetry.scripts]
 dj = "runserver:djtest"

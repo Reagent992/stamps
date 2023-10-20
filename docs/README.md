@@ -19,3 +19,5 @@
 * pre-commit
     * Автоматический запуск black, isort, flake8 при использование git commit
     
+* Environs
+    * Для хранения секрутов в файле `.env`
