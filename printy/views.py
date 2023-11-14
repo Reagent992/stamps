@@ -15,7 +15,7 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
 
     model = PrintyGroup
     queryset = PrintyGroup.objects.filter(published=True)
-    template_name = "mainapp/index.html"
+    template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
     title = settings.PRINTY_TITLE
     home_label = settings.PRINTY_LABLE
@@ -42,7 +42,7 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
     """Оснастки отфильтрованные по группе."""
 
     model = PrintyGroup
-    template_name = "mainapp/index.html"
+    template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
     home_path = settings.PRINTY_PATH
     home_label = settings.PRINTY_LABLE
@@ -80,7 +80,7 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
     """Подробости об оснастке."""
 
     model = Printy
-    template_name = "mainapp/item_details.html"
+    template_name = settings.ITEM_DETAIL_TEMPLATE
     home_path = settings.PRINTY_PATH
     home_label = settings.PRINTY_LABLE
 

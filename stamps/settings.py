@@ -124,6 +124,9 @@ PRINTY_TITLE = "Группы оснасток"
 PRINTY_LABLE = "Группы оснасток"
 # -------------------------------------------------------------BREADCRUMBS-PATH
 PRINTY_PATH = "/printy/"
+# --------------------------------------------------------------------TEMPLATES
+INDEX_TEMPLATE = "mainapp/index.html"
+ITEM_DETAIL_TEMPLATE = "mainapp/item_details.html"
 # -------------------------------------------------------------------CKEDITOR_5
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},

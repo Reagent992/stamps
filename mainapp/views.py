@@ -13,7 +13,7 @@ class StampGroupView(TitleBreadcrumbsMixin, ListView):
 
     model = StampGroup
     queryset = StampGroup.objects.filter(published=True)
-    template_name = "mainapp/index.html"
+    template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
     title = settings.INDEX_TITLE
     crumbs = []
@@ -27,7 +27,7 @@ class GroupedStampsView(TitleBreadcrumbsMixin, ListView):
     """Печати отфильтрованные оп группе."""
 
     model = StampGroup
-    template_name = "mainapp/index.html"
+    template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
 
     def get_queryset(self):
@@ -57,7 +57,7 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
     """Подробности о печати."""
 
     model = Stamp
-    template_name = "mainapp/item_details.html"
+    template_name = settings.ITEM_DETAIL_TEMPLATE
 
     def get_object(self, queryset=None):
         return Stamp.objects.get(slug=self.kwargs["slug_item"], published=True)

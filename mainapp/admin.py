@@ -21,7 +21,7 @@ class StampGroupAdmin(admin.ModelAdmin):
     list_filter = ("published",)
     readonly_fields = ("image_preview",)
 
-    @admin.display(description="Загруженная картинка")
+    @admin.display(description="Текущая картинка")
     def image_preview(self, obj):
         if obj.image:
             return mark_safe('<img src="{}" />'.format(obj.image.url))
@@ -35,7 +35,7 @@ class StampGroupAdmin(admin.ModelAdmin):
 
 @admin.register(Stamp)
 class StampAdmin(admin.ModelAdmin):
-    fields = (
+    fields = [
         "title",
         "group",
         "description",
@@ -44,7 +44,7 @@ class StampAdmin(admin.ModelAdmin):
         "image",
         "image_preview",
         "printy",
-    )
+    ]
     filter_horizontal = ("printy",)
     exclude = ("slug",)
     autocomplete_fields = ("group",)
@@ -64,7 +64,7 @@ class StampAdmin(admin.ModelAdmin):
     readonly_fields = ("image_preview",)
     search_fields = ("title",)
 
-    @admin.display(description="Загруженная картинка")
+    @admin.display(description="Текущая картинка")
     def image_preview(self, obj):
         if obj.image:
             return mark_safe('<img src="{}" />'.format(obj.image.url))

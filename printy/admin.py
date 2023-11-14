@@ -11,4 +11,6 @@ class PrintyGroupAdmin(StampGroupAdmin):
 
 @admin.register(Printy)
 class PrintyAdmin(StampAdmin):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.remove("printy")
