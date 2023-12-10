@@ -24,16 +24,12 @@
       {# Product actions #}
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
-          <a class="btn btn-outline-dark mt-auto"
+          <a class="btn btn-outline-dark mt-auto" href="
               {# Current view selection #}
-              {% if PrintyGroupsView %}
-                href="{% url 'printy:printys' item.slug %}">Подробнее о группе
-              {% elif PrintyGroupContentView %}
-                href="{% url 'printy:printy_details' item.group.slug item.slug %}">Подробнее о оснастке
-              {% elif GroupedStampsView %}
-                href="{% url 'mainapp:item_details' item.group.slug item.slug %}">Подробнее о печати
-              {% elif IndexView %}
-                href="{% url 'mainapp:stamps' item.slug %}">Подробнее о группе
+              {% if PrintyGroupsView %}{% url 'printy:printys' item.slug %}">Подробнее о группе
+              {% elif PrintyGroupContentView %}{% url 'printy:printy_details' item.group.slug item.slug %}">Подробнее о оснастке
+              {% elif GroupedStampsView %}{% url 'mainapp:item_details' item.group.slug item.slug %}">Подробнее о печати
+              {% elif IndexView %}{% url 'mainapp:stamps' item.slug %}">Подробнее о группе
               {% endif %}</a>
         </div>
       </div>
