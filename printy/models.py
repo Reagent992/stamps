@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from core.abstract_models import AbstractItemModel, AbstrcatGroupModel
 
@@ -15,6 +16,13 @@ class PrintyGroup(AbstrcatGroupModel):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        """Возвращает абсолютный URL для объекта модели."""
+        return reverse(
+            "printy:printys",
+            kwargs={"printy_group": self.slug},
+        )
 
 
 class Printy(AbstractItemModel):
@@ -42,3 +50,10 @@ class Printy(AbstractItemModel):
 
     def __str__(self):
         return f"{self.title} | {self.group.title}"
+
+    def get_absolute_url(self):
+        """Возвращает абсолютный URL для объекта модели."""
+        return reverse(
+            "printy:printy_details",
+            kwargs={"printy_item": self.slug, "printy_group": self.group.slug},
+        )

@@ -30,6 +30,9 @@ EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
+# Константа для hostname/sitemap.xml
+SITE_ID = 1
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -37,11 +40,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # ---------------------------Libs-----------------------------------------
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
+    # ---------------------------------Libs------------------------------------
     "sorl.thumbnail",
     "view_breadcrumbs",
     "django_ckeditor_5",
-    # ---------------------------Apps-----------------------------------------
+    # ---------------------------------Apps------------------------------------
     "mainapp.apps.MainappConfig",
     "about.apps.AboutConfig",
     "printy.apps.PrintyConfig",
