@@ -11,7 +11,7 @@ class StampGroup(AbstrcatGroupModel):
     pic_upload_place = "group_pics/"
 
     class Meta:
-        ordering = ("-created",)
+        ordering = ("-updated",)
         verbose_name = "Группа печатей"
         verbose_name_plural = "Группы печатей"
 
@@ -42,6 +42,7 @@ class Stamp(AbstractItemModel):
         to=Printy,
         related_name="printy",
         verbose_name="Оснастка",
+        help_text="Оснастки доступные для этой печати",
         blank=False,
         error_messages=(
             "Печать должна быть привязанна хотя бы к одной оснастке."
@@ -49,7 +50,7 @@ class Stamp(AbstractItemModel):
     )
 
     class Meta:
-        ordering = ("-created",)
+        ordering = ("-updated",)
         verbose_name = "Печать"
         verbose_name_plural = "Печати"
         constraints = [

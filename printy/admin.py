@@ -6,11 +6,23 @@ from printy.models import Printy, PrintyGroup
 
 @admin.register(PrintyGroup)
 class PrintyGroupAdmin(StampGroupAdmin):
+    """Настройка админки для Групп Оснасток."""
+
     pass
 
 
 @admin.register(Printy)
 class PrintyAdmin(StampAdmin):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields.remove("printy")
+    """Настройка админки для Оснасток."""
+
+    fields = (
+        "title",
+        "group",
+        "description",
+        "price",
+        "published",
+        "image",
+        "image_preview",
+        # "printy",  Исключеине лишнего поля.
+    )
+    filter_horizontal = ()

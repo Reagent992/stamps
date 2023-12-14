@@ -7,11 +7,14 @@ from mainapp.models import Stamp, StampGroup
 
 @admin.register(StampGroup)
 class StampGroupAdmin(admin.ModelAdmin):
+    """Настройка админки для Групп Печатей."""
+
     exclude = ("slug", "min_group_price")
     list_display = (
         "title",
         "published",
         "created",
+        "updated",
         "min_group_price",
         "image_tumbnail",
     )
@@ -35,7 +38,9 @@ class StampGroupAdmin(admin.ModelAdmin):
 
 @admin.register(Stamp)
 class StampAdmin(admin.ModelAdmin):
-    fields = [
+    """Настройка админки для Печатей."""
+
+    fields = (
         "title",
         "group",
         "description",
@@ -44,7 +49,7 @@ class StampAdmin(admin.ModelAdmin):
         "image",
         "image_preview",
         "printy",
-    ]
+    )
     filter_horizontal = ("printy",)
     exclude = ("slug",)
     autocomplete_fields = ("group",)
@@ -55,6 +60,7 @@ class StampAdmin(admin.ModelAdmin):
         "price",
         "published",
         "created",
+        "updated",
         "image_tumbnail",
     )
     list_filter = (
@@ -67,13 +73,19 @@ class StampAdmin(admin.ModelAdmin):
     @admin.display(description="Текущая картинка")
     def image_preview(self, obj):
         if obj.image:
-            return mark_safe('<img src="{}" />'.format(obj.image.url))
+            return mark_safe(
+                f'<img src="{obj.image.url}" width="300" height="300">'
+            )
         return "Картинка еще не загружена."
 
-    @admin.display(description="Картинка")
+    @admin.display(description="Иконка")
     def image_tumbnail(self, obj):
         """Поле с иконкой картинки."""
-        return mark_safe(f'<img src={obj.image.url} width="80" height="80">')
+        if obj.image:
+            return mark_safe(
+                f'<img src="{obj.image.url}" width="80" height="80">'
+            )
+        return "Нет иконки"
 
     @admin.display(description="Группа")
     def group_link(self, obj):

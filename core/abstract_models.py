@@ -27,6 +27,9 @@ class AbstrcatGroupModel(models.Model):
     created = models.DateTimeField(
         verbose_name="Дата создания", auto_now_add=True
     )
+    updated = models.DateTimeField(
+        auto_now=True, verbose_name="Дата последнего изменения"
+    )
     min_group_price = models.PositiveIntegerField(
         default=0, verbose_name="Минимальная цена"
     )
@@ -60,6 +63,9 @@ class AbstractItemModel(models.Model):
     published = models.BooleanField(
         verbose_name="Опубликованно",
         help_text="Включение и выключение отображение на сайте",
+    )
+    updated = models.DateTimeField(
+        auto_now=True, verbose_name="Дата последнего изменения"
     )
     image = models.ImageField(
         verbose_name="Картинка",

@@ -10,7 +10,7 @@ class PrintyGroup(AbstrcatGroupModel):
     pic_upload_place = "printy_group_pics/"
 
     class Meta:
-        ordering = ("-created",)
+        ordering = ("-updated",)
         verbose_name = "Группа оснасток"
         verbose_name_plural = "Группы оснасток"
 
@@ -39,7 +39,7 @@ class Printy(AbstractItemModel):
     )
 
     class Meta:
-        ordering = ("-created",)
+        ordering = ("-updated",)
         verbose_name = "Оснастка"
         verbose_name_plural = "Оснастки"
         constraints = [
