@@ -13,7 +13,9 @@ class AbstrcatGroupModel(models.Model):
         help_text="Название группы",
     )
     slug = models.SlugField(
-        unique=True, help_text="Уникальный текстовый идентификатор группы"
+        unique=True,
+        db_index=True,
+        help_text="Уникальный текстовый идентификатор группы",
     )
     image = models.ImageField(
         verbose_name="Картинка",
@@ -52,6 +54,8 @@ class AbstractItemModel(models.Model):
     )
     slug = models.SlugField(
         unique=True,
+        db_index=True,
+        help_text="Уникальный текстовый идентификатор группы",
     )
     description = models.TextField(
         verbose_name="Описание",
