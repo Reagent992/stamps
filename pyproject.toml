@@ -5,6 +5,7 @@ description = "stamps e-store"
 authors = ["Miron Sadykov <MironSadykov@yandex.ru>"]
 license = "MIT"
 readme = "docs/README.md"
+repository = "https://github.com/Reagent992/stamps"
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -25,6 +26,9 @@ environs = {extras = ["django"], version = "^9.5.0"}
 
 [tool.poetry.scripts]
 dj = "runserver:djtest"
+
+[tool.poetry.group.dev.dependencies]
+django-debug-toolbar = "^4.2.0"
 
 [build-system]
 requires = ["poetry-core"]

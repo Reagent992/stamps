@@ -12,12 +12,9 @@
     * "Хлебные крошки", breadcrumbs для отображения "пути".
 * black, isort, flake8
     * Code Style
-
 * Poetry 
     * Альтернатива pip
-
 * pre-commit
     * Автоматический запуск black, isort, flake8 при использование git commit
-    
 * Environs
-    * Для хранения секрутов в файле `.env`
+    * Для хранения секретов в файле `.env`

@@ -29,7 +29,7 @@ EMAIL_HOST_USER = email["EMAIL_HOST_USER"]
 EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-
+INTERNAL_IPS = ["localhost", "127.0.0.1"]
 # Константа для hostname/sitemap.xml
 SITE_ID = 1
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "view_breadcrumbs",
     "django_ckeditor_5",
+    "debug_toolbar",
     # ---------------------------------Apps------------------------------------
     "mainapp.apps.MainappConfig",
     "about.apps.AboutConfig",
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "stamps.urls"
