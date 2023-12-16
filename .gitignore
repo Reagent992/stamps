@@ -237,8 +237,4 @@ env
 /media/*
 /static/
 /static/*
-/about/migrations/
-*/migrations/*
-/mainapp/migrations/
-/printy/migrations/
 runserver.py
