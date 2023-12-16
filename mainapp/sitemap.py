@@ -6,24 +6,22 @@ from mainapp.models import Stamp, StampGroup
 class StampSitemap(Sitemap):
     """sitemap.xml для Печати."""
 
-    changefreq = "weekly"
-    priority = 0.9
+    changefreq = "monthly"
 
     def items(self):
         return Stamp.objects.filter(published=True)
 
     def lastmod(self, obj):
-        return obj.created
+        return obj.updated
 
 
 class StampGroupSitemap(Sitemap):
     """sitemap.xml для Группы печатей."""
 
-    changefreq = "weekly"
-    priority = 0.9
+    changefreq = "monthly"
 
     def items(self):
         return StampGroup.objects.filter(published=True)
 
     def lastmod(self, obj):
-        return obj.created
+        return obj.updated
