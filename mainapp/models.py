@@ -1,11 +1,15 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
 
-from core.abstract_models import AbstractItemModel, AbstrcatGroupModel
+from core.abstract_models import AbstractGroupModel, AbstractItemModel
 from printy.models import Printy
+from stamp_fields.models import GroupOfFieldsTypes
+
+User = get_user_model()
 
 
-class StampGroup(AbstrcatGroupModel):
+class StampGroup(AbstractGroupModel):
     """Группы печатей."""
 
     pic_upload_place = "group_pics/"
@@ -29,15 +33,19 @@ class StampGroup(AbstrcatGroupModel):
 class Stamp(AbstractItemModel):
     """Печать."""
 
+    form_fields = models.ForeignKey(
+        to=GroupOfFieldsTypes,
+        on_delete=models.RESTRICT,
+        verbose_name="Набор полей",
+        related_name="stamps",
+    )
     pic_upload_place = "stamps/"
-
     group = models.ForeignKey(
         to=StampGroup,
         on_delete=models.RESTRICT,
         related_name="stamps",
         verbose_name="Группа",
     )
-
     printy = models.ManyToManyField(
         to=Printy,
         related_name="printy",
@@ -45,7 +53,7 @@ class Stamp(AbstractItemModel):
         help_text="Оснастки доступные для этой печати",
         blank=False,
         error_messages=(
-            "Печать должна быть привязанна хотя бы к одной оснастке."
+            "Печать должна быть привязана хотя бы к одной оснастке."
         ),
     )
 

@@ -8,7 +8,7 @@ env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env.str("SECRET_KEY")
+SECRET_KEY = env.str("SECRET_KEY", default="unsafe-secret-key")
 
 DEBUG = env.bool("DEBUG", default=False)
 
@@ -21,12 +21,12 @@ DATABASES = {
     )
 }
 
-email = env.dj_email_url("EMAIL_URL", default="smtp://")
-EMAIL_HOST = email["EMAIL_HOST"]
-EMAIL_PORT = email["EMAIL_PORT"]
-EMAIL_HOST_PASSWORD = email["EMAIL_HOST_PASSWORD"]
-EMAIL_HOST_USER = email["EMAIL_HOST_USER"]
-EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
+# email = env.dj_email_url("EMAIL_URL", default="smtp://")
+# EMAIL_HOST = email["EMAIL_HOST"]
+# EMAIL_PORT = email["EMAIL_PORT"]
+# EMAIL_HOST_PASSWORD = email["EMAIL_HOST_PASSWORD"]
+# EMAIL_HOST_USER = email["EMAIL_HOST_USER"]
+# EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 INTERNAL_IPS = ["localhost", "127.0.0.1"]
@@ -47,11 +47,16 @@ INSTALLED_APPS = [
     "view_breadcrumbs",
     "django_ckeditor_5",
     "debug_toolbar",
+    "django_json_widget",
+    "crispy_forms",
+    "crispy_bootstrap5",
     # ---------------------------------Apps------------------------------------
     "mainapp.apps.MainappConfig",
     "about.apps.AboutConfig",
     "printy.apps.PrintyConfig",
     "core.apps.CoreConfig",
+    "orders.apps.OrdersConfig",
+    "stamp_fields.apps.StampFieldsConfig",
 ]
 
 MIDDLEWARE = [
@@ -65,7 +70,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = "stamps.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -84,7 +89,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "stamps.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -106,7 +111,7 @@ LANGUAGE_CODE = "ru-RU"
 
 TIME_ZONE = "Europe/Moscow"
 
-USE_I18N = True
+USE_I18N = False
 
 USE_TZ = True
 
@@ -127,13 +132,20 @@ END_OF_ALL_TITLES = " - Печати-Архангельск.рф"
 INDEX_TITLE = "Главная страница"
 ABOUT_CONTACTS_TITLE = "Контакты"
 PRINTY_TITLE = "Группы оснасток"
-# -------------------------------------------------------BREADCRUMBS-HOME-LABLE
-PRINTY_LABLE = "Группы оснасток"
+ORDER_TITLE = "Оформление заказа"
+ORDER_CREATED = "Заказ оформлен."
+# -------------------------------------------------------BREADCRUMBS-HOME-LABEL
+PRINTY_LABEL = "Группы оснасток"
 # -------------------------------------------------------------BREADCRUMBS-PATH
 PRINTY_PATH = "/printy/"
 # --------------------------------------------------------------------TEMPLATES
 INDEX_TEMPLATE = "mainapp/index.html"
 ITEM_DETAIL_TEMPLATE = "mainapp/item_details.html"
+ORDER_FORM_TEMPLATE = "mainapp/order_form.html"
+ORDER_SUCCESS_TEMPLATE = "mainapp/order_success.html"
+# -----------------------------------------------------------------CRISPY-FORMS
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 # -------------------------------------------------------------------CKEDITOR_5
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},

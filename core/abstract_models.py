@@ -1,11 +1,32 @@
 from django.db import models
 
 
-class AbstrcatGroupModel(models.Model):
+class PublishedManager(models.Manager):
+    """Расширение стандартного модельного менеджера."""
+
+    def published(self):
+        """Queryset только из опубликованных объектов."""
+        return super().get_queryset().filter(published=True)
+
+
+class AbstractTimeModel(models.Model):
+    """Абстрактная модель времени."""
+
+    created = models.DateTimeField(
+        verbose_name="Дата создания", auto_now_add=True
+    )
+    updated = models.DateTimeField(
+        auto_now=True, verbose_name="Дата последнего изменения"
+    )
+
+    class Meta:
+        abstract = True
+
+
+class AbstractGroupModel(AbstractTimeModel):
     """Абстрактная модель группы."""
 
     pic_upload_place = ""
-
     title = models.CharField(
         verbose_name="Заголовок",
         unique=True,
@@ -23,31 +44,25 @@ class AbstrcatGroupModel(models.Model):
         help_text="Загрузить картинку",
     )
     published = models.BooleanField(
-        verbose_name="Опубликованно",
+        verbose_name="Опубликовано",
         help_text="Включение и выключение отображения на сайте",
-    )
-    created = models.DateTimeField(
-        verbose_name="Дата создания", auto_now_add=True
-    )
-    updated = models.DateTimeField(
-        auto_now=True, verbose_name="Дата последнего изменения"
     )
     min_group_price = models.PositiveIntegerField(
         default=0, verbose_name="Минимальная цена"
     )
+    objects = PublishedManager()
 
     class Meta:
         abstract = True
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
-class AbstractItemModel(models.Model):
+class AbstractItemModel(AbstractTimeModel):
     """Абстрактная модель предмета."""
 
     pic_upload_place = ""
-
     title = models.CharField(
         verbose_name="Заголовок",
         max_length=200,
@@ -61,20 +76,15 @@ class AbstractItemModel(models.Model):
         verbose_name="Описание",
     )
     price = models.PositiveIntegerField(verbose_name="Цена")
-    created = models.DateTimeField(
-        verbose_name="Дата создания", auto_now_add=True
-    )
     published = models.BooleanField(
-        verbose_name="Опубликованно",
+        verbose_name="Опубликовано",
         help_text="Включение и выключение отображение на сайте",
-    )
-    updated = models.DateTimeField(
-        auto_now=True, verbose_name="Дата последнего изменения"
     )
     image = models.ImageField(
         verbose_name="Картинка",
         upload_to=pic_upload_place,
     )
+    objects = PublishedManager()
 
     class Meta:
         abstract = True

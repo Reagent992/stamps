@@ -24,6 +24,6 @@ class PageTitleViewMixin:
 
 
 class TitleBreadcrumbsMixin(PageTitleViewMixin, BaseBreadcrumbMixin):
-    """Обединение Миксинов для title и Breadcrumbs"""
+    """Обеднение миксинов для title и Breadcrumbs"""
 
     pass

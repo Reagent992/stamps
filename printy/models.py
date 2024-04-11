@@ -1,10 +1,10 @@
 from django.db import models
 from django.urls import reverse
 
-from core.abstract_models import AbstractItemModel, AbstrcatGroupModel
+from core.abstract_models import AbstractGroupModel, AbstractItemModel
 
 
-class PrintyGroup(AbstrcatGroupModel):
+class PrintyGroup(AbstractGroupModel):
     """Группы оснасток для печатей."""
 
     pic_upload_place = "printy_group_pics/"
@@ -26,7 +26,7 @@ class PrintyGroup(AbstrcatGroupModel):
 
 
 class Printy(AbstractItemModel):
-    """Оснаска."""
+    """Оснастка."""
 
     pic_upload_place = "printy_pics/"
 
@@ -35,7 +35,7 @@ class Printy(AbstractItemModel):
         on_delete=models.RESTRICT,
         related_name="printy",
         verbose_name="Группа оснасток",
-        help_text="Группа, к которой будет относиться оснаска",
+        help_text="Группа, к которой будет относиться оснастка",
     )
 
     class Meta:

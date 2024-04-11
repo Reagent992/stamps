@@ -23,6 +23,6 @@ class PrintyAdmin(StampAdmin):
         "published",
         "image",
         "image_preview",
-        # "printy",  Исключеине лишнего поля.
+        # "printy",  Исключение лишнего поля.
     )
     filter_horizontal = ()

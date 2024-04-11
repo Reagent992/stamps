@@ -13,7 +13,7 @@ class UrlsTests(TestCase):
         # Создаем неавторизованного пользователя
         self.guest_client = Client()
 
-    def test_urls_guest(self):
+    def test_urls_guest(self) -> None:
         """Страницы доступные любому пользователю"""
         url_status_dict = {
             "/": HTTPStatus.OK,

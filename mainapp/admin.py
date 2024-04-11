@@ -1,8 +1,11 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from mainapp.models import Stamp, StampGroup
+
+admin.site.unregister(Group)
 
 
 @admin.register(StampGroup)
@@ -16,7 +19,7 @@ class StampGroupAdmin(admin.ModelAdmin):
         "created",
         "updated",
         "min_group_price",
-        "image_tumbnail",
+        "image_thumbnail",
     )
     search_fields = ("title",)
     empty_value_display = "-пусто-"
@@ -31,7 +34,7 @@ class StampGroupAdmin(admin.ModelAdmin):
         return "Картинка еще не загружена."
 
     @admin.display(description="Картинка")
-    def image_tumbnail(self, obj):
+    def image_thumbnail(self, obj):
         """Поле с иконкой картинки."""
         return mark_safe(f'<img src={obj.image.url} width="80" height="80">')
 
@@ -49,6 +52,7 @@ class StampAdmin(admin.ModelAdmin):
         "image",
         "image_preview",
         "printy",
+        "form_fields",
     )
     filter_horizontal = ("printy",)
     exclude = ("slug",)
@@ -61,7 +65,7 @@ class StampAdmin(admin.ModelAdmin):
         "published",
         "created",
         "updated",
-        "image_tumbnail",
+        "image_thumbnail",
     )
     list_filter = (
         "group",
@@ -79,7 +83,7 @@ class StampAdmin(admin.ModelAdmin):
         return "Картинка еще не загружена."
 
     @admin.display(description="Иконка")
-    def image_tumbnail(self, obj):
+    def image_thumbnail(self, obj):
         """Поле с иконкой картинки."""
         if obj.image:
             return mark_safe(
@@ -89,7 +93,7 @@ class StampAdmin(admin.ModelAdmin):
 
     @admin.display(description="Группа")
     def group_link(self, obj):
-        """Поле группы - ссылка на редактированние группы."""
+        """Поле группы - ссылка на редактирование группы."""
         url = reverse(
             "admin:%s_%s_change"
             % (obj.group._meta.app_label, obj.group._meta.model_name),

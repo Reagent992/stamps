@@ -21,13 +21,19 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
-    path("__debug__/", include("debug_toolbar.urls")),
+    path(
+        "__debug__/",
+        include("debug_toolbar.urls"),
+    ),
     path(
         "ckeditor5/",
         include("django_ckeditor_5.urls"),
         name="ck_editor_5_upload_file",
     ),
-    path("about/", include("about.urls", namespace="about")),
+    path(
+        "about/",
+        include("about.urls", namespace="about"),
+    ),
     path("admin/", admin.site.urls),
     path("printy/", include("printy.urls", namespace="printy")),
     path("", include("mainapp.urls", namespace="mainapp")),

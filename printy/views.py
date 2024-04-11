@@ -10,6 +10,10 @@ from mainapp.models import Stamp
 from printy.models import Printy, PrintyGroup
 
 
+# TODO: Переделать логику работы вкладки оснасток:
+# При переходе с печати выбор доступных оснасток по ?param
+# При простом открытие Оснасток = просто просмотр оснасток.
+# Так же сделать переход на форму заказа после выбора печати и оснастки.
 class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
     """Группы оснасток."""
 
@@ -18,7 +22,7 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
     template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
     title = settings.PRINTY_TITLE
-    home_label = settings.PRINTY_LABLE
+    home_label = settings.PRINTY_LABEL
     crumbs = []
 
     def get_queryset(self):
@@ -45,7 +49,7 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
     template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
     home_path = settings.PRINTY_PATH
-    home_label = settings.PRINTY_LABLE
+    home_label = settings.PRINTY_LABEL
 
     def get_queryset(self):
         """Выводим только подходящие для выбранной печати оснастки или все."""
@@ -77,12 +81,12 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
 
 
 class PrintyView(TitleBreadcrumbsMixin, DetailView):
-    """Подробости об оснастке."""
+    """Подробности об оснастке."""
 
     model = Printy
     template_name = settings.ITEM_DETAIL_TEMPLATE
     home_path = settings.PRINTY_PATH
-    home_label = settings.PRINTY_LABLE
+    home_label = settings.PRINTY_LABEL
 
     def get_object(self, queryset=None):
         """Оснастка с проверкой на пригодность к выбранной печати."""
@@ -106,6 +110,7 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
     def get_context_data(self, **kwargs):
         """Запись выбранной оснастки в сессию."""
         self.request.session["printy"] = self.object.id
+        self.request.session.save()
         return super().get_context_data(**kwargs)
 
     @cached_property
