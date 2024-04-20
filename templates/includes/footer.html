@@ -1,16 +1,29 @@
 {% load static %} 
-{}
-{% comment %} # FIXME
-<footer class="py-5 bg-dark">
+
+
+
+{% comment %} <footer class="py-1 bg-dark sticky-bottom" style="position: fixed; bottom: 0; width: 100%; left: 0; right: 0;">
     <div class="container">
-        <p class="m-0 text-center text-white">
-            ООО "Аврора" {{ year }} год.
-        </p>
-        <p class="m-0 text-center text-white">
-            By <a href="https://github.com/Reagent992" target="_blank" rel="noopener noreferrer">Rea</a>
-        </p>
+    <p class="m-0 text-center text-white">
+    ООО "Аврора" {{ year }} год. By <a href="https://github.com/Reagent992." target="_blank" rel="noopener noreferrer">Rea</a>.
+    </p>
+    <p class="m-0 text-center text-white">
+    
+    </p>
     </div>
 </footer> {% endcomment %}
 
-<script src="{% static 'js/bootstrap.bundle.min.js' %}" async></script>
+<div class="container">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
 
+      <span class="mb-3 mb-md-0 text-body-secondary">©  ООО "Аврора" {{ year }}  By <a href="https://github.com/Reagent992" target="_blank" rel="noopener noreferrer">Rea</a>. </span>
+    </div>
+
+  </footer>
+</div>
+
+
+{# Локальный JS #}
+{% comment %} <script src="{% static 'js/bootstrap.bundle.min.js' %}" async></script> {% endcomment %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
