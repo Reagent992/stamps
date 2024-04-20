@@ -24,7 +24,10 @@ class StampGroupView(TitleBreadcrumbsMixin, ListView):
 
     def get_context_data(self, **kwargs):
         """Передаем название View в шаблон."""
-        return {**super().get_context_data(**kwargs), "IndexView": True}
+        return {
+            **super().get_context_data(**kwargs),
+            "button_text": settings.ABOUT_GROUP,
+        }
 
 
 class GroupedStampsView(TitleBreadcrumbsMixin, ListView):
@@ -48,7 +51,7 @@ class GroupedStampsView(TitleBreadcrumbsMixin, ListView):
         """Передаем название View в шаблон."""
         return {
             **super().get_context_data(**kwargs),
-            "GroupedStampsView": True,
+            "button_text": settings.ABOUT_STAMP,
         }
 
     @cached_property

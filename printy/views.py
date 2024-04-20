@@ -39,7 +39,10 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
 
     def get_context_data(self, **kwargs):
         """Передаем название View в шаблон."""
-        return {**super().get_context_data(**kwargs), "PrintyGroupsView": True}
+        return {
+            **super().get_context_data(**kwargs),
+            "button_text": settings.ABOUT_GROUP,
+        }
 
 
 class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
@@ -71,7 +74,7 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
         """Передаем название View в шаблон."""
         return {
             **super().get_context_data(**kwargs),
-            "PrintyGroupContentView": True,
+            "button_text": settings.ABOUT_PRINTY,
         }
 
     @cached_property
