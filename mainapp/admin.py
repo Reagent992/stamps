@@ -1,9 +1,12 @@
+from typing import Optional
+
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from mainapp.models import Stamp, StampGroup
+from printy.models import PrintyGroup
 
 admin.site.unregister(Group)
 
@@ -19,6 +22,7 @@ class StampGroupAdmin(admin.ModelAdmin):
         "created",
         "updated",
         "min_group_price",
+        "get_obj_count",
         "image_thumbnail",
     )
     search_fields = ("title",)
@@ -37,6 +41,14 @@ class StampGroupAdmin(admin.ModelAdmin):
     def image_thumbnail(self, obj):
         """Поле с иконкой картинки."""
         return mark_safe(f'<img src={obj.image.url} width="80" height="80">')
+
+    @admin.display(description="Количество")
+    def get_obj_count(self, obj: StampGroup | PrintyGroup) -> Optional[int]:
+        if hasattr(obj, "stamps"):
+            return obj.stamps.count()
+        if hasattr(obj, "printy"):
+            return obj.printy.count()
+        return None
 
 
 @admin.register(Stamp)
