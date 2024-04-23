@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.functional import cached_property
 from django.views.generic import DetailView, ListView, TemplateView
 
@@ -23,10 +23,11 @@ class StampGroupView(TitleBreadcrumbsMixin, ListView):
     crumbs = []
 
     def get_context_data(self, **kwargs):
-        """Передаем название View в шаблон."""
+        """Передаем данные в шаблон."""
         return {
             **super().get_context_data(**kwargs),
             "button_text": settings.ABOUT_GROUP,
+            "IndexView": True,
         }
 
 
@@ -76,10 +77,24 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
         return self.object.title
 
     def get_context_data(self, **kwargs):
-        """Запись выбранной печати в сессию."""
-        # TODO: rename to selected_stamp_id
-        self.request.session["stamp"] = self.object.id
-        return super().get_context_data(**kwargs)
+        """Передача данных в шаблон."""
+        return {
+            **super().get_context_data(**kwargs),
+            "printy_selected": bool(
+                self.request.session.get("selected_printy_id")
+            ),
+            "button_text": settings.BUTTON_CHOICE_PRINTY,
+        }
+
+    def post(self, request, *args, **kwargs):
+        """Запись выбранной печати в сессию и редирект на выбор оснастки."""
+        if "chosen_item_id" in request.POST:
+            chosen_item_id = request.POST["chosen_item_id"]
+            self.request.session["selected_stamp_id"] = chosen_item_id
+            return redirect(
+                reverse("printy:printy_index") + f"?stamp_id={chosen_item_id}"
+            )
+        return super().post(request, *args, **kwargs)
 
     @cached_property
     def crumbs(self):
@@ -109,7 +124,7 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
     def crumbs(self):
         """Breadcrumbs."""
         selected_stamp = get_object_or_404(
-            Stamp, id=self.request.session.get("stamp")
+            Stamp, id=self.request.session.get("selected_stamp_id")
         )
         return [
             (
@@ -148,7 +163,9 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
             Stamp, slug=self.kwargs["slug_item"], published=True
         )
         selected_printy = get_object_or_404(
-            Printy, id=self.request.session.get("printy"), published=True
+            Printy,
+            id=self.request.session.get("selected_printy_id"),
+            published=True,
         )
         stamp_fields = selected_stamp.form_fields.fields.all()
         stamp_text_form = StampTextForm(stamp_fields)
@@ -166,7 +183,9 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
             Stamp, slug=self.kwargs["slug_item"], published=True
         )
         selected_printy = get_object_or_404(
-            Printy, id=request.session.get("printy"), published=True
+            Printy,
+            id=request.session.get("selected_printy_id"),
+            published=True,
         )
         stamp_fields = selected_stamp.form_fields.fields.all()
         stamp_text_form = StampTextForm(stamp_fields, request.POST or None)

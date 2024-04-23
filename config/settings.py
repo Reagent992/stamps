@@ -138,6 +138,9 @@ ORDER_CREATED = "Заказ оформлен."
 ABOUT_GROUP = "Подробнее о группе"
 ABOUT_STAMP = "Подробнее о печати"
 ABOUT_PRINTY = "Подробнее о оснастке"
+BUTTON_CHOICE_PRINTY = "Выбрать оснастку"
+BUTTON_MAKE_ORDER = "Сделать заказ"
+BUTTON_WRONG_PRINTY = "Оснастка не подходит под выбранную печать"
 # -------------------------------------------------------BREADCRUMBS-HOME-LABEL
 PRINTY_LABEL = "Группы оснасток"
 # -------------------------------------------------------------BREADCRUMBS-PATH
