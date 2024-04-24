@@ -40,9 +40,9 @@ class GroupedStampsView(TitleBreadcrumbsMixin, ListView):
 
     def get_queryset(self):
         self.stamp_group = get_object_or_404(
-            StampGroup, slug=self.kwargs["group"]
+            StampGroup.objects.published(), slug=self.kwargs["group"]
         )
-        return Stamp.objects.filter(group=self.stamp_group, published=True)
+        return Stamp.objects.published(group=self.stamp_group)
 
     def get_title(self):
         """Заголовок вкладки."""
@@ -69,7 +69,7 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
 
     def get_object(self, queryset=None):
         return get_object_or_404(
-            Stamp, slug=self.kwargs["slug_item"], published=True
+            Stamp.objects.published(), slug=self.kwargs["slug_item"]
         )
 
     def get_title(self):
@@ -100,7 +100,7 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
     def crumbs(self):
         """Breadcrumbs."""
         current_stamp_group = get_object_or_404(
-            StampGroup, slug=self.kwargs["group"]
+            StampGroup.objects.published(), slug=self.kwargs["group"]
         )
         return [
             (
@@ -124,7 +124,8 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
     def crumbs(self):
         """Breadcrumbs."""
         selected_stamp = get_object_or_404(
-            Stamp, id=self.request.session.get("selected_stamp_id")
+            Stamp.objects.published(),
+            id=self.request.session.get("selected_stamp_id"),
         )
         return [
             (
@@ -160,12 +161,11 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
         """Передача формы и остального в шаблон."""
         context = super().get_context_data(**kwargs)
         selected_stamp = get_object_or_404(
-            Stamp, slug=self.kwargs["slug_item"], published=True
+            Stamp.objects.published(), slug=self.kwargs["slug_item"]
         )
         selected_printy = get_object_or_404(
-            Printy,
+            Printy.objects.published(),
             id=self.request.session.get("selected_printy_id"),
-            published=True,
         )
         stamp_fields = selected_stamp.form_fields.fields.all()
         stamp_text_form = StampTextForm(stamp_fields)
@@ -180,12 +180,11 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         """Заполненная форма для заказа."""
         selected_stamp = get_object_or_404(
-            Stamp, slug=self.kwargs["slug_item"], published=True
+            Stamp.objects.published(), slug=self.kwargs["slug_item"]
         )
         selected_printy = get_object_or_404(
-            Printy,
+            Printy.objects.published(),
             id=request.session.get("selected_printy_id"),
-            published=True,
         )
         stamp_fields = selected_stamp.form_fields.fields.all()
         stamp_text_form = StampTextForm(stamp_fields, request.POST or None)

@@ -4,9 +4,9 @@ from django.db import models
 class PublishedManager(models.Manager):
     """Расширение стандартного модельного менеджера."""
 
-    def published(self):
+    def published(self, *args, **kwargs):
         """Queryset только из опубликованных объектов."""
-        return super().get_queryset().filter(published=True)
+        return super().get_queryset().filter(published=True, *args, **kwargs)
 
 
 class AbstractTimeModel(models.Model):

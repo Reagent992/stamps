@@ -13,7 +13,7 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
     """Группы оснасток."""
 
     model = PrintyGroup
-    queryset = PrintyGroup.objects.filter(published=True)
+    queryset = PrintyGroup.objects.published()
     template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
     title = settings.PRINTY_TITLE
@@ -26,13 +26,13 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
         self.stamp_id = self.request.GET.get("stamp_id")
         if not self.stamp_id:
             return super().get_queryset()
-        stamp_obj = get_object_or_404(Stamp, id=self.stamp_id)
+        stamp_obj = get_object_or_404(
+            Stamp.objects.published(), id=self.stamp_id
+        )
         list_of_group_ids = stamp_obj.printy.values_list(
             "group", flat=True
         ).distinct()
-        return PrintyGroup.objects.filter(
-            id__in=list_of_group_ids, published=True
-        )
+        return PrintyGroup.objects.published(id__in=list_of_group_ids)
 
     def get_context_data(self, **kwargs):
         """Передаем название View в шаблон."""
@@ -57,15 +57,15 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
         """Выводим только подходящие для выбранной(через params)
         печати оснастки или все."""
         self.printy_group = get_object_or_404(
-            PrintyGroup, slug=self.kwargs["printy_group"]
+            PrintyGroup.objects.published(), slug=self.kwargs["printy_group"]
         )
         self.stamp_id = self.request.GET.get("stamp_id")
         if self.stamp_id:
-            stamp_obj = get_object_or_404(Stamp, id=self.stamp_id)
-            return stamp_obj.printy.filter(
-                group=self.printy_group, published=True
+            stamp_obj = get_object_or_404(
+                Stamp.objects.published(), id=self.stamp_id
             )
-        return Printy.objects.filter(group=self.printy_group, published=True)
+            return stamp_obj.printy.published(group=self.printy_group)
+        return Printy.objects.published(group=self.printy_group)
 
     def get_title(self):
         """Заголовок вкладки."""
@@ -94,7 +94,8 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
 
     def get_object(self, queryset=None):
         return get_object_or_404(
-            Printy, slug=self.kwargs["printy_item"], published=True
+            Printy.objects.published(),
+            slug=self.kwargs["printy_item"],
         )
 
     def get_title(self):
@@ -108,7 +109,7 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
         context["turn_off_button"] = not bool(selected_stamp_id)
         context["button_text"] = settings.BUTTON_MAKE_ORDER
         self.selected_stamp_obj: Stamp = get_object_or_404(
-            Stamp, id=selected_stamp_id
+            Stamp.objects.published(), id=selected_stamp_id
         )
         if self.get_object() not in self.selected_stamp_obj.printy.all():
             context["disable_button"] = True
@@ -121,7 +122,9 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
             selected_stamp_id = self.request.session.get("selected_stamp_id")
             chosen_item_id = request.POST["chosen_item_id"]
             self.request.session["selected_printy_id"] = chosen_item_id
-            selected_stamp_obj = get_object_or_404(Stamp, id=selected_stamp_id)
+            selected_stamp_obj = get_object_or_404(
+                Stamp.objects.published(), id=selected_stamp_id
+            )
             selected_stamp_obj.slug
             selected_stamp_obj.group.slug
             return redirect(
@@ -135,7 +138,7 @@ class PrintyView(TitleBreadcrumbsMixin, DetailView):
     def crumbs(self):
         """Breadcrumbs."""
         printy_group = get_object_or_404(
-            PrintyGroup, slug=self.kwargs["printy_group"]
+            PrintyGroup.objects.published(), slug=self.kwargs["printy_group"]
         )
         return [
             (
