@@ -17,6 +17,11 @@ urlpatterns = [
         name="index",
     ),
     path(
+        "success/",
+        SuccessFormView.as_view(),
+        name="order_success",
+    ),
+    path(
         "<slug:group>/",
         GroupedStampsView.as_view(),
         name="stamps",
@@ -30,10 +35,5 @@ urlpatterns = [
         "<slug:group>/<slug:slug_item>/order",
         CreateStampOrderView.as_view(),
         name="stamp_form",
-    ),
-    path(
-        "success/",
-        SuccessFormView.as_view(),
-        name="order_success",
     ),
 ]
