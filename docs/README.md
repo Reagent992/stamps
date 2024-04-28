@@ -11,9 +11,11 @@
 | --- | --- | --- |
 | python | 3.10 | Язык программирования Python версии |
 | django | 4 | Фронт на Джанго-шаблонах|
+| celery | latest | Очередь задач |
+| rabbitmq | latest | Брокер для celery |
 | django-view-breadcrumbs | latest | "Хлебные крошки", breadcrumbs для отображения "пути". |
 | django-ckeditor | 5 | Редактор теста |
-| python-slugify | latest | Транслитерация текста. |
+| python-slugify | latest | Транслитерация текста |
 | Poetry | latest | Пакетный менеджер, Альтернатива pip |
 | Environs[django] | latest | Для хранения секретов в файле `.env` |
 | django-json-widget| latest | Для удобного просмотра и редактирования JSONField|

@@ -19,6 +19,7 @@ environs = {extras = ["django"], version = "^9.5.0"}
 django-json-widget = "^2.0.1"
 django-crispy-forms = "^2.1"
 crispy-bootstrap5 = "^2024.2"
+celery = "^5.4.0"
 
 [tool.poetry.scripts]
 dj = "runserver:djtest"
