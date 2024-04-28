@@ -9,10 +9,9 @@ env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env.str("SECRET_KEY", default="unsafe-secret-key")
-
 DEBUG = env.bool("DEBUG", default=False)
-
-
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+INTERNAL_IPS = env.list("INTERNAL_IPS", default=["localhost", "127.0.0.1"])
 DATABASES = {
     "default": env.dj_db_url(
         "DATABASE_URL",
@@ -20,16 +19,26 @@ DATABASES = {
         ssl_require=not DEBUG,
     )
 }
-
+# -----------------------------------------------------------------------CELERY
+CELERY_BROKER_URL = env.str(
+    "CELERY_BROKER_URL",
+    default="pyamqp://guest:guest@localhost:5672//",
+)
+CELERY_RESULT_BACKEND = env.str(
+    "CELERY_RESULT_BACKEND",
+    default="rpc://guest:guest@localhost:5672//",
+)
+# CELERY_TIMEZONE = "Europe/Moscow"
+# ------------------------------------------------------------------------EMAIL
 # email = env.dj_email_url("EMAIL_URL", default="smtp://")
 # EMAIL_HOST = email["EMAIL_HOST"]
 # EMAIL_PORT = email["EMAIL_PORT"]
 # EMAIL_HOST_PASSWORD = email["EMAIL_HOST_PASSWORD"]
 # EMAIL_HOST_USER = email["EMAIL_HOST_USER"]
 # EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
+if DEBUG:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-INTERNAL_IPS = ["localhost", "127.0.0.1"]
 # Константа для hostname/sitemap.xml
 SITE_ID = 1
 
