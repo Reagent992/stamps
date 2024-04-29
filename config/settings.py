@@ -28,16 +28,22 @@ CELERY_RESULT_BACKEND = env.str(
     "CELERY_RESULT_BACKEND",
     default="rpc://guest:guest@localhost:5672//",
 )
-# CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TIMEZONE = "Europe/Moscow"
 # ------------------------------------------------------------------------EMAIL
-# email = env.dj_email_url("EMAIL_URL", default="smtp://")
-# EMAIL_HOST = email["EMAIL_HOST"]
-# EMAIL_PORT = email["EMAIL_PORT"]
-# EMAIL_HOST_PASSWORD = email["EMAIL_HOST_PASSWORD"]
-# EMAIL_HOST_USER = email["EMAIL_HOST_USER"]
-# EMAIL_USE_TLS = email["EMAIL_USE_TLS"]
-if DEBUG:
+EMAIL_HOST = env.str("EMAIL_HOST", default="smtp.yandex.ru")
+EMAIL_PORT = env.str("EMAIL_PORT", default="465")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=False)
+EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=True)
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="email@yandex.ru")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="strong_password")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+if DEBUG:  # output of emailmessage will be in console with debug if true.
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Site address. Used in email sending. Must be without "/" at the end.
+HOST = env.str("HOST", default="http://localhost:8000")
+# Used to receive "new order email".
+ADMIN_EMAIL = env.str("ADMIN_EMAIL", default="example@example.com")
 
 # Константа для hostname/sitemap.xml
 SITE_ID = 1

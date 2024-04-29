@@ -7,6 +7,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from core.mixins import TitleBreadcrumbsMixin
 from mainapp.forms import StampTextForm
 from mainapp.models import Stamp, StampGroup
+from mainapp.tasks import send_order_email
 from orders.forms import OrderForm
 from orders.models import Order
 from printy.models import Printy
@@ -191,12 +192,13 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
         order_form = OrderForm(request.POST or None)
 
         if stamp_text_form.is_valid() and order_form.is_valid():
-            Order.objects.create(
+            order = Order.objects.create(
                 **order_form.cleaned_data,
                 stamp_text=stamp_text_form.cleaned_data,
                 printy=selected_printy,
                 stamp=selected_stamp,
             )
+            send_order_email.delay(order_id=order.id)
             return redirect("mainapp:order_success")
 
         return render(
@@ -215,7 +217,7 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
 
 
 class SuccessFormView(TitleBreadcrumbsMixin, TemplateView):
-    """Страница успешного созданного заказа."""
+    """Страница успешно созданного заказа."""
 
     template_name = settings.ORDER_SUCCESS_TEMPLATE
     title = settings.ORDER_CREATED
