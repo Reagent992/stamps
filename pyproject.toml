@@ -1,11 +1,14 @@
 [tool.poetry]
-name = "stamps"
 version = "0.1.0"
 description = "stamps e-store"
 authors = ["Miron Sadykov <MironSadykov@yandex.ru>"]
 license = "MIT"
 readme = "docs/README.md"
 repository = "https://github.com/Reagent992/stamps"
+#  workaround to force scripts work with current file structure
+name = "../"
+# package-mode = false
+packages = [{include = "../."}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -21,10 +24,6 @@ django-crispy-forms = "^2.1"
 crispy-bootstrap5 = "^2024.2"
 celery = "^5.4.0"
 
-[tool.poetry.scripts]
-dj = "runserver:djtest"
-
-
 [tool.poetry.group.dev.dependencies]
 django-debug-toolbar = "^4.2.0"
 black = "^23.9.1"
@@ -34,6 +33,16 @@ flake8-broken-line = "^1.0.0"
 flake8-plugin-utils = "^1.3.3"
 flake8-return = "^1.2.0"
 pre-commit = "^3.5.0"
+ipython = "^8.24.0"
+
+[tool.poetry.scripts]
+dr = "poetry_scripts:dr"
+ds = "poetry_scripts:ds"
+cw = "poetry_scripts:cw"
+rb = "poetry_scripts:rb"
+
+
+
 
 [build-system]
 requires = ["poetry-core"]
