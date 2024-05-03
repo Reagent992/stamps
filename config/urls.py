@@ -37,6 +37,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("printy/", include("printy.urls", namespace="printy")),
     path("", include("mainapp.urls", namespace="mainapp")),
+    path("", include("orders.urls", namespace="orders")),
 ]
 
 if settings.DEBUG:
