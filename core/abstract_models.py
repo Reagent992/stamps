@@ -4,9 +4,9 @@ from django.db import models
 class PublishedManager(models.Manager):
     """Расширение стандартного модельного менеджера."""
 
-    def published(self, *args, **kwargs):
+    def get_queryset(self):
         """Queryset только из опубликованных объектов."""
-        return super().get_queryset().filter(published=True, *args, **kwargs)
+        return super().get_queryset().filter(published=True)
 
 
 class AbstractTimeModel(models.Model):
@@ -50,7 +50,8 @@ class AbstractGroupModel(AbstractTimeModel):
     min_group_price = models.PositiveIntegerField(
         default=0, verbose_name="Минимальная цена"
     )
-    objects = PublishedManager()
+    objects = models.Manager()
+    filter_published = PublishedManager()
 
     class Meta:
         abstract = True
@@ -84,7 +85,8 @@ class AbstractItemModel(AbstractTimeModel):
         verbose_name="Картинка",
         upload_to=pic_upload_place,
     )
-    objects = PublishedManager()
+    objects = models.Manager()
+    filter_published = PublishedManager()
 
     class Meta:
         abstract = True

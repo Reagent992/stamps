@@ -23,8 +23,8 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
     def crumbs(self):
         """Breadcrumbs."""
         selected_stamp = get_object_or_404(
-            Stamp.objects.published(),
-            id=self.request.session.get("selected_stamp_id"),
+            Stamp.filter_published.all(),
+            id=self.request.session.get(settings.USER_CHOICE_STAMP_ID),
         )
         return [
             (
@@ -60,11 +60,11 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
         """Передача формы и остального в шаблон."""
         context = super().get_context_data(**kwargs)
         selected_stamp = get_object_or_404(
-            Stamp.objects.published(), slug=self.kwargs["slug_item"]
+            Stamp.filter_published.all(), slug=self.kwargs["slug_item"]
         )
         selected_printy = get_object_or_404(
-            Printy.objects.published(),
-            id=self.request.session.get("selected_printy_id"),
+            Printy.filter_published.all(),
+            id=self.request.session.get(settings.USER_CHOICE_PRINTY_ID),
         )
         stamp_fields = selected_stamp.form_fields.fields.all()
         stamp_text_form = StampTextForm(stamp_fields)
@@ -79,11 +79,11 @@ class CreateStampOrderView(TitleBreadcrumbsMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         """Заполненная форма для заказа."""
         selected_stamp = get_object_or_404(
-            Stamp.objects.published(), slug=self.kwargs["slug_item"]
+            Stamp.filter_published.all(), slug=self.kwargs["slug_item"]
         )
         selected_printy = get_object_or_404(
-            Printy.objects.published(),
-            id=request.session.get("selected_printy_id"),
+            Printy.filter_published.all(),
+            id=request.session.get(settings.USER_CHOICE_PRINTY_ID),
         )
         stamp_fields = selected_stamp.form_fields.fields.all()
         stamp_text_form = StampTextForm(stamp_fields, request.POST or None)

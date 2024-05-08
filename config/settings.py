@@ -142,6 +142,9 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 PAGINATION_AMOUNT = 4
 BREADCRUMBS_HOME_LABEL = "Главная страница"
+USER_CHOICE_PRINTY_ID = "user_choice_printy_id"
+USER_CHOICE_STAMP_ID = "user_choice_stamp_id"
+STAMP_ID_QUERY_PARAM = "stamp_id"
 # ------------------------------------------------------------------------TITLE
 END_OF_ALL_TITLES = " - Печати-Архангельск.рф"
 INDEX_TITLE = "Главная страница"

@@ -12,7 +12,7 @@ class StampGroupView(TitleBreadcrumbsMixin, ListView):
     """Главная страница, группы печатей."""
 
     model = StampGroup
-    queryset = StampGroup.objects.published()
+    queryset = StampGroup.filter_published.all()
     template_name = settings.INDEX_TEMPLATE
     paginate_by = settings.PAGINATION_AMOUNT
     title = settings.INDEX_TITLE
@@ -36,9 +36,9 @@ class GroupedStampsView(TitleBreadcrumbsMixin, ListView):
 
     def get_queryset(self):
         self.stamp_group = get_object_or_404(
-            StampGroup.objects.published(), slug=self.kwargs["group"]
+            StampGroup.filter_published.all(), slug=self.kwargs["group"]
         )
-        return Stamp.objects.published(group=self.stamp_group)
+        return Stamp.filter_published.filter(group=self.stamp_group)
 
     def get_title(self):
         """Заголовок вкладки."""
@@ -65,7 +65,7 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
 
     def get_object(self, queryset=None):
         return get_object_or_404(
-            Stamp.objects.published(), slug=self.kwargs["slug_item"]
+            Stamp.filter_published.all(), slug=self.kwargs["slug_item"]
         )
 
     def get_title(self):
@@ -77,7 +77,7 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
         return {
             **super().get_context_data(**kwargs),
             "printy_selected": bool(
-                self.request.session.get("selected_printy_id")
+                self.request.session.get(settings.USER_CHOICE_PRINTY_ID)
             ),
             "button_text": settings.BUTTON_CHOICE_PRINTY,
         }
@@ -86,9 +86,12 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
         """Запись выбранной печати в сессию и редирект на выбор оснастки."""
         if "chosen_item_id" in request.POST:
             chosen_item_id = request.POST["chosen_item_id"]
-            self.request.session["selected_stamp_id"] = chosen_item_id
+            self.request.session[
+                settings.USER_CHOICE_STAMP_ID
+            ] = chosen_item_id
             return redirect(
-                reverse("printy:printy_index") + f"?stamp_id={chosen_item_id}"
+                reverse("printy:printy_index")
+                + f"?{settings.STAMP_ID_QUERY_PARAM}={chosen_item_id}"
             )
         return super().post(request, *args, **kwargs)
 
@@ -96,7 +99,7 @@ class StampDetailView(TitleBreadcrumbsMixin, DetailView):
     def crumbs(self):
         """Breadcrumbs."""
         current_stamp_group = get_object_or_404(
-            StampGroup.objects.published(), slug=self.kwargs["group"]
+            StampGroup.filter_published.all(), slug=self.kwargs["group"]
         )
         return [
             (
