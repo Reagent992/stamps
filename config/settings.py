@@ -171,6 +171,60 @@ ORDER_SUCCESS_TEMPLATE = "mainapp/order_success.html"
 # -----------------------------------------------------------------CRISPY-FORMS
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+# ----------------------------------------------------------------------LOGGING
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s"
+        },
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": "django.log",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "logger": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
+        }
+    },
+}
+if DEBUG:
+    LOGGING["filters"] = {
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        }
+    }
+    LOGGING["handlers"].update(
+        {
+            "console": {
+                "level": "DEBUG",
+                "filters": ["require_debug_true"],
+                "class": "logging.StreamHandler",
+            }
+        }
+    )
+    LOGGING["loggers"].update(
+        {
+            "django.db.backends": {
+                "level": "DEBUG",
+                "handlers": ["console"],
+            }
+        }
+    )
 # -------------------------------------------------------------------CKEDITOR_5
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},
