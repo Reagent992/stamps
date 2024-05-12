@@ -32,6 +32,7 @@
 | pre-commit | latest | Автоматический запуск black, isort, flake8 при использование git commit |
 | black, isort, flake8 | latest | Code Style |
 | django-debug-toolbar | latest | Оверлей для разработки. |
+| django-stubs[compatible-mypy] | lates | typehints |
 
 ## Автор
 

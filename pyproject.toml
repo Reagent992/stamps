@@ -35,6 +35,7 @@ flake8-plugin-utils = "^1.3.3"
 flake8-return = "^1.2.0"
 pre-commit = "^3.5.0"
 ipython = "^8.24.0"
+django-stubs = {extras = ["compatible-mypy"], version = "^5.0.0"}
 
 [tool.poetry.scripts]
 dr = "poetry_scripts:dr"
@@ -99,3 +100,9 @@ skip_glob = [
     "static/*",
     "templates/*",
 ]
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings"
