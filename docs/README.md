@@ -24,6 +24,7 @@
 | pillow | latest| images |
 | sorl-thumbnail | latest| images thumbnails |
 | django-ckeditor-5 | 5 | Редактор текста для админки |
+| django-dirtyfields | latest | Отслеживание изменений в объекте модели, до сохранения в БД.|
 
 ### dev зависимости
 | Библиотека | Версия | Описание |

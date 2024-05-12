@@ -23,6 +23,7 @@ django-json-widget = "^2.0.1"
 django-crispy-forms = "^2.1"
 crispy-bootstrap5 = "^2024.2"
 celery = "^5.4.0"
+django-dirtyfields = "^1.9.2"
 
 [tool.poetry.group.dev.dependencies]
 django-debug-toolbar = "^4.2.0"
