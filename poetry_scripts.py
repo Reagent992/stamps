@@ -35,3 +35,9 @@ def rb():
         "rabbitmq:management",
     ]
     subprocess.run(cmd)
+
+
+def flower():
+    """Run Flower."""
+    cmd = ["python", "-m", "celery", "-A", "config", "flower"]
+    subprocess.run(cmd)

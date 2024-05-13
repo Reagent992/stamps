@@ -24,6 +24,7 @@ django-crispy-forms = "^2.1"
 crispy-bootstrap5 = "^2024.2"
 celery = "^5.4.0"
 django-dirtyfields = "^1.9.2"
+flower = "^2.0.1"
 
 [tool.poetry.group.dev.dependencies]
 django-debug-toolbar = "^4.2.0"
@@ -42,6 +43,7 @@ dr = "poetry_scripts:dr"
 ds = "poetry_scripts:ds"
 cw = "poetry_scripts:cw"
 rb = "poetry_scripts:rb"
+flower = "poetry_scripts:flower"
 
 
 

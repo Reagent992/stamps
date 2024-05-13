@@ -13,6 +13,7 @@
 | django | 4 | Фронт на Джанго-шаблонах|
 | celery | latest | Очередь задач |
 | rabbitmq | latest | Брокер для celery |
+| flower | latest | Трекер для celery задач | 
 | django-view-breadcrumbs | latest | "Хлебные крошки", breadcrumbs для отображения "пути". |
 | django-ckeditor | 5 | Редактор теста |
 | python-slugify | latest | Транслитерация текста |
