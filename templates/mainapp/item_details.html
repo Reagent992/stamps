@@ -1,41 +1,41 @@
-{% extends 'base.html' %}
-{% block  content %}
-  {% load thumbnail %}
-  <section class="py-5">
-    <div class="container px-4 px-lg-5 my-5">
-      <div class="row gx-4 gx-lg-5 align-items-center">
-        <div class="col-md-6">
-          {% thumbnail object.image "600x600" format="PNG" as im %}
-            <img class="card-img-top mb-5 mb-md-0" src="{{ im.url }}" alt="stamp picture"/>
-          {% empty %}
-            <p>No image</p> {# TODO: Сделать картинку-заглушку #}
-          {% endthumbnail %}
-        </div>
-        <div class="col-md-6">
-          <h1 class="display-5 fw-bolder">{{ object.title }}</h1>
-          <div class="fs-5 mb-5">
-            <span>{{ object.price }} ₽</span>
-          </div>
-          <p class="lead">{{ object.description }}</p>
-          {% if not turn_off_button and not disable_button %}
-            <div class="d-flex">
-              {# Делаем POST на текущий url, в нем записываем в сессию выбрануй объект и делаем редирект дальше. #}
-              <form method="post" action="{{ object.get_absolute_url }}">
-                {% csrf_token %}
-                <input type="hidden" name="chosen_item_id" value="{{ object.pk }}">
-                <button class="btn btn-outline-dark flex-shrink-0" type="submit"> {{ button_text }} </button>
-              </form>
-          {% elif disable_button %}
-              <form method="post" action="{{ object.get_absolute_url }}" class="text-decoration-none">
-                {% csrf_token %}
-                <input type="hidden" name="chosen_item_id" value="{{ object.pk }}">
-                <button class="btn btn-outline-dark flex-shrink-0" type="submit" disabled> {{ button_text }} </button>
-              </form>
+{% extends "base.html" %}
+{% block content %}
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6">
+                    <img class="card-img-top mb-5 mb-md-0"
+                         width="600"
+                         height="600"
+                         src="{{ object.image.url }}"
+                         alt="Изображение товара" />
+                </div>
+                <div class="col-md-6">
+                    <h1 class="display-5 fw-bolder">{{ object.title }}</h1>
+                    <div class="fs-5 mb-5">
+                        <span>{{ object.price }} ₽</span>
+                    </div>
+                    <p class="lead">{{ object.description }}</p>
+                    {% if not turn_off_button and not disable_button %}
+                        <div class="d-flex">
+                            {# Делаем POST на текущий url, в нем записываем в сессию выбрануй объект и делаем редирект дальше. #}
+                            <form method="post" action="{{ object.get_absolute_url }}">
+                                {% csrf_token %}
+                                <input type="hidden" name="chosen_item_id" value="{{ object.pk }}">
+                                <button class="btn btn-outline-dark flex-shrink-0" type="submit">{{ button_text }}</button>
+                            </form>
+                        {% elif disable_button %}
+                            <form method="post"
+                                  action="{{ object.get_absolute_url }}"
+                                  class="text-decoration-none">
+                                {% csrf_token %}
+                                <input type="hidden" name="chosen_item_id" value="{{ object.pk }}">
+                                <button class="btn btn-outline-dark flex-shrink-0" type="submit" disabled>{{ button_text }}</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
-          {% endif %}
         </div>
-      </div>
-    </div>
-  </section>
-
-{% endblock %}
+    </section>
+{% endblock content %}

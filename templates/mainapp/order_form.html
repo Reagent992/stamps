@@ -1,46 +1,47 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
-{% load thumbnail %}
-{% load crispy_forms_tags %}
-<section class="py-1">
-  <div class="container">
-    <div class="row justify-content-center">
-      {# Выбранная печать #}
-      <div class="col-lg-4 mb-4">
-        <div class="card h-100 mx-auto">
-          <h3 class="text-center">Выбранная печать</h3>
-          {% thumbnail item.image '600x600' crop='center' format='PNG' as im %}
-            <img class="card-img-top mx-auto mb-3" style="width: 75%" src="{{ im.url }}" alt="Изображение товара">
-          {% endthumbnail %}
-
-          <h3 class="text-center">Выбранная оснастка</h3>
-          {% thumbnail selected_printy.image '600x600' crop='center' format='PNG' as im %}
-            <img class="card-img-top mx-auto mb-3" style="width: 75%" src="{{ im.url }}" alt="Изображение товара">
-          {% endthumbnail %}
-
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bolder">Итоговая сумма</h5>
-            <p style="font-size: 2em"> {{ price_sum }} ₽</p>
-          </div>
+    {% load crispy_forms_tags %}
+    <section class="py-1">
+        <div class="container">
+            <div class="row justify-content-center">
+                {# Выбранная печать #}
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100 mx-auto">
+                        <h3 class="text-center">Выбранная печать</h3>
+                        <img class="card-img-top mx-auto mb-3 object-fit-scale"
+                             width="600"
+                             height="600"
+                             src="{{ item.image.url }}"
+                             alt="Изображение товара">
+                        <h3 class="text-center">Выбранная оснастка</h3>
+                        <img class="card-img-top mx-auto mb-3 object-fit-scale"
+                             style="width: 75%"
+                             width="600"
+                             height="600"
+                             src="{{ selected_printy.image.url }}"
+                             alt="Изображение товара">
+                        <div class="card-body p-4 text-center">
+                            <h5 class="fw-bolder">Итоговая сумма</h5>
+                            <p class="display-6">{{ price_sum }} ₽</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {#Crispy-Form#}
+                            <form method="post" class="my-class">
+                                {% csrf_token %}
+                                {{ form|crispy }}
+                                {{ order_form|crispy }}
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Отправить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="col-lg-8 mb-4">
-        <div class="card">
-          <div class="card-body">
-            {#Crispy-Form#}
-            <form method="post" class="my-class">
-              {% csrf_token %}
-              {{ form|crispy }}
-              {{ order_form|crispy }}
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Отправить</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </section>
-{% endblock %}
+    </section>
+{% endblock content %}
