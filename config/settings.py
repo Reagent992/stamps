@@ -12,13 +12,32 @@ SECRET_KEY = env.str("SECRET_KEY", default="unsafe-secret-key")
 DEBUG = env.bool("DEBUG", default=False)
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 INTERNAL_IPS = env.list("INTERNAL_IPS", default=["localhost", "127.0.0.1"])
-DATABASES = {
-    "default": env.dj_db_url(
-        "DATABASE_URL",
-        default="sqlite:///" + os.path.join(BASE_DIR, "db.sqlite3"),
-        ssl_require=not DEBUG,
-    )
-}
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS", default=["http://localhost", "http://127.0.0.1"]
+)
+# ---------------------------------------------------------------------------DB
+USE_POSTGRESQL = env.bool("USE_POSTGRESQL", default=False)
+
+if USE_POSTGRESQL:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env.str("DB_NAME", default="PGDB"),
+            "USER": env.str("POSTGRES_USER", default="username"),
+            "PASSWORD": env.str(
+                "POSTGRES_PASSWORD", default="unsafe-password123"
+            ),
+            "HOST": env.str("DB_HOST", default="db"),
+            "PORT": env.int("DB_PORT", default=5432),
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 # -----------------------------------------------------------------------CELERY
 CELERY_BROKER_URL = env.str(
     "CELERY_BROKER_URL",
@@ -39,15 +58,14 @@ EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="strong_password")
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 if DEBUG:  # output of emailmessage will be in console with debug if true.
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 # Site address. Used in email sending. Must be without "/" at the end.
 HOST = env.str("HOST", default="http://localhost:8000")
 # Used to receive "new order email".
 ADMIN_EMAIL = env.str("ADMIN_EMAIL", default="example@example.com")
-
+# -----------------------------------------------------------------------------
 # Константа для hostname/sitemap.xml
 SITE_ID = 1
-
+# -----------------------------------------------------------------------------
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -134,17 +152,27 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_URL = "static/"
 
-# -------------------------------------------------------------CUSTOM CONSTANTS
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-# STATIC_ROOT = BASE_DIR / 'static'
 # folder for users images
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# -------------------------------------------------------------CUSTOM CONSTANTS
 PAGINATION_AMOUNT = 4
 BREADCRUMBS_HOME_LABEL = "Главная страница"
 USER_CHOICE_PRINTY_ID = "user_choice_printy_id"
 USER_CHOICE_STAMP_ID = "user_choice_stamp_id"
 STAMP_ID_QUERY_PARAM = "stamp_id"
+# -------------------------------------------------------------------IMAGE EDIT
+IMAGE_SIZE_IN_PIXELS = (600, 600)
+TEXT_POSITION = (10, 10)  # from right bottom corner
+TEXT_COLOR = (196, 207, 249, 53)  # Red, Green, Blue, Alpha(transparency)
+FONT_SIZE = 32
+WATERMARK_TEXT = "Печати-Архангельск.рф"
+USE_WATERMARK_FILE = False
+relative_path_to_watermark = "docs/images/watermark.png"
+WATERMARK_PATH = os.path.join(BASE_DIR, relative_path_to_watermark)
+IMAGE_FORMAT = "PNG"
+FONT = "DejaVuSerif.ttf"
 # ------------------------------------------------------------------------TITLE
 END_OF_ALL_TITLES = " - Печати-Архангельск.рф"
 INDEX_TITLE = "Главная страница"
@@ -195,36 +223,13 @@ LOGGING = {
         },
     },
     "loggers": {
-        "logger": {
+        "": {
             "handlers": ["console", "file"],
             "level": "INFO",
             "propagate": True,
         }
     },
 }
-if DEBUG:
-    LOGGING["filters"] = {
-        "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
-        }
-    }
-    LOGGING["handlers"].update(
-        {
-            "console": {
-                "level": "DEBUG",
-                "filters": ["require_debug_true"],
-                "class": "logging.StreamHandler",
-            }
-        }
-    )
-    LOGGING["loggers"].update(
-        {
-            "django.db.backends": {
-                "level": "DEBUG",
-                "handlers": ["console"],
-            }
-        }
-    )
 # -------------------------------------------------------------------CKEDITOR_5
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},

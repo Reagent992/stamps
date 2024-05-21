@@ -1,10 +1,17 @@
+import logging
+
+from dirtyfields import DirtyFieldsMixin
 from django.db import models
+
+from core.tasks import paste_watermark_and_resize_image
+
+logger = logging.getLogger("__name__")
 
 
 class PublishedManager(models.Manager):
     """Расширение стандартного модельного менеджера."""
 
-    def get_queryset(self):
+    def get_queryset(self) -> models.QuerySet:
         """Queryset только из опубликованных объектов."""
         return super().get_queryset().filter(published=True)
 
@@ -23,7 +30,7 @@ class AbstractTimeModel(models.Model):
         abstract = True
 
 
-class AbstractGroupModel(AbstractTimeModel):
+class AbstractGroupModel(DirtyFieldsMixin, AbstractTimeModel):
     """Абстрактная модель группы."""
 
     pic_upload_place = ""
@@ -60,10 +67,10 @@ class AbstractGroupModel(AbstractTimeModel):
         return self.title
 
 
-class AbstractItemModel(AbstractTimeModel):
+class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
     """Абстрактная модель предмета."""
 
-    pic_upload_place = ""
+    pic_upload_place = ""  # FIXME: не переопределяется в моделях-наследниках.
     title = models.CharField(
         verbose_name="Заголовок",
         max_length=200,
@@ -87,6 +94,50 @@ class AbstractItemModel(AbstractTimeModel):
     )
     objects = models.Manager()
     filter_published = PublishedManager()
+    _skip_celery_task = False
 
     class Meta:
         abstract = True
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ) -> None:
+        # TODO: Move slugify here from signals.
+        created = self.pk is None
+        logger.info(
+            (
+                f"created: {created}, "
+                f"self:{self}, "
+                f"force_insert:{force_insert}, "
+                f"force_update:{force_update}, "
+                f"fields:{update_fields}"
+            )
+        )
+        is_dirty = self.is_dirty()
+        self.image_changed = self.get_dirty_fields().get("image")
+        self.temp_image_name = None
+        super().save(force_insert, force_update, using, update_fields)
+        if not self._skip_celery_task:
+            if created and self.image:
+                self.send_celery_task()
+            elif (
+                not created
+                and is_dirty
+                and self.image_changed
+                and update_fields is None
+            ):
+                self.send_celery_task()
+
+    def send_celery_task(self) -> None:
+        logger.info("Sending new image to edit")
+        paste_watermark_and_resize_image.delay(
+            self.__class__.__name__,
+            self.id,
+            self._meta.app_label,
+            self.image_changed,
+            self.image.name,
+        )
