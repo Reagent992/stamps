@@ -22,3 +22,8 @@ repos:
         types: [ python ]
         pass_filenames: false
         args: ["--verbose"]
+  - repo: https://github.com/djlint/djLint
+    rev: v1.34.1
+    hooks:
+      - id: djlint-reformat-django
+      - id: djlint-django
