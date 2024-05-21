@@ -6,9 +6,10 @@ license = "MIT"
 readme = "docs/README.md"
 repository = "https://github.com/Reagent992/stamps"
 #  workaround to force scripts work with current file structure
-name = "../"
+# name = "../"
+name = "stamps"
 # package-mode = false
-packages = [{include = "../."}]
+# packages = [{include = "../."}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -25,6 +26,8 @@ crispy-bootstrap5 = "^2024.2"
 celery = "^5.4.0"
 django-dirtyfields = "^1.9.2"
 flower = "^2.0.1"
+psycopg2-binary = "^2.9.9"
+djlint = "^1.34.1"
 
 [tool.poetry.group.dev.dependencies]
 django-debug-toolbar = "^4.2.0"
