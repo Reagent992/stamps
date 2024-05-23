@@ -34,6 +34,7 @@
 | black, isort, flake8 | latest | Code Style |
 | django-debug-toolbar | latest | Оверлей для разработки. |
 | django-stubs[compatible-mypy] | lates | typehints |
+| djlint | lates | Линтер для Django-шаблонов |
 
 ## Автор
 
