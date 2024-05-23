@@ -169,10 +169,10 @@ TEXT_COLOR = (196, 207, 249, 53)  # Red, Green, Blue, Alpha(transparency)
 FONT_SIZE = 32
 WATERMARK_TEXT = "Печати-Архангельск.рф"
 USE_WATERMARK_FILE = False
-relative_path_to_watermark = "docs/images/watermark.png"
+relative_path_to_watermark = "./docs/images/watermark.png"
 WATERMARK_PATH = os.path.join(BASE_DIR, relative_path_to_watermark)
 IMAGE_FORMAT = "PNG"
-FONT = "DejaVuSerif.ttf"
+FONT = os.path.join(BASE_DIR, "static", "fonts", "DejaVuSans.ttf")
 # ------------------------------------------------------------------------TITLE
 END_OF_ALL_TITLES = " - Печати-Архангельск.рф"
 INDEX_TITLE = "Главная страница"

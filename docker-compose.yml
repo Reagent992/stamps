@@ -1,0 +1,55 @@
+volumes:
+  pg_data:
+
+# This compose file is used only for development.
+
+services:
+  web:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    image: stamps # image name
+    command: /start # shell script used to run the service
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    env_file: .env
+    depends_on:
+      - rabbitmq
+      - db
+
+  db:
+    image: postgres:16.3-alpine3.19
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.13.2-alpine
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: /start-celeryworker
+    volumes:
+      - .:/app
+    env_file: .env
+    depends_on:
+      - rabbitmq
+      - web
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: /start-flower
+    volumes:
+      - .:/app
+    env_file: .env
+    ports:
+      - 5555:5555
+    depends_on:
+      - rabbitmq
+      - web
