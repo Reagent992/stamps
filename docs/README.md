@@ -24,7 +24,7 @@
 | bootstrap | 5 | CSS |
 | pillow | latest| images |
 | sorl-thumbnail | latest| images thumbnails |
-| django-ckeditor-5 | 5 | Редактор текста для админки |
+| [django-ckeditor-5](https://github.com/hvlads/django-ckeditor-5) | 5 | Редактор текста для админки |
 | django-dirtyfields | latest | Отслеживание изменений в объекте модели, до сохранения в БД.|
 
 ### dev зависимости

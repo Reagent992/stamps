@@ -5,11 +5,9 @@ authors = ["Miron Sadykov <MironSadykov@yandex.ru>"]
 license = "MIT"
 readme = "docs/README.md"
 repository = "https://github.com/Reagent992/stamps"
-#  workaround to force scripts work with current file structure
-# name = "../"
-name = "stamps"
-# package-mode = false
-# packages = [{include = "../."}]
+name = "src"
+packages = [{include = "docs"}]
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -40,13 +38,16 @@ flake8-return = "^1.2.0"
 pre-commit = "^3.5.0"
 ipython = "^8.24.0"
 django-stubs = {extras = ["compatible-mypy"], version = "^5.0.0"}
+ipykernel = "^6.29.4"
 
 [tool.poetry.scripts]
-dr = "poetry_scripts:dr"
-ds = "poetry_scripts:ds"
-cw = "poetry_scripts:cw"
-rb = "poetry_scripts:rb"
-flower = "poetry_scripts:flower"
+dr = "docs.poetry_scripts:dr"
+ds = "docs.poetry_scripts:ds"
+cw = "docs.poetry_scripts:cw"
+rb = "docs.poetry_scripts:rb"
+flower = "docs.poetry_scripts:flower"
+dt = "docs.poetry_scripts:dt"
+rc = "docs.poetry_scripts:rc"
 
 
 
