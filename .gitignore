@@ -235,4 +235,4 @@ idea/
 env
 /media/
 /media/*
-runserver.py
+sandbox.ipynb

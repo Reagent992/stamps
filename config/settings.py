@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 from environs import Env
@@ -119,6 +118,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.year.year",
+                "core.context_processors.title.title",
             ],
         },
     },
@@ -152,12 +152,13 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-STATIC_URL = "static/"
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_URL = "static/"
+# STATICFILES_DIRS = (BASE_DIR.joinpath("static"),)
+STATIC_ROOT = "static/"
 # folder for users images
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "media/"
+MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 # -------------------------------------------------------------CUSTOM CONSTANTS
 PAGINATION_AMOUNT = 4
 BREADCRUMBS_HOME_LABEL = "Главная страница"
@@ -172,11 +173,11 @@ FONT_SIZE = 32
 WATERMARK_TEXT = "Печати-Архангельск.рф"
 USE_WATERMARK_FILE = False
 relative_path_to_watermark = "./docs/images/watermark.png"
-WATERMARK_PATH = os.path.join(BASE_DIR, relative_path_to_watermark)
+WATERMARK_PATH = str(BASE_DIR.joinpath(relative_path_to_watermark))
 IMAGE_FORMAT = "PNG"
-FONT = os.path.join(BASE_DIR, "static", "fonts", "DejaVuSans.ttf")
+FONT = str(BASE_DIR.joinpath("static", "fonts", "DejaVuSans.ttf"))
 # ------------------------------------------------------------------------TITLE
-END_OF_ALL_TITLES = " - Печати-Архангельск.рф"
+TITLE = "Печати-Архангельск.рф"
 INDEX_TITLE = "Главная страница"
 ABOUT_CONTACTS_TITLE = "Контакты"
 PRINTY_TITLE = "Группы оснасток"
@@ -242,8 +243,7 @@ customColorPalette = [
     {"color": "hsl(207, 90%, 54%)", "label": "Blue"},
 ]
 
-# CKEDITOR_5_CUSTOM_CSS = 'path_to.css'  # optional
-# CKEDITOR_5_FILE_STORAGE = "path_to_storage.CustomStorage"  # optional
+CKEDITOR_5_USER_LANGUAGE = True
 CKEDITOR_5_CONFIGS = {
     "default": {
         "toolbar": [
@@ -286,15 +286,14 @@ CKEDITOR_5_CONFIGS = {
             "superscript",
             "highlight",
             "|",
-            "codeBlock",
+            # "codeBlock",
             "sourceEditing",
             "insertImage",
             "bulletedList",
             "numberedList",
             "todoList",
-            "|",
             "blockQuote",
-            "imageUpload",
+            # "imageUpload",
             "|",
             "fontSize",
             "fontFamily",
@@ -303,6 +302,8 @@ CKEDITOR_5_CONFIGS = {
             "mediaEmbed",
             "removeFormat",
             "insertTable",
+            "|",
+            "ShowBlocks",
         ],
         "image": {
             "toolbar": [
