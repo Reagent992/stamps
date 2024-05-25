@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-        <meta name="keywords" content="HTML, CSS, JavaScript, web development">
+        <meta name="keywords"
+              content="Печати, Изготовление печатей, Доставка печатей, Печати в Архангельске">
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Изготовление и доставка печатей" />
-        {# Favicon #}
         <link rel="icon"
               type="image/x-icon"
               href="{% static 'assets/favicon.ico' %}" />
@@ -17,19 +17,27 @@
               rel="stylesheet"
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
               crossorigin="anonymous">
+        {% if title %}
+            <title>{{ title }} - {{ extend_title }}</title>
+        {% elif flatpage.title %}
+            <title>{{ flatpage.title }} - {{ extend_title }}</title>
+        {% else %}
+            <title>{{ extend_title }}</title>
+        {% endif %}
         {% block extra_head %}
         {% endblock extra_head %}
-        <title>{{ title }}</title>
     </head>
     <body>
         {% include "includes/header.html" %}
-        <div class="container text-center">
-            <div class="mt-1 d-flex justify-content-center">
-                {% block breadcrumbs %}
-                    {% render_breadcrumbs %}
-                {% endblock breadcrumbs %}
+        {% if render_breadcrumbs %}
+            <div class="container text-center">
+                <div class="mt-1 d-flex justify-content-center">
+                    {% block breadcrumbs %}
+                        {% render_breadcrumbs %}
+                    {% endblock breadcrumbs %}
+                </div>
             </div>
-        </div>
+        {% endif %}
         {% block content %}
         {% endblock content %}
         {% include "includes/footer.html" %}

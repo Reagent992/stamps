@@ -1,4 +1,3 @@
-from django.conf import settings
 from view_breadcrumbs import BaseBreadcrumbMixin
 
 
@@ -19,7 +18,7 @@ class PageTitleViewMixin:
         title = self.get_title()
         if not title:
             raise ValueError("Заголовок(title) страницы не должен быть пустым")
-        context["title"] = title + settings.END_OF_ALL_TITLES
+        context["title"] = title
         return context
 
 
