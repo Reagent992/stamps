@@ -1,7 +1,13 @@
 {% extends "base.html" %}
-{# It's a template for flatpages created through admin panel #}
+{% load static %}
+{% block extra_head %}
+    <link href="{% static 'css/ckeditor5.css' %}"
+          rel="stylesheet"
+          media="all"
+          type="text/css">
+{% endblock extra_head %}
 {% block content %}
-    <div class="container text-center">
-        <div class="mt-1 d-flex justify-content-center">{{ flatpage.content }}</div>
+    <div class="container d-flex justify-content-center mt-2">
+        <div class="ck ck-content">{{ flatpage.content|safe }}</div>
     </div>
 {% endblock content %}

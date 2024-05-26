@@ -153,12 +153,11 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-STATIC_URL = "static/"
-# STATICFILES_DIRS = (BASE_DIR.joinpath("static"),)
-STATIC_ROOT = "static/"
-# folder for users images
+STATICFILES_DIRS = ((BASE_DIR / "static"),)
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "collected_static"
 MEDIA_URL = "media/"
-MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
+MEDIA_ROOT = str(BASE_DIR / "media")
 # -------------------------------------------------------------CUSTOM CONSTANTS
 PAGINATION_AMOUNT = 4
 BREADCRUMBS_HOME_LABEL = "Главная страница"
@@ -173,9 +172,9 @@ FONT_SIZE = 32
 WATERMARK_TEXT = "Печати-Архангельск.рф"
 USE_WATERMARK_FILE = False
 relative_path_to_watermark = "./docs/images/watermark.png"
-WATERMARK_PATH = str(BASE_DIR.joinpath(relative_path_to_watermark))
+WATERMARK_PATH = str(BASE_DIR / relative_path_to_watermark)
 IMAGE_FORMAT = "PNG"
-FONT = str(BASE_DIR.joinpath("static", "fonts", "DejaVuSans.ttf"))
+FONT = str(BASE_DIR / "static" / "fonts" / "DejaVuSans.ttf")
 # ------------------------------------------------------------------------TITLE
 TITLE = "Печати-Архангельск.рф"
 INDEX_TITLE = "Главная страница"
