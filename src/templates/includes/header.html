@@ -21,9 +21,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'printy:printy_index' %}">Оснастки</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about:contacts' %}">Контакты</a>
-                </li>
+                {% for item in flatpages_queryset %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </div>
