@@ -27,11 +27,28 @@ repos:
 
       - id: django-tests
         name: Django Tests
-        entry: python ./src/manage.py test
+        entry: bash scripts/run_tests.sh
         language: system
-        pass_filenames: false
-        types: [python]
-        stages: [commit]
+        verbose: true
+
+      - id: django-migrations
+        name: Django Migrations
+        entry: bash scripts/check_migrations.sh
+        language: system
+        verbose: true
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: check-added-large-files
+      - id: name-tests-test
+        args: ["--django"]
+      - id: mixed-line-ending
+        args: ["--fix=auto"]
 
   - repo: https://github.com/djlint/djLint
     rev: v1.34.1

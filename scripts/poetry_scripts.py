@@ -16,7 +16,7 @@ def ds():
 
 def dt():
     """Запуск Django Test."""
-    cmd = ["python", "manage.py", "test"]
+    cmd = ["python", "manage.py", "test", "--parallel", "auto"]
     subprocess.run(cmd, cwd="src")
 
 
