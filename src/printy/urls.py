@@ -1,6 +1,10 @@
 from django.urls import path
 
-from printy.views import PrintyGroupContentView, PrintyGroupsView, PrintyView
+from printy.views import (
+    PrintyDetailView,
+    PrintyGroupContentView,
+    PrintyGroupsView,
+)
 
 app_name = "printy"
 
@@ -13,7 +17,7 @@ urlpatterns = [
     ),
     path(
         "<slug:printy_group>/<slug:printy_item>/",
-        PrintyView.as_view(),
+        PrintyDetailView.as_view(),
         name="printy_details",
     ),
 ]

@@ -110,11 +110,13 @@ class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
         created = self.pk is None
         logger.info(
             (
+                f"Saving new {self.__class__.__name__} object, "
                 f"created: {created}, "
                 f"self:{self}, "
                 f"force_insert:{force_insert}, "
                 f"force_update:{force_update}, "
                 f"fields:{update_fields}"
+                f"celery task flag: {self._skip_celery_task}"
             )
         )
         is_dirty = self.is_dirty()

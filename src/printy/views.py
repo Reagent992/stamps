@@ -86,7 +86,7 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
         return [(self.printy_group.title, reverse_lazy("printy:printys"))]
 
 
-class PrintyView(TitleBreadcrumbsMixin, DetailView):
+class PrintyDetailView(TitleBreadcrumbsMixin, DetailView):
     """Подробности об оснастке."""
 
     model = Printy

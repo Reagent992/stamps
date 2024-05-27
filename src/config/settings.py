@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 from environs import Env
@@ -79,7 +80,6 @@ INSTALLED_APPS = [
     "sorl.thumbnail",
     "view_breadcrumbs",
     "django_ckeditor_5",
-    "debug_toolbar",
     "django_json_widget",
     "crispy_forms",
     "crispy_bootstrap5",
@@ -100,7 +100,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 ]
 
@@ -159,6 +158,18 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "collected_static"
 MEDIA_URL = "media/"
 MEDIA_ROOT = str(BASE_DIR / "media")
+# ---------------------------------------------------------DJANGO DEBUG TOOLBAR
+TESTING = "test" in sys.argv
+
+if not TESTING:
+    INSTALLED_APPS = [
+        *INSTALLED_APPS,
+        "debug_toolbar",
+    ]
+    MIDDLEWARE = [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        *MIDDLEWARE,
+    ]
 # -------------------------------------------------------------CUSTOM CONSTANTS
 PAGINATION_AMOUNT = 4
 BREADCRUMBS_HOME_LABEL = "Главная страница"
