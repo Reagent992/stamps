@@ -9,9 +9,16 @@ from django.contrib.flatpages.models import FlatPage
 from django.contrib.sites.models import Site
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
+from django.urls import resolve, reverse
 
 from mainapp.models import Stamp, StampGroup
+from mainapp.views import GroupedStampsView, StampDetailView, StampGroupView
 from printy.models import Printy, PrintyGroup
+from printy.views import (
+    PrintyDetailView,
+    PrintyGroupContentView,
+    PrintyGroupsView,
+)
 from stamp_fields.models import FieldsTypes, GroupOfFieldsTypes
 
 User = get_user_model()
@@ -30,6 +37,8 @@ class UrlsTests(TestCase):
         0. Служебное.
         1. Создание данных для тестов.
         2. Публичные страницы открываются(status = 200).
+        3. path:view mapping.
+        4. namespace:path mapping.
     """
 
     @classmethod
@@ -155,7 +164,7 @@ class UrlsTests(TestCase):
                 )
 
     def test_public_urls(self) -> None:
-        """Test access to public pages."""
+        """2.2 Test access to public pages."""
         urls_to_statuses = {
             "/sitemap.xml": HTTPStatus.OK,
             self.flatpage1.get_absolute_url(): HTTPStatus.OK,
@@ -168,3 +177,57 @@ class UrlsTests(TestCase):
                     expected_status,
                     f"URL {url} has wrong status code",
                 )
+
+    def test_path_to_view_mapping(self) -> None:
+        """3. Test path to view mapping."""
+        path_to_view = {
+            "/": StampGroupView,
+            f"/{self.stamp_group1.slug}/": GroupedStampsView,
+            f"/{self.stamp_group1.slug}/{self.stamp1.slug}/": StampDetailView,
+            "/printy/": PrintyGroupsView,
+            f"/printy/{self.printygroup1.slug}/": PrintyGroupContentView,
+            (
+                f"/printy/{self.printygroup1.slug}" f"/{self.printy1.slug}/"
+            ): PrintyDetailView,
+        }
+        for path, expected_view in path_to_view.items():
+            with self.subTest(path=path, expected_view=expected_view):
+                resolved_view = resolve(path)
+                self.assertEqual(resolved_view.func.view_class, expected_view)
+
+    def test_namespace_to_path_mapping(self) -> None:
+        """4. Test namespace to path mapping."""
+        namespace_to_path = (
+            ("mainapp:index", {}, "/"),
+            (
+                "mainapp:stamps",
+                {"group": self.stamp_group1.slug},
+                f"/{self.stamp_group1.slug}/",
+            ),
+            (
+                "mainapp:item_details",
+                {
+                    "group": self.stamp1.group.slug,
+                    "slug_item": self.stamp1.slug,
+                },
+                f"/{self.stamp1.group.slug}/{self.stamp1.slug}/",
+            ),
+            ("printy:printy_index", {}, "/printy/"),
+            (
+                "printy:printys",
+                {"printy_group": self.printygroup1.slug},
+                f"/printy/{self.printygroup1.slug}/",
+            ),
+            (
+                "printy:printy_details",
+                {
+                    "printy_group": self.printy1.group.slug,
+                    "printy_item": self.printy1.slug,
+                },
+                f"/printy/{self.printy1.group.slug}/{self.printy1.slug}/",
+            ),
+        )
+        for namespace, kwargs, path in namespace_to_path:
+            with self.subTest(namespace=namespace, kwargs=kwargs, path=path):
+                reverse_result = reverse(viewname=namespace, kwargs=kwargs)
+                self.assertEqual(reverse_result, path)
