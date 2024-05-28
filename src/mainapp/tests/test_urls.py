@@ -147,7 +147,6 @@ class UrlsTests(TestCase):
         # TODO: add flatpages
         url_status_dict = {
             "/sitemap.xml": HTTPStatus.OK,
-            "/about/contacts/": HTTPStatus.OK,
         }
         for url, status in url_status_dict.items():
             with self.subTest(url=url, status=status):

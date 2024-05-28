@@ -85,7 +85,6 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     # ---------------------------------Apps------------------------------------
     "mainapp.apps.MainappConfig",
-    "about.apps.AboutConfig",
     "printy.apps.PrintyConfig",
     "core.apps.CoreConfig",
     "orders.apps.OrdersConfig",

@@ -27,10 +27,6 @@ urlpatterns = [
         "ckeditor5/",
         include("django_ckeditor_5.urls"),
     ),
-    path(
-        "about/",
-        include("about.urls", namespace="about"),
-    ),
     path("admin/", admin.site.urls),
     path("printy/", include("printy.urls", namespace="printy")),
     path("pages/", include("django.contrib.flatpages.urls")),
