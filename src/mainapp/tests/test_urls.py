@@ -5,6 +5,8 @@ from http import HTTPStatus
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.sites.models import Site
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 
@@ -29,12 +31,6 @@ class UrlsTests(TestCase):
         1. Создание данных для тестов.
         2. Публичные страницы открываются(status = 200).
     """
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        """0. Удаляем временную папку для медиа-файлов."""
-        super().tearDownClass()
-        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -108,6 +104,22 @@ class UrlsTests(TestCase):
         )
         cls.stamp1._skip_celery_task = True
         cls.stamp1.save(force_insert=True)
+        # Django create example Site by default.
+        cls.site = Site.objects.get_current()
+        # about Flatpage
+        cls.flatpage1 = FlatPage.objects.create(
+            url="/test_url/",
+            title="О нас",
+            content="Описание страницы about",
+            template_name="flatpages/default.html",
+        )
+        cls.flatpage1.sites.add(cls.site)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        """0. Удаляем временную папку для медиа-файлов."""
+        super().tearDownClass()
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def test_public_urls_stamps(self) -> None:
         """2. Страницы штампов доступные любому пользователю."""
@@ -143,16 +155,16 @@ class UrlsTests(TestCase):
                 )
 
     def test_public_urls(self) -> None:
-        """2.2 Остальные публичные страницы."""
-        # TODO: add flatpages
-        url_status_dict = {
+        """Test access to public pages."""
+        urls_to_statuses = {
             "/sitemap.xml": HTTPStatus.OK,
+            self.flatpage1.get_absolute_url(): HTTPStatus.OK,
         }
-        for url, status in url_status_dict.items():
-            with self.subTest(url=url, status=status):
+        for url, expected_status in urls_to_statuses.items():
+            with self.subTest(url=url, expected_status=expected_status):
                 response = self.guest_user.get(url)
                 self.assertEqual(
                     response.status_code,
-                    status,
-                    f"Адресу {url} не соответствует HTTP-статус {status}",
+                    expected_status,
+                    f"URL {url} has wrong status code",
                 )

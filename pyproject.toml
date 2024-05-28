@@ -49,6 +49,7 @@ rb = "scripts.poetry_scripts:rb"
 flower = "scripts.poetry_scripts:flower"
 dt = "scripts.poetry_scripts:dt"
 rc = "scripts.poetry_scripts:rc"
+mm = "scripts.poetry_scripts:mm"
 
 [build-system]
 requires = ["poetry-core"]

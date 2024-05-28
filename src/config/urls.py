@@ -28,8 +28,8 @@ urlpatterns = [
         include("django_ckeditor_5.urls"),
     ),
     path("admin/", admin.site.urls),
-    path("printy/", include("printy.urls", namespace="printy")),
     path("pages/", include("django.contrib.flatpages.urls")),
+    path("printy/", include("printy.urls", namespace="printy")),
     path("", include("mainapp.urls", namespace="mainapp")),
     path("", include("orders.urls", namespace="orders")),
 ]
