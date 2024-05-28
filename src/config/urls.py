@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.flatpages.sitemaps import FlatPageSitemap
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 
@@ -12,6 +13,7 @@ sitemaps = {
     "Stamps": StampSitemap,
     "PrintyGroup": PrintyGroupSitemap,
     "Printy": PrintySitemap,
+    "Pages": FlatPageSitemap,
 }
 
 urlpatterns = [
