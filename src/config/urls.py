@@ -40,6 +40,6 @@ if settings.DEBUG:
     )
 if not settings.TESTING:
     urlpatterns = [
-        *urlpatterns,
         path("__debug__/", include("debug_toolbar.urls")),
+        *urlpatterns,
     ]
