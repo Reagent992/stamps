@@ -1,23 +1,8 @@
 from django.db.models import Min
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from slugify import slugify
 
-from mainapp.models import Stamp, StampGroup
-
-
-@receiver(pre_save, sender=StampGroup)
-def stamp_group_create_pre_save(sender, instance, *args, **kwargs):
-    """Заполнение поля slug при создании новой группы штампов."""
-    if not instance.slug:
-        instance.slug = slugify(instance.title)
-
-
-@receiver(pre_save, sender=Stamp)
-def stamp_create_pre_save(sender, instance, *args, **kwargs):
-    """Заполнение поля slug при создании нового штампа."""
-    if not instance.slug:
-        instance.slug = slugify(instance.title)
+from mainapp.models import Stamp
 
 
 def update_min_price(instance):

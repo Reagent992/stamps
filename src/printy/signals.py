@@ -1,26 +1,11 @@
 from django.db.models import Min
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from slugify import slugify
 
-from printy.models import Printy, PrintyGroup
-
-
-@receiver(pre_save, sender=PrintyGroup)
-def stamp_group_create_pre_save(sender, instance, *args, **kwargs):
-    """Заполнение поля slug при создании новой группы оснасток."""
-    if not instance.slug:
-        instance.slug = slugify(instance.title)
+from printy.models import Printy
 
 
-@receiver(pre_save, sender=Printy)
-def stamp_create_pre_save(sender, instance, *args, **kwargs):
-    """Заполнение поля slug при создании новой оснастки."""
-    if not instance.slug:
-        instance.slug = slugify(instance.title)
-
-
-def update_min_price(instance):
+def update_min_price(instance) -> None:
     """Обновление минимальной цены.
 
     Как работает функция:
@@ -41,12 +26,12 @@ def update_min_price(instance):
 
 
 @receiver(post_save, sender=Printy)
-def stamp_post_save(sender, instance, created, *args, **kwargs):
+def stamp_post_save(sender, instance, created, *args, **kwargs) -> None:
     """Обновление минимальной цены при создание новой оснастки."""
     update_min_price(instance)
 
 
 @receiver(post_delete, sender=Printy)
-def stamp_pre_delete(sender, instance, *args, **kwargs):
+def stamp_pre_delete(sender, instance, *args, **kwargs) -> None:
     """Обновление минимальной цены при удаление оснастки."""
     update_min_price(instance)

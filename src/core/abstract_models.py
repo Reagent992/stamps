@@ -2,6 +2,7 @@ import logging
 
 from dirtyfields import DirtyFieldsMixin
 from django.db import models
+from slugify import slugify
 
 from core.tasks import paste_watermark_and_resize_image
 
@@ -66,6 +67,16 @@ class AbstractGroupModel(DirtyFieldsMixin, AbstractTimeModel):
     def __str__(self) -> str:
         return self.title
 
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ) -> None:
+        self.slug = slugify(self.title)
+        return super().save(force_insert, force_update, using, update_fields)
+
 
 class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
     """Абстрактная модель предмета."""
@@ -106,7 +117,7 @@ class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
         using=None,
         update_fields=None,
     ) -> None:
-        # TODO: Move slugify here from signals.
+        self.slug = slugify(self.title)
         created = self.pk is None
         logger.info(
             (
