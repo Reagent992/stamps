@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta name="keywords"
+              content="Печати, Изготовление печатей, Доставка печатей, Печати в Архангельске">
+        <meta name="description" content="Изготовление и доставка печатей">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Новый заказ</title>
+        <link rel="stylesheet" href="https://matcha.mizu.sh/matcha.css">
+    </head>
+    <body class="layout-simple">
+        <section>
+            <table class="center">
+                <caption>Детали заказа</caption>
+                <tbody>
+                    <tr>
+                        <th>Оснастка</th>
+                        <td>
+                            <a href="{{ printy_url }}">{{ item.printy.title }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Печать</th>
+                        <td>
+                            <a href="{{ stamp_url }}">{{ item.stamp.title }}</a>
+                        </td>
+                    </tr>
+                    {% for k, v in item.stamp_text.items %}
+                        {% if k and v %}
+                            <tr>
+                                <th>{{ k }}</th>
+                                <td>{{ v }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="center">
+                <caption>Заказчик</caption>
+                <tbody>
+                    <tr>
+                        <th>Email</th>
+                        <td>
+                            <a href="mailto:{{ item.email }}">{{ item.email }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Телефон</th>
+                        <td>
+                            <a href="tel:{{ item.phone }}">{{ item.phone }}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Имя</th>
+                        <td>{{ item.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Адрес</th>
+                        <td>{{ item.address }}</td>
+                    </tr>
+                    <tr>
+                        <th>Город</th>
+                        <td>{{ item.city }}</td>
+                    </tr>
+                    <tr>
+                        <th>Почтовый индекс</th>
+                        <td>{{ item.postal_code }}</td>
+                    </tr>
+                    <tr>
+                        <th>Комментарий</th>
+                        <td>{{ item.comment }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </body>
+</html>
