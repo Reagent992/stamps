@@ -207,6 +207,7 @@ INDEX_TEMPLATE = "mainapp/index.html"
 ITEM_DETAIL_TEMPLATE = "mainapp/item_details.html"
 ORDER_FORM_TEMPLATE = "mainapp/order_form.html"
 ORDER_SUCCESS_TEMPLATE = "mainapp/order_success.html"
+NEW_ORDER_EMAIL_TEMPLATE = "new_order_email.html"
 # -----------------------------------------------------------------CRISPY-FORMS
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
