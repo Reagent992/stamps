@@ -1,4 +1,9 @@
+from django.conf import settings
+from django.shortcuts import get_object_or_404
 from view_breadcrumbs import BaseBreadcrumbMixin
+
+from mainapp.models import Stamp
+from printy.models import Printy
 
 
 class PageTitleViewMixin:
@@ -26,3 +31,21 @@ class TitleBreadcrumbsMixin(PageTitleViewMixin, BaseBreadcrumbMixin):
     """Обеднение миксинов для title и Breadcrumbs"""
 
     pass
+
+
+class ItemsFromSessionMixin:
+    """Get selected stamp and printy from session."""
+
+    @property
+    def selected_stamp(self) -> Stamp:
+        return get_object_or_404(
+            Stamp.filter_published.all(),
+            id=self.request.session.get(settings.USER_CHOICE_STAMP_ID),
+        )
+
+    @property
+    def selected_printy(self) -> Printy:
+        return get_object_or_404(
+            Printy.filter_published.all(),
+            id=self.request.session.get(settings.USER_CHOICE_PRINTY_ID),
+        )
