@@ -117,7 +117,7 @@ class TestCaseOrder(TestCase):
         orders_count = Order.objects.count()
         form_data = {
             self.stamp_field1.name: "text1",
-            self.stamp_field2: "text2",
+            self.stamp_field2.name: "text2",
             "email": "test@test.com",
             "phone": "1234567890",
             "name": "test_name",
@@ -133,6 +133,7 @@ class TestCaseOrder(TestCase):
         )
         self.assertEqual(Order.objects.count(), orders_count + 1)
         send_order_email.assert_called_once_with(
-            order_id=Order.objects.last().id
+            order_id=Order.objects.last().id,
+            recipient=Order.objects.last().email,
         )
         self.assertRedirects(response, reverse("orders:order_success"))
