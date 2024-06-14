@@ -138,8 +138,6 @@ class PrintyDetailView(TitleBreadcrumbsMixin, DetailView):
             selected_stamp_obj.group.slug
             return redirect(
                 "orders:create_order",
-                selected_stamp_obj.group.slug,
-                selected_stamp_obj.slug,
             )
         return super().get(request, *args, **kwargs)
 

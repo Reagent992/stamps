@@ -29,9 +29,9 @@ urlpatterns = [
     ),
     path("admin/", admin.site.urls),
     path("pages/", include("django.contrib.flatpages.urls")),
+    path("orders/", include("orders.urls", namespace="orders")),
     path("printy/", include("printy.urls", namespace="printy")),
     path("", include("mainapp.urls", namespace="mainapp")),
-    path("", include("orders.urls", namespace="orders")),
 ]
 
 if settings.DEBUG:

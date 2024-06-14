@@ -11,7 +11,7 @@ urlpatterns = [
         name="order_success",
     ),
     path(
-        "<slug:group>/<slug:slug_item>/order",
+        "create-order/",
         CreateStampOrderView.as_view(),
         name="create_order",
     ),
