@@ -12,7 +12,7 @@ from orders.forms import OrderForm
 from orders.models import Order
 from orders.tasks import send_order_email
 
-logger = logging.getLogger("__name__")
+logger = logging.getLogger()
 
 
 class CreateStampOrderView(
@@ -83,17 +83,18 @@ class CreateStampOrderView(
                 printy=self.selected_printy,
                 stamp=self.selected_stamp,
             )
-            logger.info(
-                (
-                    "New Order was created. id=%d, stamp=%s, printy=%s, "
-                    "order_info=%s, stamp_text=%s"
-                ),
-                order.id,
-                self.selected_stamp,
-                self.selected_printy,
-                order_form.cleaned_data,
-                stamp_text_form.cleaned_data,
-            )
+            if settings.DEBUG:
+                logger.info(
+                    (
+                        "New Order was created. id=%d, stamp=%s, printy=%s, "
+                        "order_info=%s, stamp_text=%s"
+                    ),
+                    order.id,
+                    self.selected_stamp,
+                    self.selected_printy,
+                    order_form.cleaned_data,
+                    stamp_text_form.cleaned_data,
+                )
             send_order_email.delay(order_id=order.id, recipient=order.email)
             return redirect("orders:order_success")
 
