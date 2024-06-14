@@ -29,15 +29,13 @@
     </head>
     <body>
         {% include "includes/header.html" %}
-        {% if render_breadcrumbs %}
-            <div class="container text-center">
-                <div class="mt-1 d-flex justify-content-center">
-                    {% block breadcrumbs %}
-                        {% render_breadcrumbs %}
-                    {% endblock breadcrumbs %}
-                </div>
+        <div class="container text-center">
+            <div class="mt-1 d-flex justify-content-center">
+                {% block breadcrumbs %}
+                    {% render_breadcrumbs %}
+                {% endblock breadcrumbs %}
             </div>
-        {% endif %}
+        </div>
         {% block content %}
         {% endblock content %}
         {% include "includes/footer.html" %}
