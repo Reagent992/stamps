@@ -119,7 +119,7 @@ class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
     ) -> None:
         self.slug = slugify(self.title)
         created = self.pk is None
-        logger.info(
+        logger.debug(
             (
                 f"Saving new {self.__class__.__name__} object, "
                 f"created: {created}, "

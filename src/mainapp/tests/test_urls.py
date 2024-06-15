@@ -42,6 +42,12 @@ class UrlsTests(TestCase):
     """
 
     @classmethod
+    def tearDownClass(cls) -> None:
+        """0. Удаляем временную папку для медиа-файлов."""
+        super().tearDownClass()
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
+
+    @classmethod
     def setUpClass(cls) -> None:
         """1. Создаем данные для тестов."""
         super().setUpClass()
@@ -123,12 +129,6 @@ class UrlsTests(TestCase):
             template_name="flatpages/default.html",
         )
         cls.flatpage1.sites.add(cls.site)
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        """0. Удаляем временную папку для медиа-файлов."""
-        super().tearDownClass()
-        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def test_public_urls_stamps(self) -> None:
         """2. Страницы штампов доступные любому пользователю."""

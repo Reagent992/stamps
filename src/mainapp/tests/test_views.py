@@ -1,10 +1,10 @@
 import logging
 import shutil
 import tempfile
+from http import HTTPStatus
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
@@ -23,15 +23,14 @@ logger = logging.getLogger("__name__")
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class StampTests(TestCase):
     """
-    Тесты для View Штампов и Оснасток тестируются вместе.
+    View Штампов и Оснасток тестируются вместе.
 
     Оглавление:
     0. Служебное.
     1. Создание данных для тестов.
-    2. View используют ожидаемые HTML-шаблоны.
+    2. View use the expected HTML templates.
     3. Выбраны правильные заголовки для страниц.
-    4. Context View содержит запрашиваемый объект(ы).
-    TODO:
+    4. Context of view contains necessary objects.
     5. Pagination
     """
 
@@ -113,11 +112,63 @@ class StampTests(TestCase):
         )
         cls.stamp1._skip_celery_task = True
         cls.stamp1.save(force_insert=True)
+        # pagination
+        obj_array = [
+            StampGroup(
+                title=f"Тестовая группа штампов {i}",
+                slug=f"test_group{i}",
+                image=cls.uploaded,
+                published=True,
+            )
+            for i in range(2, 16)
+        ]
+        StampGroup.objects.bulk_create(obj_array)
+        obj_array = [
+            PrintyGroup(
+                title=f"Тестовая группа оснасток {i}",
+                slug=f"test_printy_group{i}",
+                image=cls.uploaded,
+                published=True,
+            )
+            for i in range(2, 16)
+        ]
+        PrintyGroup.objects.bulk_create(obj_array)
+        for i in range(2, 16):
+            cur_obj = Stamp(
+                title=f"Тестовый штамп {i}",
+                slug=f"test_stamp{i}",
+                description="Описание тестового штампа",
+                price=399,
+                published=True,
+                image=cls.uploaded,
+                group=cls.stamp_group1,
+                form_fields=cls.stamp_fields_group,
+            )
+            cur_obj._skip_celery_task = True
+            cur_obj.save(force_insert=True)
+        for i in range(2, 16):
+            cur_obj = Printy(
+                title=f"Тестовая оснастка {i}",
+                slug=f"test_printy{i}",
+                description="Описание тестовой оснастки",
+                price=299,
+                published=True,
+                image=cls.uploaded,
+                group=cls.printygroup1,
+            )
+            cur_obj._skip_celery_task = True
+            cur_obj.save(force_insert=True)
+        cls.first_stamp = Stamp.objects.first()
+        cls.first_printy = Printy.objects.first()
+        # pagination test expect it to be equal
+        cls.objects_amount = 15
+        assert Stamp.objects.count() == cls.objects_amount
+        assert Printy.objects.count() == cls.objects_amount
+        assert StampGroup.objects.count() == cls.objects_amount
+        assert PrintyGroup.objects.count() == cls.objects_amount
 
     def test_pages_use_correct_template_stamps(self) -> None:
-        """
-        2. View-классы Stamps используют ожидаемые HTML-шаблоны.
-        """
+        """2. View use the expected HTML templates."""
         stamps_templates = {
             reverse("mainapp:index"): settings.INDEX_TEMPLATE,
             reverse(
@@ -130,22 +181,6 @@ class StampTests(TestCase):
                     "slug_item": self.stamp1.slug,
                 },
             ): settings.ITEM_DETAIL_TEMPLATE,
-        }
-
-        for reverse_name, template in stamps_templates.items():
-            with self.subTest(reverse_name=reverse_name, template=template):
-                cache.clear()
-                response = self.guest_user.get(reverse_name)
-                self.assertTemplateUsed(
-                    response,
-                    template,
-                    f"На странице {reverse_name} "
-                    f"не использован требуемый шаблон: {template}",
-                )
-
-    def test_pages_use_correct_template_printy(self) -> None:
-        """2.1 View-классы Printy используют ожидаемые HTML-шаблоны."""
-        printys_templates = {
             reverse("printy:printy_index"): settings.INDEX_TEMPLATE,
             reverse(
                 "printy:printys",
@@ -159,10 +194,8 @@ class StampTests(TestCase):
                 },
             ): settings.ITEM_DETAIL_TEMPLATE,
         }
-
-        for reverse_name, template in printys_templates.items():
+        for reverse_name, template in stamps_templates.items():
             with self.subTest(reverse_name=reverse_name, template=template):
-                cache.clear()
                 response = self.guest_user.get(reverse_name)
                 self.assertTemplateUsed(
                     response,
@@ -172,9 +205,7 @@ class StampTests(TestCase):
                 )
 
     def test_pages_use_correct_titles_stamps(self) -> None:
-        """
-        3. Выбраны правильные заголовки для страниц, Stamp.
-        """
+        """3. Выбраны правильные заголовки для страниц."""
         titles_pages = {
             reverse("mainapp:index"): settings.INDEX_TITLE,
             reverse(
@@ -187,20 +218,6 @@ class StampTests(TestCase):
                     "slug_item": self.stamp1.slug,
                 },
             ): self.stamp1.title,
-        }
-        for page, title in titles_pages.items():
-            with self.subTest(page=page, title=title):
-                cache.clear()
-                response = self.guest_user.get(page)
-                self.assertEqual(
-                    response.context.get("title"),
-                    title,
-                    "Не совпадают заголовки вкладки.",
-                )
-
-    def test_pages_use_correct_titles_printy(self) -> None:
-        """3.1 Выбраны правильные заголовки для страниц, Printy"""
-        titles_pages = {
             reverse("printy:printy_index"): settings.PRINTY_TITLE,
             reverse(
                 "printy:printys",
@@ -216,7 +233,6 @@ class StampTests(TestCase):
         }
         for page, title in titles_pages.items():
             with self.subTest(page=page, title=title):
-                cache.clear()
                 response = self.guest_user.get(page)
                 self.assertEqual(
                     response.context.get("title"),
@@ -225,53 +241,65 @@ class StampTests(TestCase):
                 )
 
     def test_view_stamps_context_contain_object(self) -> None:
-        """4. Context View Stamps содержит запрашиваемый объект(ы)."""
-        pages = {
-            # TODO: проверку групп логично будет вынести в отдельный тест.
-            # reverse("mainapp:index"): self.stamp_group1,
-            reverse(
-                "mainapp:stamps", kwargs={"group": self.stamp1.group.slug}
-            ): self.stamp1,
-            reverse(
-                "mainapp:item_details",
-                kwargs={
-                    "group": self.stamp1.group.slug,
-                    "slug_item": self.stamp1.slug,
-                },
-            ): self.stamp1,
-        }
-        for page, item in pages.items():
-            with self.subTest(page=page, item=item):
-                cache.clear()
-                response = self.guest_user.get(page)
+        """4. Context of view contains necessary objects."""
+        pages = (
+            (reverse("mainapp:index"), self.stamp_group1, True),
+            (
+                reverse(
+                    "mainapp:stamps",
+                    kwargs={"group": self.first_stamp.group.slug},
+                ),
+                self.first_stamp,
+                False,
+            ),
+            (
+                reverse(
+                    "mainapp:item_details",
+                    kwargs={
+                        "group": self.first_stamp.group.slug,
+                        "slug_item": self.first_stamp.slug,
+                    },
+                ),
+                self.first_stamp,
+                False,
+            ),
+            (reverse("printy:printy_index"), self.printygroup1, True),
+            (
+                reverse(
+                    "printy:printys",
+                    kwargs={"printy_group": self.first_printy.group.slug},
+                ),
+                self.first_printy,
+                False,
+            ),
+            (
+                reverse(
+                    "printy:printy_details",
+                    kwargs={
+                        "printy_group": self.first_printy.group.slug,
+                        "printy_item": self.first_printy.slug,
+                    },
+                ),
+                self.first_printy,
+                False,
+            ),
+        )
+        for path, test_obj, its_group in pages:
+            with self.subTest(path=path, test_obj=test_obj):
+                response = self.guest_user.get(path)
                 response_obj = response.context.get("page_obj")
                 if response_obj:
                     response_obj = response_obj[0]
                 else:
                     response_obj = response.context.get("object")
-                self.assert_attributes_equal(response_obj, item, page)
-
-    # def test_view_printy_context_contain_object(self):
-    #     """4.1 Context View Printy содержит запрашиваемые объект(ы)."""
-    #     pages = {
-    #         reverse("printy:printy_index"): self.printy1,
-    #         reverse(
-    #             "printy:printys",
-    #             kwargs={"printy_group": self.printy1.group.slug},
-    #         ): self.printy1,
-    #         reverse(
-    #             "printy:printy_details",
-    #             kwargs={
-    #                 "printy_group": self.printy1.group.slug,
-    #                 "printy_item": self.printy1.slug,
-    #             },
-    #         ): self.printy1.title,
-    #     }
+                self.assert_attributes_equal(
+                    response_obj, test_obj, path, its_group
+                )
 
     def assert_attributes_equal(
-        self, response_obj, test_item, page, its_group=False
-    ):
-        """Assert equality of attributes between response_obj and test_item."""
+        self, response_obj, test_obj, path, its_group=False
+    ) -> None:
+        """Assert equality of attributes between response_obj and test_obj."""
         attributes = [
             "title",
             "slug",
@@ -285,10 +313,59 @@ class StampTests(TestCase):
             attributes = ["title", "slug", "image", "published"]
         for attribute in attributes:
             response_attr = getattr(response_obj, attribute)
-            item_attr = getattr(test_item, attribute)
+            test_obj_attr = getattr(test_obj, attribute)
             self.assertEqual(
                 response_attr,
-                item_attr,
-                f"При запросе на <{page}> "
-                f"У <{response_obj}> и <{test_item}> не совпадают {attribute}",
+                test_obj_attr,
+                f"ojb {response_obj} from {path}"
+                f" don't have {attribute}={test_obj_attr}",
             )
+
+    def calculate_last_page_number(self) -> int:
+        t = self.objects_amount // settings.PAGINATION_AMOUNT
+        if self.objects_amount % settings.PAGINATION_AMOUNT:
+            return t + 1
+        return t
+
+    def calculate_amount_of_items_on_last_page(self) -> int:
+        if not self.objects_amount % settings.PAGINATION_AMOUNT:
+            return self.objects_amount // settings.PAGINATION_AMOUNT
+        return self.objects_amount % settings.PAGINATION_AMOUNT
+
+    def test_pagination(self) -> None:
+        urls = (
+            reverse("mainapp:index"),
+            reverse(
+                "mainapp:stamps",
+                kwargs={"group": self.stamp_group1.slug},
+            ),
+            reverse("printy:printy_index"),
+            reverse(
+                "printy:printys",
+                kwargs={"printy_group": self.printygroup1.slug},
+            ),
+        )
+        for url in urls:
+            with self.subTest(url=url):
+                first_page = self.client.get(url)
+                last_page = self.client.get(
+                    url + f"?page={self.calculate_last_page_number()}"
+                )
+                self.assertEqual(
+                    len(first_page.context["page_obj"]),
+                    settings.PAGINATION_AMOUNT,
+                    "Incorrect number of objects on the first page.",
+                )
+                self.assertEqual(
+                    len(last_page.context["page_obj"]),
+                    self.calculate_amount_of_items_on_last_page(),
+                    "Incorrect number of objects on the last page.",
+                )
+                self.assertNotContains(
+                    first_page,
+                    last_page.context["page_obj"],
+                    HTTPStatus.OK,
+                    msg_prefix=(
+                        "First_page should not contain last_page objects."
+                    ),
+                )
