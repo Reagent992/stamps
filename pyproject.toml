@@ -40,6 +40,7 @@ ipython = "^8.24.0"
 django-stubs = {extras = ["compatible-mypy"], version = "^5.0.0"}
 ipykernel = "^6.29.4"
 pytest = "^8.2.1"
+redgreenunittest = "^0.1.1"
 
 [tool.poetry.scripts]
 dr = "scripts.poetry_scripts:dr"

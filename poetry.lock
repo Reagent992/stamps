@@ -1834,6 +1834,19 @@ files = [
 cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
+name = "redgreenunittest"
+version = "0.1.1"
+description = "This is literally an exact clone of unittest (from Python 2.7), but with colors."
+optional = false
+python-versions = "*"
+files = [
+    {file = "redgreenunittest-0.1.1.tar.gz", hash = "sha256:94f98a8928f80f4bf216e316062cd7d7af134d922287e73f59cab0f3262d87b4"},
+]
+
+[package.dependencies]
+Pygments = "*"
+
+[[package]]
 name = "regex"
 version = "2023.12.25"
 description = "Alternative regular expression module, to replace re."
@@ -2146,4 +2159,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "61f7010ce4f75055dae03025428e99c6b1e8c58030be443b85b34d7c165d17c3"
+content-hash = "69bf6fa2570720a037f4080a5383783e05ed10aeb7b4b10eb913c765e8c5f3c1"
