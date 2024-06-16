@@ -3,4 +3,5 @@
 set -o errexit
 set -o nounset
 
+cd src
 celery -A config worker -l INFO

@@ -2,7 +2,7 @@
 
 set -o errexit
 set -o nounset
-
+cd src
 worker_ready() {
     celery -A config inspect ping
 }
