@@ -13,7 +13,7 @@
 | django | 4 | Фронт на Джанго-шаблонах|
 | celery | latest | Очередь задач |
 | rabbitmq | latest | Брокер для celery |
-| flower | latest | Трекер для celery задач | 
+| flower | latest | Трекер для celery задач |
 | django-view-breadcrumbs | latest | "Хлебные крошки", breadcrumbs для отображения "пути". |
 | django-ckeditor | 5 | Редактор теста |
 | python-slugify | latest | Транслитерация текста |
@@ -26,6 +26,7 @@
 | sorl-thumbnail | latest| images thumbnails |
 | [django-ckeditor-5](https://github.com/hvlads/django-ckeditor-5) | 5 | Редактор текста для админки |
 | django-dirtyfields | latest | Отслеживание изменений в объекте модели, до сохранения в БД.|
+| gunicorn | latest | wsgi-сервер |
 
 ### dev зависимости
 | Библиотека | Версия | Описание |
