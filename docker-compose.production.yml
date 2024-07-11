@@ -1,16 +1,16 @@
 volumes:
   pg_data:
 
-# This compose file is used only for development.
 
 services:
   web:
     build:
       context: .
       dockerfile: ./Dockerfile
-      target: dev
+      target: prod
     image: stamps # image name
-    command: /start_dev # shell script used to run the service
+    restart: unless-stopped
+    command: /start_prod # shell script used to run the service
     volumes:
       - .:/app
     ports:
@@ -19,33 +19,58 @@ services:
     depends_on:
       - rabbitmq
       - db
+    healthcheck:
+      test: curl --fail http://localhost:8000/ || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
   db:
     image: postgres:16.3-alpine3.19
+    restart: unless-stopped
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER}
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   rabbitmq:
     image: rabbitmq:3.13.2-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   celery_worker:
     build:
       context: .
       dockerfile: ./Dockerfile
     command: /start-celeryworker
+    restart: unless-stopped
     volumes:
       - .:/app
     env_file: .env
     depends_on:
       - rabbitmq
       - web
+    healthcheck:
+      test: celery -A config inspect ping
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   flower:
     build:
       context: .
       dockerfile: ./Dockerfile
     command: /start-flower
+    restart: unless-stopped
     volumes:
       - .:/app
     env_file: .env
