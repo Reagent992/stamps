@@ -37,6 +37,20 @@ repos:
         language: system
         verbose: true
 
+      - id: export-dev-requirements
+        name: Export DEV requirements.txt
+        language: system
+        pass_filenames: false
+        entry: poetry export --without-hashes --dev --output infra/requirements/dev.txt
+        files: ^(pyproject.toml|poetry.lock)$
+
+      - id: export-prod-requirements
+        name: Export PROD requirements.txt
+        language: system
+        pass_filenames: false
+        entry: poetry export --without-hashes --output infra/requirements/prod.txt
+        files: ^(pyproject.toml|poetry.lock)$
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
@@ -61,9 +75,3 @@ repos:
     hooks:
       - id: poetry-lock
       - id: poetry-check
-      - id: poetry-export
-        args: [
-          "-f", "requirements.txt",
-          "-o", "requirements.txt",
-          "--without-hashes"
-        ]

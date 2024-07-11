@@ -18,7 +18,14 @@ CSRF_TRUSTED_ORIGINS = env.list(
 # ---------------------------------------------------------------------------DB
 USE_POSTGRESQL = env.bool("USE_POSTGRESQL", default=False)
 
-if USE_POSTGRESQL:
+if not USE_POSTGRESQL or "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -29,13 +36,6 @@ if USE_POSTGRESQL:
             ),
             "HOST": env.str("DB_HOST", default="db"),
             "PORT": env.int("DB_PORT", default=5432),
-        }
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 # -----------------------------------------------------------------------CELERY
@@ -150,6 +150,7 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
+
 STATICFILES_DIRS = ((BASE_DIR / "static"),)
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "collected_static"
@@ -158,7 +159,7 @@ MEDIA_ROOT = str(BASE_DIR / "media")
 # ---------------------------------------------------------DJANGO DEBUG TOOLBAR
 TESTING = "test" in sys.argv
 
-if not TESTING:
+if not TESTING and DEBUG is True:
     INSTALLED_APPS = [
         *INSTALLED_APPS,
         "debug_toolbar",
