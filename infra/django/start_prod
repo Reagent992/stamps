@@ -7,4 +7,7 @@ set -o nounset
 cd src
 python manage.py migrate
 python manage.py collectstatic --noinput
-gunicorn --bind 0.0.0.0:8000 config.wsgi
+mkdir -p static
+cp -r collected_static/* static/
+celery -A config worker -l INFO &
+exec gunicorn --bind 0.0.0.0:8000 config.wsgi

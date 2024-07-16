@@ -1,0 +1,31 @@
+# Base file for multiple compose files.
+# for dev: "compose up" will auto-use compose.override.yml also
+# for production: "docker compose -f compose.yml -f compose.production.yml up"
+# i.e. ignore compose.override.yml in production.
+
+services:
+  web:
+    build:
+      context: ../
+      dockerfile: ../Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    env_file: ../.env
+    depends_on:
+      - rabbitmq
+      - db
+
+  db:
+    image: postgres:16.3-alpine3.19
+    restart: unless-stopped
+    env_file: ../.env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.13.2-alpine
+    restart: unless-stopped
+
+volumes:
+  pg_data:

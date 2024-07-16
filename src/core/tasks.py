@@ -98,6 +98,7 @@ def paste_watermark_and_resize_image(
     instance = get_object_by_model_id_app(model_name, object_id, app_label)
     logger.info(f"Start of celery task for {instance}")
     absolute_path_to_image = instance.image.path
+    # FIXME: handle FileNotFoundError
     image = open_image(absolute_path_to_image)
     image = image.resize(IMAGE_SIZE_IN_PIXELS, Image.Resampling.LANCZOS)
     if USE_WATERMARK_FILE:

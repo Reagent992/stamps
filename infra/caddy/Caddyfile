@@ -1,0 +1,44 @@
+{
+	email {$ADMIN_EMAIL}
+}
+# www.{$HOST} {
+# 	redir https://{$HOST}{uri}
+# }
+
+{$DOMEN} {
+	# HTTPS options:
+	header Strict-Transport-Security max-age=31536000;
+
+	# Removing some headers for improved security:
+	header -Server
+
+	# Serve static files
+	handle_path /static/* {
+		# STATIC_ROOT
+		root * /app/src/static
+
+		file_server
+	}
+
+	# Serve media files
+	handle_path /media/* {
+		# MEDIA_ROOT
+		root * /app/src/media
+
+		file_server
+	}
+
+	# Serve Django app
+	handle {
+		reverse_proxy web:8000
+	}
+
+	# Dynamically compress response with gzip when it makes sense.
+	# This setting is ignored for precompressed files.
+	encode gzip
+
+	# Logs:
+	log {
+		output stdout
+	}
+}

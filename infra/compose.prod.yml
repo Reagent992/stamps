@@ -1,0 +1,57 @@
+# It's a part of the base compose file.
+# It adds and overrides some settings of the base file to make it work for production.
+# "docker compose -f compose.yml -f compose.production.yml up".
+name: stamps-prod
+
+services:
+  web:
+    container_name: web-prod
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      target: prod
+    image: web-prod
+    command: /start_prod
+    volumes:
+      - django-static:/app/src/static  # serving django's statics
+      - django-media:/app/src/media  # serving django's media
+    environment:
+      - DEBUG=False
+      - USE_POSTGRESQL=True
+      - PROD=True
+    healthcheck:
+      test: curl --fail http://localhost:8000/ || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  caddy:
+    image: "caddy:2.8.4-alpine"
+    container_name: caddy
+    restart: unless-stopped
+    env_file: ../.env
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile  # configuration
+      - caddy-config:/config  # configuration autosaves
+      - caddy-data:/data  # saving certificates
+      - django-static:/app/src/static  # serving django's statics
+      - django-media:/app/src/media  # serving django's media
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+
+  rabbitmq:
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  caddy-config:
+  caddy-data:
+  django-static:
+  django-media:

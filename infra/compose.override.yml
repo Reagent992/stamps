@@ -1,0 +1,23 @@
+# It's a part of the base compose file.
+# It adds and overrides some settings of the base file to make it work for development.
+# "docker compose up" will use both compose.yml and compose.override.yml automatically.
+name: stamps-dev
+
+services:
+  web:
+    container_name: web-dev
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      target: python-base
+    image: web-dev
+    command: /start_dev
+    volumes:
+      - ../.:/app
+    environment:
+      - DEBUG=True
+      - USE_POSTGRESQL=True
+      - PROD=False
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+      - DJANGO_SUPERUSER_PASSWORD=admin
