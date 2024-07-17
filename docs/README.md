@@ -1,6 +1,6 @@
 # В разработке
 
-## Интернет магазин по продаже печатей и штампов
+## Интернет магазин изготовления печатей и штампов на заказ
 
 ![Картинка-Пример](images/img.png)
 
@@ -17,7 +17,7 @@
 | django-view-breadcrumbs | latest | "Хлебные крошки", breadcrumbs для отображения "пути". |
 | django-ckeditor | 5 | Редактор теста |
 | python-slugify | latest | Транслитерация текста |
-| Poetry | latest | Пакетный менеджер, Альтернатива pip |
+| Poetry | latest | Пакетный менеджер |
 | Environs[django] | latest | Для хранения секретов в файле `.env` |
 | django-json-widget| latest | Для удобного просмотра и редактирования JSONField|
 | django-crispy-forms(c crispy_bootstrap5) | latest | Для Генерации форм |
@@ -25,8 +25,9 @@
 | pillow | latest| images |
 | sorl-thumbnail | latest| images thumbnails |
 | [django-ckeditor-5](https://github.com/hvlads/django-ckeditor-5) | 5 | Редактор текста для админки |
-| django-dirtyfields | latest | Отслеживание изменений в объекте модели, до сохранения в БД.|
+| django-dirtyfields | latest | Отслеживание изменений в объекте модели, до сохранения в БД|
 | gunicorn | latest | wsgi-сервер |
+| [django-split-settings](https://github.com/wemake-services/django-split-settings) | latest | Позволяет разделять настройки на несколько файлов |
 
 ### dev зависимости
 | Библиотека | Версия | Описание |
@@ -36,6 +37,8 @@
 | django-debug-toolbar | latest | Оверлей для разработки. |
 | django-stubs[compatible-mypy] | lates | typehints |
 | djlint | lates | Линтер для Django-шаблонов |
+
+## [Запуск в Docker](/infra/infra.md)
 
 ## Автор
 
