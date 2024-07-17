@@ -37,6 +37,7 @@
 | django-debug-toolbar | latest | Оверлей для разработки. |
 | django-stubs[compatible-mypy] | lates | typehints |
 | djlint | lates | Линтер для Django-шаблонов |
+| selenium | latest | Функциональные тесты |
 
 ## [Запуск в Docker](/infra/infra.md)
 
