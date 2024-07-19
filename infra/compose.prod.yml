@@ -10,6 +10,8 @@ services:
       context: ../
       dockerfile: Dockerfile
       target: prod
+      args:
+        - PROD=True
     image: web-prod
     command: /start_prod
     volumes:

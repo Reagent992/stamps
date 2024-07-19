@@ -10,6 +10,8 @@ services:
       context: ../
       dockerfile: Dockerfile
       target: python-base
+      args:
+        - PROD=False
     image: web-dev
     command: /start_dev
     volumes:

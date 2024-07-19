@@ -3,9 +3,10 @@
 FROM python:3.10.14-slim-bookworm AS python-base
 
 # Needed for fixing permissions of files created by Docker:
-ARG PROD=True \
+ARG PROD \
   UID=1000 \
   GID=1000
+
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
@@ -48,7 +49,7 @@ RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
   # Install deps:
   && poetry run pip install -U pip \
   && poetry install \
-  $(if [ "$PROD" = True ]; then echo '--only main'; fi) \
+  $(if [ "$PROD" = 'True' ]; then echo '--only main'; fi) \
   --no-interaction --no-ansi --sync
 
 COPY /infra/django/entrypoint /entrypoint
