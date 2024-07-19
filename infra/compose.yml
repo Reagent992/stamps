@@ -1,6 +1,6 @@
 # Base file for multiple compose files.
 # for dev: "compose up" will auto-use compose.override.yml also
-# for production: "docker compose -f compose.yml -f compose.production.yml up"
+# for production: "docker compose -f compose.yml -f compose.prod.yml up"
 # i.e. ignore compose.override.yml in production.
 
 services:

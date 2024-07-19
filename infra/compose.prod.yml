@@ -1,6 +1,6 @@
 # It's a part of the base compose file.
 # It adds and overrides some settings of the base file to make it work for production.
-# "docker compose -f compose.yml -f compose.production.yml up".
+# "docker compose -f compose.yml -f compose.prod.yml up".
 name: stamps-prod
 
 services:
