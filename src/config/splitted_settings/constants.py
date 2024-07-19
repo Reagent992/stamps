@@ -1,4 +1,6 @@
-from config import BASE_DIR
+from pathlib import Path
+
+BASE_DIR = BASE_DIR = Path(__file__).resolve().parent.parent
 
 PAGINATION_AMOUNT = 4
 BREADCRUMBS_HOME_LABEL = "Главная страница"

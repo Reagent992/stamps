@@ -1,7 +1,9 @@
 import sys
+from pathlib import Path
 
-from config import BASE_DIR
 from config.settings import env
+
+BASE_DIR = BASE_DIR = Path(__file__).resolve().parent.parent
 
 USE_POSTGRESQL = env.bool("USE_POSTGRESQL", default=False)
 

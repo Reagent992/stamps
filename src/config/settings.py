@@ -8,7 +8,13 @@ env = Env()
 env.read_env()
 # Most settings moved to splitted_settings folder.
 include(
-    "splitted_settings/*"
+    "splitted_settings/celery.py",
+    "splitted_settings/ckeditor.py",
+    "splitted_settings/constants.py",
+    "splitted_settings/db.py",
+    "splitted_settings/email.py",
+    "splitted_settings/logging.py",
+    "splitted_settings/sentry.py",
 )
 BASE_DIR = Path(__file__).resolve().parent.parent
 
