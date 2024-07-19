@@ -28,6 +28,7 @@
 | django-dirtyfields | latest | Отслеживание изменений в объекте модели, до сохранения в БД|
 | gunicorn | latest | wsgi-сервер |
 | [django-split-settings](https://github.com/wemake-services/django-split-settings) | latest | Позволяет разделять настройки на несколько файлов |
+| sentry | latest | Отслеживание ошибок |
 
 ### dev зависимости
 | Библиотека | Версия | Описание |
