@@ -9,3 +9,5 @@ CELERY_RESULT_BACKEND = env.str(
     default="rpc://guest:guest@localhost:5672//",
 )
 CELERY_TIMEZONE = "Europe/Moscow"
+
+TASK_BEGIN_DELAY = 1

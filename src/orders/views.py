@@ -95,7 +95,10 @@ class CreateStampOrderView(
                     order_form.cleaned_data,
                     stamp_text_form.cleaned_data,
                 )
-            send_order_email.delay(order_id=order.id, recipient=order.email)
+            send_order_email.delay(
+                (order.id, order.email),
+                countdown=settings.TASK_BEGIN_DELAY,
+            )
             return redirect("orders:order_success")
 
         return render(

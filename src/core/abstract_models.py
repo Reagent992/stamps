@@ -1,6 +1,7 @@
 import logging
 
 from dirtyfields import DirtyFieldsMixin
+from django.conf import settings
 from django.db import models
 from slugify import slugify
 
@@ -147,10 +148,13 @@ class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
 
     def send_celery_task(self) -> None:
         logger.info("Sending new image to edit")
-        paste_watermark_and_resize_image.delay(
-            self.__class__.__name__,
-            self.id,
-            self._meta.app_label,
-            self.image_changed,
-            self.image.name,
+        paste_watermark_and_resize_image.apply_async(
+            (
+                self.__class__.__name__,
+                self.id,
+                self._meta.app_label,
+                self.image_changed,
+                self.image.name,
+            ),
+            countdown=settings.TASK_BEGIN_DELAY,
         )

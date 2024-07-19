@@ -133,7 +133,7 @@ class TestCaseOrder(TestCase):
         )
         self.assertEqual(Order.objects.count(), orders_count + 1)
         send_order_email.assert_called_once_with(
-            order_id=Order.objects.last().id,
-            recipient=Order.objects.last().email,
+            (Order.objects.last().id, Order.objects.last().email),
+            countdown=settings.TASK_BEGIN_DELAY,
         )
         self.assertRedirects(response, reverse("orders:order_success"))
