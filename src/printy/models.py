@@ -7,8 +7,6 @@ from core.abstract_models import AbstractGroupModel, AbstractItemModel
 class PrintyGroup(AbstractGroupModel):
     """Группы оснасток для печатей."""
 
-    pic_upload_place = "printy_group_pics/"
-
     class Meta:
         ordering = ("-updated",)
         verbose_name = "Группа оснасток"
@@ -27,8 +25,6 @@ class PrintyGroup(AbstractGroupModel):
 
 class Printy(AbstractItemModel):
     """Оснастка."""
-
-    pic_upload_place = "printy_pics/"
 
     group = models.ForeignKey(
         to=PrintyGroup,

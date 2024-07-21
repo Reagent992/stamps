@@ -12,8 +12,6 @@ User = get_user_model()
 class StampGroup(AbstractGroupModel):
     """Группы печатей."""
 
-    pic_upload_place = "group_pics/"
-
     class Meta:
         ordering = ("-updated",)
         verbose_name = "Группа печатей"
@@ -39,7 +37,6 @@ class Stamp(AbstractItemModel):
         verbose_name="Набор полей",
         related_name="stamps",
     )
-    pic_upload_place = "stamps/"
     group = models.ForeignKey(
         to=StampGroup,
         on_delete=models.RESTRICT,

@@ -6,6 +6,7 @@ from django.db import models
 from slugify import slugify
 
 from core.tasks import paste_watermark_and_resize_image
+from core.utils import get_renamed_image_path
 
 logger = logging.getLogger("__name__")
 
@@ -35,7 +36,6 @@ class AbstractTimeModel(models.Model):
 class AbstractGroupModel(DirtyFieldsMixin, AbstractTimeModel):
     """Абстрактная модель группы."""
 
-    pic_upload_place = ""
     title = models.CharField(
         verbose_name="Заголовок",
         unique=True,
@@ -49,7 +49,7 @@ class AbstractGroupModel(DirtyFieldsMixin, AbstractTimeModel):
     )
     image = models.ImageField(
         verbose_name="Картинка",
-        upload_to=pic_upload_place,
+        upload_to=get_renamed_image_path,
         help_text="Загрузить картинку",
     )
     published = models.BooleanField(
@@ -82,7 +82,6 @@ class AbstractGroupModel(DirtyFieldsMixin, AbstractTimeModel):
 class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
     """Абстрактная модель предмета."""
 
-    pic_upload_place = ""  # FIXME: не переопределяется в моделях-наследниках.
     title = models.CharField(
         verbose_name="Заголовок",
         max_length=200,
@@ -102,7 +101,7 @@ class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
     )
     image = models.ImageField(
         verbose_name="Картинка",
-        upload_to=pic_upload_place,
+        upload_to=get_renamed_image_path,
     )
     objects = models.Manager()
     filter_published = PublishedManager()
