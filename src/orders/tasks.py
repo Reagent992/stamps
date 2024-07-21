@@ -1,13 +1,12 @@
-import logging
-
 from celery import shared_task
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from orders.models import Order
 
-logger = logging.getLogger("__name__")
+logger = get_task_logger(__name__)
 
 
 def get_order(order_id: int) -> Order:
@@ -50,6 +49,6 @@ def send_order_email(order_id: int, recipient: str = "") -> None:
                 fail_silently=False,
             )
     except Exception as e:
-        logger.error("Error occurred while sending email:", e)
+        logger.error("Error occurred while sending email:", exc_info=e)
     else:
         logger.info("Email sent successfully")

@@ -5,9 +5,8 @@ set -o pipefail
 set -o nounset
 
 cd src
-python manage.py makemigrations
 python manage.py migrate
 output=$(python manage.py createsuperuser --noinput 2>&1) || true
 echo "$output"
-celery -A config worker -l INFO &
+celery -A config worker -l INFO -f celery.logs &
 exec python manage.py runserver 0.0.0.0:8000

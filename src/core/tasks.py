@@ -1,9 +1,9 @@
-import logging
 from io import BytesIO
 from typing import NamedTuple
 from uuid import uuid4
 
 from celery import shared_task
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -12,7 +12,7 @@ from PIL.Image import Image as ImageType
 
 from core.utils import get_object_by_model_id_app
 
-logger = logging.getLogger("__name__")
+logger = get_task_logger(__name__)
 
 
 class Position(NamedTuple):
@@ -43,7 +43,7 @@ def open_image(path_to_image: str) -> ImageType:
         image = Image.open(path_to_image)
     except FileNotFoundError as e:
         msg = f"FileNotFoundError occurred while opening file: {e}"
-        logger.error(msg)
+        logger.error(msg, exc_info=e)
         raise FileNotFoundError(msg)
     image = image.convert("RGBA")
     return image
@@ -98,14 +98,7 @@ def paste_watermark_and_resize_image(
     instance = get_object_by_model_id_app(model_name, object_id, app_label)
     logger.info(f"Start of celery task for {instance}")
     absolute_path_to_image = instance.image.path
-    try:
-        image = open_image(absolute_path_to_image)
-    except FileNotFoundError as error:
-        logger.error(
-            f"Celery task can't find file {absolute_path_to_image}",
-            stack_info=error,
-        )
-        raise FileNotFoundError
+    image = open_image(absolute_path_to_image)
     image = image.resize(IMAGE_SIZE_IN_PIXELS, Image.Resampling.LANCZOS)
     if USE_WATERMARK_FILE:
         image = paste_watermark_file(image, WATERMARK_PATH)

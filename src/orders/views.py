@@ -12,7 +12,7 @@ from orders.forms import OrderForm
 from orders.models import Order
 from orders.tasks import send_order_email
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class CreateStampOrderView(

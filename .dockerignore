@@ -83,3 +83,4 @@ release.config.js
 
 .env
 db.sqlite3
+docs

@@ -8,7 +8,7 @@ from slugify import slugify
 from core.tasks import paste_watermark_and_resize_image
 from core.utils import get_renamed_image_path
 
-logger = logging.getLogger("__name__")
+logger = logging.getLogger(__name__)
 
 
 class PublishedManager(models.Manager):
@@ -119,7 +119,7 @@ class AbstractItemModel(DirtyFieldsMixin, AbstractTimeModel):
     ) -> None:
         self.slug = slugify(self.title)
         created = self.pk is None
-        logger.debug(
+        logger.info(
             (
                 f"Saving new {self.__class__.__name__} object, "
                 f"created: {created}, "

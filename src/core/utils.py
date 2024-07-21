@@ -5,7 +5,7 @@ from uuid import uuid4
 from django.apps import apps
 from django.db.models import Model
 
-logger = logging.getLogger("logger")
+logger = logging.getLogger(__name__)
 
 
 def get_object_by_model_id_app(

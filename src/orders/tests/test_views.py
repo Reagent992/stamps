@@ -17,7 +17,7 @@ from stamp_fields.models import FieldsTypes, GroupOfFieldsTypes
 User = get_user_model()
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
-logger = logging.getLogger("__name__")
+logger = logging.getLogger(__name__)
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
