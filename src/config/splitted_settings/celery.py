@@ -1,4 +1,7 @@
-from config.settings import env
+from environs import Env
+
+env = Env()
+env.read_env()
 
 CELERY_BROKER_URL = env.str(
     "CELERY_BROKER_URL",

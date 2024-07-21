@@ -1,8 +1,9 @@
-from django.conf import settings
+from environs import Env
 
-from config.settings import env
+env = Env()
+env.read_env()
 
-DEBUG = settings.DEBUG
+DEBUG = env.bool("DEBUG", default=False)
 
 EMAIL_HOST = env.str("EMAIL_HOST", default="smtp.yandex.ru")
 EMAIL_PORT = env.str("EMAIL_PORT", default="465")

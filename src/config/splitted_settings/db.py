@@ -1,7 +1,10 @@
 import sys
 from pathlib import Path
 
-from config.settings import env
+from environs import Env
+
+env = Env()
+env.read_env()
 
 BASE_DIR = BASE_DIR = Path(__file__).resolve().parent.parent
 
