@@ -45,6 +45,7 @@ pytest = "^8.2.1"
 redgreenunittest = "^0.1.1"
 djlint = "^1.34.1"
 selenium = "^4.22.0"
+factory-boy = "^3.3.0"
 
 [tool.poetry.scripts]
 dr = "scripts.poetry_scripts:dr"
