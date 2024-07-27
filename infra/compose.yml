@@ -4,18 +4,6 @@
 # i.e. ignore compose.override.yml in production.
 
 services:
-  web:
-    build:
-      context: ../
-      dockerfile: ../Dockerfile
-    restart: unless-stopped
-    ports:
-      - 8000:8000
-    env_file: ../.env
-    depends_on:
-      - rabbitmq
-      - db
-
   db:
     image: postgres:16.3-alpine3.19
     restart: unless-stopped
@@ -23,7 +11,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${DB_PORT}:5432
 
   rabbitmq:
     image: rabbitmq:3.13.2-alpine

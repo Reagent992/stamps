@@ -14,12 +14,16 @@ services:
         - PROD=True
     image: web-prod
     command: /start_prod
+    restart: unless-stopped
+    env_file: ../.env
+    depends_on:
+      - rabbitmq
+      - db
     volumes:
-      - django-static:/app/src/static  # serving django's statics
-      - django-media:/app/src/media  # serving django's media
+      - django-static:/app/src/static # serving django's statics
+      - django-media:/app/src/media # serving django's media
     environment:
       - DEBUG=False
-      - USE_POSTGRESQL=True
       - PROD=True
     healthcheck:
       test: curl --fail http://localhost:8000/ || exit 1
@@ -34,11 +38,11 @@ services:
     restart: unless-stopped
     env_file: ../.env
     volumes:
-      - ./caddy/Caddyfile:/etc/caddy/Caddyfile  # configuration
-      - caddy-config:/config  # configuration autosaves
-      - caddy-data:/data  # saving certificates
-      - django-static:/app/src/static  # serving django's statics
-      - django-media:/app/src/media  # serving django's media
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile # configuration
+      - caddy-config:/config # configuration autosaves
+      - caddy-data:/data # saving certificates
+      - django-static:/app/src/static # serving django's statics
+      - django-media:/app/src/media # serving django's media
     ports:
       - "80:80"
       - "443:443"
