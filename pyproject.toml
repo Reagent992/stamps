@@ -56,6 +56,9 @@ flower = "scripts.poetry_scripts:flower"
 dt = "scripts.poetry_scripts:dt"
 rc = "scripts.poetry_scripts:rc"
 mm = "scripts.poetry_scripts:mm"
+rm = "scripts.poetry_scripts:rm"
+dwc = "scripts.poetry_scripts:dwc"
+
 
 [build-system]
 requires = ["poetry-core"]

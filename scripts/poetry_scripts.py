@@ -26,6 +26,12 @@ def mm():
     subprocess.run(cmd, cwd="src")
 
 
+def rm():
+    """Запуск Django MakeMigrations."""
+    cmd = ["python", "manage.py", "migrate"]
+    subprocess.run(cmd, cwd="src")
+
+
 def cw():
     """Запуск Celery worker."""
     cmd = [
@@ -65,8 +71,8 @@ def flower():
     subprocess.run(cmd, cwd="src")
 
 
-def rc():
-    """Run rabbitmq, flower and celery worker at the same terminal window."""
+def dwc():
+    """Запуск Django с celery worker в одном thread."""
 
     def run_command(cmd):
         subprocess.run(cmd, cwd="src")
@@ -74,22 +80,7 @@ def rc():
     with ThreadPoolExecutor() as executor:
         executor.submit(
             run_command,
-            [
-                "docker",
-                "run",
-                "-it",
-                "--rm",
-                "--name",
-                "rabbitmq",
-                "-p",
-                "5672:5672",
-                "-p",
-                "15672:15672",
-                "rabbitmq:management",
-            ],
-        )
-        executor.submit(
-            run_command, ["python", "-m", "celery", "-A", "config", "flower"]
+            ["python", "manage.py", "runserver"],
         )
         executor.submit(
             run_command,

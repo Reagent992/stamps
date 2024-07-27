@@ -1,10 +1,19 @@
-# В разработке
-
-## Интернет магазин изготовления печатей и штампов на заказ
+# Проект интернет-магазина по изготовлению печатей и штампов на заказ
+- [Проект интернет-магазина по изготовлению печатей и штампов на заказ](#проект-интернет-магазина-по-изготовлению-печатей-и-штампов-на-заказ)
+  - [Описание](#описание)
+  - [Зависимости](#зависимости)
+    - [Основные зависимости](#основные-зависимости)
+    - [dev зависимости](#dev-зависимости)
+  - [Запуск проекта](#запуск-проекта)
+    - [dev](#dev)
+    - [prod](#prod)
+  - [Автор](#автор)
+  - [Модель БД](#модель-бд)
+## Описание
 
 ![Картинка-Пример](images/img.png)
-
-## Используется
+- Проект находится в разработке.
+## Зависимости
 
 ### Основные зависимости
 | Библиотека                                                                        | Версия | Описание                                                    |
@@ -41,13 +50,43 @@
 | selenium                                                 | latest | Функциональные тесты                                                    |
 | [Factory Boy](https://github.com/FactoryBoy/factory_boy) | latest | Generate fake, test data                                                |
 
-## [Запуск в Docker](/infra/infra.md)
+## Запуск проекта
+- Везде используются сокращения **dev** и **prod**.
+- Используется стратегия "Merge Compose files". т.е. есть базовый `compose.yml` и он расширяется файлом `compose.override.yml` для **dev** и файлом `compose.prod.yml` для **prod**.
+- Переменные окружения завязанные на dev/prod уже прописаны.
 
+### dev
+1. Запуск: `docker compose up` - запустится сразу `compose.yml` и `compose.override.yml` который расширяет его до **dev** версии.
+2. Запуск `djnago runserver` и `celery worker`.\
+Для этого есть короткие команды создаваемые `poetry`:
+     - `dwc` (django with celery)
+     - `dr`(django run)
+     - `cw`(celery worker)
+3. Доступны management команды для создания фикстур:
+   -  `python manage.py fixture` - Для создания фикстур.
+   -  `python manage.py delete` - Для отчистки таблиц в которые были добавлены фикстуры.
+- Создается superuser с **login**: admin **password**: admin\
+  login и password берутся из environment variables в `compose.override.yml`, там их можно заменить.
+
+
+### prod
+Запуск: `docker compose -f compose.yml -f compose.prod.yml up` - базовый файл и расширяющий его. __Последовательность важна!__
+- **Celery** работает в одном контейнере с **Django**, т.к. так проще, выносить ее в отдельный контейнер сейчас нету необходимости.
 ## Автор
 
 [Sadykov Miron](https://github.com/Reagent992)
 
 
 ## Модель БД
-![Модель БД](images/models.png)
-Так же доступен оригинальный файл в excalidraw-формате.
+
+<details>
+  <summary>Модель БД от руки</summary>
+  <img src="images/models.png" alt="Модель БД от руки">
+  Так же доступен оригинальный файл в excalidraw-формате.
+
+</details>
+<details>
+  <summary>Модель БД от pg_admin</summary>
+  <img src="images/db_by_pg_admin.png" alt="Модель БД от pg_admin">
+
+</details>
