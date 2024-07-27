@@ -108,7 +108,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-TEST_RUNNER = "redgreenunittest.django.runner.RedGreenDiscoverRunner"
+TEST_RUNNER = "django_rich.test.RichRunner"
 
 STATICFILES_DIRS = ((BASE_DIR / "static"),)
 STATIC_URL = "/static/"

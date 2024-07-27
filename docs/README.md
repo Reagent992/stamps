@@ -49,6 +49,7 @@
 | djlint                                                   | latest | Линтер для Django-шаблонов                                              |
 | selenium                                                 | latest | Функциональные тесты                                                    |
 | [Factory Boy](https://github.com/FactoryBoy/factory_boy) | latest | Generate fake, test data                                                |
+| [django-rich](https://github.com/adamchainz/django-rich) | latest | Colourized tests outputs                                                |
 
 ## Запуск проекта
 - Везде используются сокращения **dev** и **prod**.
