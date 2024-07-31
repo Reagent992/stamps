@@ -1,9 +1,10 @@
-from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from requests import post
 
+from config.celery import app
 from orders.models import Order
 
 logger = get_task_logger(__name__)
@@ -17,7 +18,7 @@ def get_order(order_id: int) -> Order:
         raise Order.DoesNotExist
 
 
-@shared_task
+@app.task
 def send_order_email(order_id: int, recipient: str = "") -> None:
     """Send emails about new order.
     To admin and recipient."""
@@ -52,3 +53,20 @@ def send_order_email(order_id: int, recipient: str = "") -> None:
         logger.error("Error occurred while sending email:", exc_info=e)
     else:
         logger.info("Email sent successfully")
+
+
+# https://core.telegram.org/bots/api#sendmessage
+@app.task
+def send_telegram_message(chat_id: str, text: str) -> None:
+    url = f"https://api.telegram.org/bot{settings.TG_BOT_TOKEN}/sendMessage"
+    response = post(
+        url,
+        data={
+            "chat_id": chat_id,
+            "text": text,
+            "parse_mode": "markdown",
+            "disable_web_page_preview": True,
+        },
+    )
+    print(response.text)
+    assert response.status_code == 200, "TG should return 200"

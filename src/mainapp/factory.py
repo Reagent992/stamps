@@ -54,5 +54,7 @@ class StampFactory(factory.django.DjangoModelFactory):
     def printy(self, create, extracted, **kwargs):
         if not create:
             return
+        if extracted:
+            self.printy.set(extracted)
         if not extracted:
             self.printy.set(Printy.objects.order_by("?")[:PRINTY_PER_STAMP])

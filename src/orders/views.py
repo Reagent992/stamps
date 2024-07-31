@@ -1,16 +1,18 @@
 import logging
 
 from django.conf import settings
+from django.db import transaction
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.functional import cached_property
 from django.views.generic import TemplateView
 
 from core.mixins import ItemsFromSessionMixin, TitleBreadcrumbsMixin
+from core.utils import get_tg_msg
 from mainapp.forms import StampTextForm
 from orders.forms import OrderForm
 from orders.models import Order
-from orders.tasks import send_order_email
+from orders.tasks import send_order_email, send_telegram_message
 
 logger = logging.getLogger(__name__)
 
@@ -77,28 +79,30 @@ class CreateStampOrderView(
         order_form = OrderForm(request.POST or None)
 
         if stamp_text_form.is_valid() and order_form.is_valid():
-            order = Order.objects.create(
-                **order_form.cleaned_data,
-                stamp_text=stamp_text_form.cleaned_data,
-                printy=self.selected_printy,
-                stamp=self.selected_stamp,
-            )
-            if settings.DEBUG:
-                logger.info(
-                    (
-                        "New Order was created. id=%d, stamp=%s, printy=%s, "
-                        "order_info=%s, stamp_text=%s"
-                    ),
-                    order.id,
-                    self.selected_stamp,
-                    self.selected_printy,
-                    order_form.cleaned_data,
-                    stamp_text_form.cleaned_data,
+            with transaction.atomic():
+                order = Order.objects.create(
+                    **order_form.cleaned_data,
+                    stamp_text=stamp_text_form.cleaned_data,
+                    printy=self.selected_printy,
+                    stamp=self.selected_stamp,
                 )
-            send_order_email.delay(
-                (order.id, order.email),
-                countdown=settings.TASK_BEGIN_DELAY,
-            )
+                if settings.DEBUG:
+                    logger.info(
+                        (
+                            "New Order was created. id=%d, stamp=%s, "
+                            "printy=%s, order_info=%s, stamp_text=%s"
+                        ),
+                        order.id,
+                        self.selected_stamp,
+                        self.selected_printy,
+                        order_form.cleaned_data,
+                        stamp_text_form.cleaned_data,
+                    )
+                send_order_email.delay_on_commit(order.id, order.email)
+                tg_msg = get_tg_msg(order)
+                send_telegram_message.delay_on_commit(
+                    settings.TG_ADMIN_USER_ID, tg_msg
+                )
             return redirect("orders:order_success")
 
         return render(

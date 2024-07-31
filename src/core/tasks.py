@@ -2,7 +2,6 @@ from io import BytesIO
 from typing import NamedTuple
 from uuid import uuid4
 
-from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -10,6 +9,7 @@ from django.core.files.storage import default_storage
 from PIL import Image, ImageDraw, ImageFont
 from PIL.Image import Image as ImageType
 
+from config.celery import app
 from core.utils import get_object_by_model_id_app
 
 logger = get_task_logger(__name__)
@@ -85,7 +85,7 @@ def paste_text_watermark(
     return Image.alpha_composite(image, blank_image)
 
 
-@shared_task
+@app.task
 def paste_watermark_and_resize_image(
     model_name: str,
     object_id: str | int,

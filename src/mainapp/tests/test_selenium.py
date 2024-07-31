@@ -45,18 +45,27 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
         # Группа оснасток.
         cls.printygroup1 = PrintyGroupFactory.create()
         # Оснастка.
-        cls.printy1 = PrintyFactory.create()
+        cls.printy1 = PrintyFactory.create(group=cls.printygroup1)
         # Поля для печати.
         cls.stamp_field1 = FieldsTypesFactory.create()
         cls.stamp_field2 = FieldsTypesFactory.create()
         # Группа полей печати.
-        cls.stamp_field_fields = GroupOfFieldsTypesFactory.create()
+        cls.stamp_field_fields = GroupOfFieldsTypesFactory.create(
+            fields=[cls.stamp_field1, cls.stamp_field2]
+        )
         # Группа штампов.
         cls.stamp_group1 = StampGroupFactory.create()
         # Штамп.
-        cls.stamp1 = StampFactory.create()
+        cls.stamp1 = StampFactory.create(
+            group=cls.stamp_group1,
+            form_fields=cls.stamp_field_fields,
+            printy=[cls.printy1],
+        )
         # Objects for pagination.
-        PrintyFactory.create_batch(cls.AMOUNT_OF_GROUPS - 1)
+        [
+            PrintyFactory.create(group=cls.printygroup1)
+            for _ in range(cls.AMOUNT_OF_GROUPS - 1)
+        ]
         StampGroupFactory.create_batch(cls.AMOUNT_OF_GROUPS - 1)
         # ----------------------------------------------------------------Order
         cls.field1_fill = "field1_fill"
@@ -99,12 +108,15 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
             return element.find_element(By.CLASS_NAME, "btn").click()
         return self.find_element(By.CLASS_NAME, "btn").click()
 
-    @patch("orders.tasks.send_order_email.delay")
-    def test_create_order(self, send_order_email: MagicMock) -> None:
+    @patch("orders.tasks.send_telegram_message.delay_on_commit")
+    @patch("orders.tasks.send_order_email.delay_on_commit")
+    def test_create_order(
+        self, send_order_email: MagicMock, send_telegram_message: MagicMock
+    ) -> None:
         """Goes through the order process: choose stamp,
         printy, fill in information, check if email was sent."""
         # Select stamp group.
-        self.utils.scroll_to_bottom_with_sleep()
+        self.utils.scroll_to_bottom_with_sleep(0.5)
         stamp_group_cards = self.get_cards()
         self.assertEqual(len(stamp_group_cards), self.AMOUNT_OF_GROUPS)
         stamp_group = stamp_group_cards[-1]
@@ -113,7 +125,7 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
             By.CLASS_NAME, "fw-bolder"
         )
         self.assertEqual(stamp_group_title.text, self.stamp_group1.title)
-        self.click_button(stamp_group)
+        self.click_button(stamp_group)  # FIXME: Срабатывает через раз.
 
         # Select stamp.
         self.utils.scroll_to_bottom_with_sleep()
@@ -144,6 +156,7 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
         self.find_element(By.ID, "id_comment").send_keys(self.comment)
         self.find_element(By.CLASS_NAME, "btn").submit()
         send_order_email.assert_called_once()
+        send_telegram_message.assert_called_once()
 
         # Check order.
         order = Order.objects.first()

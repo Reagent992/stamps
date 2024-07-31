@@ -40,6 +40,7 @@
 | sentry                                                                            | Отслеживание ошибок                                         |
 | [HTMX](https://htmx.org/)                                                         | Интерактивные элементы(пагинация по скролу вниз.)           |
 | [django-htmx](https://github.com/adamchainz/django-htmx)                          | Middleware для работы с HTMX.                               |
+| requests                                                                          | Для отправки уведомлений в Телеграм                         |
 
 ### dev зависимости
 | Библиотека                                               | Описание                                                                |

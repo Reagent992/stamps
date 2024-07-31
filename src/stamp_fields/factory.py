@@ -28,6 +28,8 @@ class GroupOfFieldsTypesFactory(factory.django.DjangoModelFactory):
     def fields(self, create, extracted, **kwargs) -> None:
         if not create:
             return
+        if extracted:
+            self.fields.set(extracted)
         if not extracted:
             self.fields.set(
                 FieldsTypes.objects.order_by("?")[:FIELDS_PER_GROUP]

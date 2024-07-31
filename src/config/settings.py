@@ -24,6 +24,9 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 CSRF_TRUSTED_ORIGINS = env.list(
     "CSRF_TRUSTED_ORIGINS", default=["http://localhost", "http://127.0.0.1"]
 )
+# ---------------------------------------------------------------------TELEGRAM
+TG_BOT_TOKEN = env.str("TG_BOT_TOKEN", default="unsafe-bot-token")
+TG_ADMIN_USER_ID = env.str("TG_ADMIN_USER_ID", default="0")
 # -----------------------------------------------------------------------------
 INSTALLED_APPS = [
     "django.contrib.admin",
