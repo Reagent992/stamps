@@ -13,43 +13,45 @@
 
 ![Картинка-Пример](images/img.png)
 - Проект находится в разработке.
-## Зависимости
 
+## Зависимости
 ### Основные зависимости
-| Библиотека                                                                        | Версия | Описание                                                    |
-| --------------------------------------------------------------------------------- | ------ | ----------------------------------------------------------- |
-| python                                                                            | 3.10   | Язык программирования Python версии                         |
-| django                                                                            | 4      | Фронт на Джанго-шаблонах                                    |
-| celery                                                                            | latest | Очередь задач                                               |
-| rabbitmq                                                                          | latest | Брокер для celery                                           |
-| flower                                                                            | latest | Трекер для celery задач                                     |
-| django-view-breadcrumbs                                                           | latest | "Хлебные крошки", breadcrumbs для отображения "пути".       |
-| django-ckeditor                                                                   | 5      | Редактор теста                                              |
-| python-slugify                                                                    | latest | Транслитерация текста                                       |
-| Poetry                                                                            | latest | Пакетный менеджер                                           |
-| Environs[django]                                                                  | latest | Для хранения секретов в файле `.env`                        |
-| django-json-widget                                                                | latest | Для удобного просмотра и редактирования JSONField           |
-| django-crispy-forms(c crispy_bootstrap5)                                          | latest | Для Генерации форм                                          |
-| bootstrap                                                                         | 5      | CSS                                                         |
-| pillow                                                                            | latest | images                                                      |
-| sorl-thumbnail                                                                    | latest | images thumbnails                                           |
-| [django-ckeditor-5](https://github.com/hvlads/django-ckeditor-5)                  | 5      | Редактор текста для админки                                 |
-| django-dirtyfields                                                                | latest | Отслеживание изменений в объекте модели, до сохранения в БД |
-| gunicorn                                                                          | latest | wsgi-сервер                                                 |
-| [django-split-settings](https://github.com/wemake-services/django-split-settings) | latest | Позволяет разделять настройки на несколько файлов           |
-| sentry                                                                            | latest | Отслеживание ошибок                                         |
+| Библиотека                                                                        | Описание                                                    |
+| --------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| python 3.10                                                                       | Язык программирования Python версии                         |
+| django 4                                                                          | Фронт на Джанго-шаблонах                                    |
+| celery                                                                            | Очередь задач                                               |
+| rabbitmq                                                                          | Брокер для celery                                           |
+| flower                                                                            | Трекер для celery задач                                     |
+| django-view-breadcrumbs                                                           | "Хлебные крошки", breadcrumbs для отображения "пути".       |
+| django-ckeditor 5                                                                 | Редактор теста                                              |
+| python-slugify                                                                    | Транслитерация текста                                       |
+| Poetry                                                                            | Пакетный менеджер                                           |
+| Environs[django]                                                                  | Для хранения секретов в файле `.env`                        |
+| django-json-widget                                                                | Для удобного просмотра и редактирования JSONField           |
+| django-crispy-forms(c crispy_bootstrap5)                                          | Для Генерации форм                                          |
+| bootstrap 5                                                                       | CSS                                                         |
+| pillow                                                                            | images                                                      |
+| sorl-thumbnail                                                                    | images thumbnails                                           |
+| [django-ckeditor-5](https://github.com/hvlads/django-ckeditor-5)                  | Редактор текста для админки                                 |
+| django-dirtyfields                                                                | Отслеживание изменений в объекте модели, до сохранения в БД |
+| gunicorn                                                                          | wsgi-сервер                                                 |
+| [django-split-settings](https://github.com/wemake-services/django-split-settings) | Позволяет разделять настройки на несколько файлов           |
+| sentry                                                                            | Отслеживание ошибок                                         |
+| [HTMX](https://htmx.org/)                                                         | Интерактивные элементы(пагинация по скролу вниз.)           |
+| [django-htmx](https://github.com/adamchainz/django-htmx)                          | Middleware для работы с HTMX.                               |
 
 ### dev зависимости
-| Библиотека                                               | Версия | Описание                                                                |
-| -------------------------------------------------------- | ------ | ----------------------------------------------------------------------- |
-| pre-commit                                               | latest | Автоматический запуск black, isort, flake8 при использование git commit |
-| black, isort, flake8                                     | latest | Code Style                                                              |
-| django-debug-toolbar                                     | latest | Оверлей для разработки.                                                 |
-| django-stubs[compatible-mypy]                            | latest | typehints                                                               |
-| djlint                                                   | latest | Линтер для Django-шаблонов                                              |
-| selenium                                                 | latest | Функциональные тесты                                                    |
-| [Factory Boy](https://github.com/FactoryBoy/factory_boy) | latest | Generate fake, test data                                                |
-| [django-rich](https://github.com/adamchainz/django-rich) | latest | Colourized tests outputs                                                |
+| Библиотека                                               | Описание                                                                |
+| -------------------------------------------------------- | ----------------------------------------------------------------------- |
+| pre-commit                                               | Автоматический запуск black, isort, flake8 при использование git commit |
+| black, isort, flake8                                     | Code Style                                                              |
+| django-debug-toolbar                                     | Оверлей для разработки.                                                 |
+| django-stubs[compatible-mypy]                            | typehints                                                               |
+| djlint                                                   | Линтер для Django-шаблонов                                              |
+| selenium                                                 | Функциональные тесты                                                    |
+| [Factory Boy](https://github.com/FactoryBoy/factory_boy) | Generate fake, test data                                                |
+| [django-rich](https://github.com/adamchainz/django-rich) | Colourized tests outputs                                                |
 
 ## Запуск проекта
 - Везде используются сокращения **dev** и **prod**.

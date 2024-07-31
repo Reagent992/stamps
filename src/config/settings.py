@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django_json_widget",
     "crispy_forms",
     "crispy_bootstrap5",
+    "django_htmx",
     # ---------------------------------Apps------------------------------------
     "mainapp.apps.MainappConfig",
     "printy.apps.PrintyConfig",
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
