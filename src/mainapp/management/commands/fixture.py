@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from mainapp.factory import StampFactory, StampGroupFactory
 from printy.factory import PrintyFactory, PrintyGroupFactory
-from stamp_fields.factory import GroupOfFieldsTypesFactory
+from stamp_fields.factory import FieldsTypesFactory, GroupOfFieldsTypesFactory
 
 
 class Command(BaseCommand):
@@ -14,7 +14,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         amount = 20 * options.get("multiplier", 1)
         try:
-            GroupOfFieldsTypesFactory.create_batch(amount)
+            FieldsTypesFactory.create_batch(amount)
+            GroupOfFieldsTypesFactory.create_batch(amount // 4)
             PrintyGroupFactory.create_batch(amount // 4)
             PrintyFactory.create_batch(amount)
             StampGroupFactory.create_batch(amount // 4)

@@ -2,9 +2,10 @@ import factory
 
 from config.splitted_settings.constants import (
     FIXTURES_LANGUAGE,
-    IMAGE_COLOR,
+    GROUP_COLOR,
     IMAGE_FORMAT,
     IMAGE_WIDTH,
+    ITEM_COLOR,
     MAX_PRICE,
     MIX_PRICE,
     SENTENCE_LEN,
@@ -20,7 +21,7 @@ class PrintyGroupFactory(factory.django.DjangoModelFactory):
 
     title = factory.Faker("sentence", nb_words=SENTENCE_LEN, locale=LOCALE)
     image = factory.django.ImageField(
-        color=IMAGE_COLOR, width=IMAGE_WIDTH, image_format=IMAGE_FORMAT
+        color=GROUP_COLOR, width=IMAGE_WIDTH, image_format=IMAGE_FORMAT
     )
     published = True
 
@@ -34,7 +35,7 @@ class PrintyFactory(factory.django.DjangoModelFactory):
 
     title = factory.Faker("sentence", nb_words=SENTENCE_LEN, locale=LOCALE)
     image = factory.django.ImageField(
-        color=IMAGE_COLOR, width=IMAGE_WIDTH, image_format=IMAGE_FORMAT
+        color=ITEM_COLOR, width=IMAGE_WIDTH, image_format=IMAGE_FORMAT
     )
     description = factory.Faker("paragraph", locale=LOCALE)
     price = factory.Faker("random_int", min=MIX_PRICE, max=MAX_PRICE)

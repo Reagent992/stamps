@@ -29,5 +29,6 @@ class GroupOfFieldsTypesFactory(factory.django.DjangoModelFactory):
         if not create:
             return
         if not extracted:
-            extracted = FieldsTypesFactory.create_batch(FIELDS_PER_GROUP)
-        self.fields.add(*extracted)
+            self.fields.set(
+                FieldsTypes.objects.order_by("?")[:FIELDS_PER_GROUP]
+            )
