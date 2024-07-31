@@ -14,7 +14,7 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": "WARNING",
             "class": "logging.StreamHandler",
             "formatter": "simple",
         },

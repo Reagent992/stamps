@@ -2,7 +2,7 @@ from pathlib import Path
 
 BASE_DIR = BASE_DIR = Path(__file__).resolve().parent.parent
 
-PAGINATION_AMOUNT = 4
+PAGINATION_AMOUNT = 8
 BREADCRUMBS_HOME_LABEL = "Главная страница"
 USER_CHOICE_PRINTY_ID = "user_choice_printy_id"
 USER_CHOICE_STAMP_ID = "user_choice_stamp_id"
@@ -57,3 +57,5 @@ MAX_PRICE = 2000
 SENTENCE_LEN = 3
 PRINTY_PER_STAMP = 4
 FIELDS_PER_GROUP = 4
+GROUP_COLOR = "gray"
+ITEM_COLOR = "black"

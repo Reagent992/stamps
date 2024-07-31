@@ -1,0 +1,8 @@
+{% for item in object_list %}
+    {% include "mainapp/card.html" %}
+{% endfor %}
+{% if page_obj.has_next %}
+    <span hx-get="{{ url_name }}?page={{ page_obj.next_page_number }}"
+          hx-swap="beforebegin"
+          hx-trigger="revealed"></span>
+{% endif %}

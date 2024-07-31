@@ -24,7 +24,13 @@ class StampGroupView(TitleBreadcrumbsMixin, ListView):
             **super().get_context_data(**kwargs),
             "button_text": settings.ABOUT_GROUP,
             "IndexView": True,
+            "url_name": reverse("mainapp:index"),
         }
+
+    def get_template_names(self) -> list[str]:
+        if self.request.htmx:
+            return ["mainapp/_card.html"]
+        return super().get_template_names()
 
 
 class GroupedStampsView(TitleBreadcrumbsMixin, ListView):
@@ -44,11 +50,19 @@ class GroupedStampsView(TitleBreadcrumbsMixin, ListView):
         """Заголовок вкладки."""
         return self.stamp_group.title
 
+    def get_template_names(self) -> list[str]:
+        if self.request.htmx:
+            return ["mainapp/_card.html"]
+        return super().get_template_names()
+
     def get_context_data(self, *args, object_list=None, **kwargs):
         """Передаем название View в шаблон."""
         return {
             **super().get_context_data(**kwargs),
             "button_text": settings.ABOUT_STAMP,
+            "url_name": reverse(
+                "mainapp:stamps", kwargs={"group": self.stamp_group.slug}
+            ),
         }
 
     @cached_property

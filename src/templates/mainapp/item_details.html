@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <section class="py-5">
-        <div class="container px-4 px-lg-5 my-5">
+        <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 align-items-center">
                 <div class="col-md-6">
                     <img class="card-img-top mb-5 mb-md-0 img-fluid"
@@ -18,7 +18,7 @@
                     <p class="lead">{{ object.description }}</p>
                     {% if not turn_off_button and not disable_button %}
                         <div class="d-flex">
-                            {# Делаем POST на текущий url, в нем записываем в сессию выбрануй объект и делаем редирект дальше. #}
+                            {# Делаем POST на текущий url, в нем записываем в сессию выбраный объект и делаем редирект дальше. #}
                             <form method="post" action="{{ object.get_absolute_url }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="chosen_item_id" value="{{ object.pk }}">

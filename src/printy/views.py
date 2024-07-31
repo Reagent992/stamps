@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.functional import cached_property
 from django.views.generic import DetailView, ListView
 
@@ -40,7 +40,13 @@ class PrintyGroupsView(TitleBreadcrumbsMixin, ListView):
             "button_text": settings.ABOUT_GROUP,
             "param": self.stamp_id,
             "PrintyGroupsView": True,
+            "url_name": reverse("printy:printy_index"),
         }
+
+    def get_template_names(self) -> list[str]:
+        if self.request.htmx:
+            return ["mainapp/_card.html"]
+        return super().get_template_names()
 
 
 class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
@@ -73,11 +79,20 @@ class PrintyGroupContentView(TitleBreadcrumbsMixin, ListView):
         """Заголовок вкладки."""
         return self.printy_group.title
 
+    def get_template_names(self) -> list[str]:
+        if self.request.htmx:
+            return ["mainapp/_card.html"]
+        return super().get_template_names()
+
     def get_context_data(self, *, object_list=None, **kwargs):
         """Передаем название View в шаблон."""
         return {
             **super().get_context_data(**kwargs),
             "button_text": settings.ABOUT_PRINTY,
+            "url_name": reverse(
+                "printy:printys",
+                kwargs={"printy_group": self.printy_group.slug},
+            ),
         }
 
     @cached_property

@@ -4,7 +4,6 @@ from typing import Optional
 from unittest.mock import MagicMock, patch
 
 from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import LiveServerTestCase, override_settings
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -12,10 +11,11 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from mainapp.models import Stamp, StampGroup
+from core.selenium_utils import Scrolls
+from mainapp.factory import StampFactory, StampGroupFactory
 from orders.models import Order
-from printy.models import Printy, PrintyGroup
-from stamp_fields.models import FieldsTypes, GroupOfFieldsTypes
+from printy.factory import PrintyFactory, PrintyGroupFactory
+from stamp_fields.factory import FieldsTypesFactory, GroupOfFieldsTypesFactory
 
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
@@ -27,7 +27,8 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
     """
 
     @classmethod
-    def setUpClass(cls) -> None:
+    @patch("core.tasks.paste_watermark_and_resize_image.delay")
+    def setUpClass(cls, mocked_task) -> None:
         super().setUpClass()
         # -------------------------------------------------------------Selenium
         cls.options = webdriver.ChromeOptions()
@@ -36,122 +37,27 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
         cls.driver = webdriver.Chrome(options=cls.options)
         cls.driver.get(cls.live_server_url)
         cls.wait = WebDriverWait(cls.driver, 2, 0.1)
+        cls.action = webdriver.ActionChains(cls.driver)
+        cls.utils = Scrolls(cls.driver, cls.action)
+        # ------------------------------------------------------------Constants
+        cls.AMOUNT_OF_GROUPS = 15
         # -------------------------------------------------------------Fixtures
-        # Создаем картинки.
-        cls.small_gif = (
-            b"\x47\x49\x46\x38\x39\x61\x01\x00"
-            b"\x01\x00\x00\x00\x00\x21\xf9\x04"
-            b"\x01\x0a\x00\x01\x00\x2c\x00\x00"
-            b"\x00\x00\x01\x00\x01\x00\x00\x02"
-            b"\x02\x4c\x01\x00\x3b"
-        )
-        cls.uploaded = SimpleUploadedFile(
-            name="small.gif", content=cls.small_gif, content_type="image/gif"
-        )
         # Группа оснасток.
-        cls.printygroup1 = PrintyGroup.objects.create(
-            title="Тестовая группа оснасток",
-            slug="test_printy_group1",
-            image=cls.uploaded,
-            published=True,
-        )
+        cls.printygroup1 = PrintyGroupFactory.create()
         # Оснастка.
-        cls.printy1 = Printy(
-            title="Тестовая оснастка",
-            slug="test_printy1",
-            description="Описание тестовой оснастки",
-            price=299,
-            published=True,
-            image=cls.uploaded,
-            group=cls.printygroup1,
-        )
-        cls.printy1._skip_celery_task = True
-        cls.printy1.save(force_insert=True)
+        cls.printy1 = PrintyFactory.create()
         # Поля для печати.
-        cls.stamp_field1 = FieldsTypes.objects.create(
-            name="Тестовое поле для печати",
-            re="",
-            help_text="Тестовое поле для печати",
-        )
-        cls.stamp_field2 = FieldsTypes.objects.create(
-            name="Тестовое поле для печати2",
-            re="",
-            help_text="Тестовое поле для печати2",
-        )
-        # Группа полей для печати.
-        cls.stamp_fields_group = GroupOfFieldsTypes.objects.create(
-            name="Тестовая группа полей для печати"
-        )
-        cls.stamp_fields_group.fields.add(cls.stamp_field1, cls.stamp_field2)
+        cls.stamp_field1 = FieldsTypesFactory.create()
+        cls.stamp_field2 = FieldsTypesFactory.create()
+        # Группа полей печати.
+        cls.stamp_field_fields = GroupOfFieldsTypesFactory.create()
         # Группа штампов.
-        cls.stamp_group1 = StampGroup.objects.create(
-            title="Тестовая группа",
-            slug="test_group",
-            image=cls.uploaded,
-            published=True,
-        )
+        cls.stamp_group1 = StampGroupFactory.create()
         # Штамп.
-        cls.stamp1 = Stamp(
-            title="Тестовый штамп",
-            slug="test_stamp1",
-            description="Описание тестового штампа",
-            price=399,
-            published=True,
-            image=cls.uploaded,
-            group=cls.stamp_group1,
-            form_fields=cls.stamp_fields_group,
-        )
-        cls.stamp1._skip_celery_task = True
-        cls.stamp1.save(force_insert=True)
-        cls.stamp1.printy.add(cls.printy1)
-        # pagination
-        obj_array = [
-            StampGroup(
-                title=f"Тестовая группа штампов {i}",
-                slug=f"test_group{i}",
-                image=cls.uploaded,
-                published=True,
-            )
-            for i in range(2, 16)
-        ]
-        StampGroup.objects.bulk_create(obj_array)
-        obj_array = [
-            PrintyGroup(
-                title=f"Тестовая группа оснасток {i}",
-                slug=f"test_printy_group{i}",
-                image=cls.uploaded,
-                published=True,
-            )
-            for i in range(2, 16)
-        ]
-        PrintyGroup.objects.bulk_create(obj_array)
-        for i in range(2, 16):
-            cur_obj = Stamp(
-                title=f"Тестовый штамп {i}",
-                slug=f"test_stamp{i}",
-                description="Описание тестового штампа",
-                price=399,
-                published=True,
-                image=cls.uploaded,
-                group=cls.stamp_group1,
-                form_fields=cls.stamp_fields_group,
-            )
-            cur_obj._skip_celery_task = True
-            cur_obj.save(force_insert=True)
-        for i in range(2, 16):
-            cur_obj = Printy(
-                title=f"Тестовая оснастка {i}",
-                slug=f"test_printy{i}",
-                description="Описание тестовой оснастки",
-                price=299,
-                published=True,
-                image=cls.uploaded,
-                group=cls.printygroup1,
-            )
-            cur_obj._skip_celery_task = True
-            cur_obj.save(force_insert=True)
-        cls.first_stamp = Stamp.objects.first()
-        cls.first_printy = Printy.objects.first()
+        cls.stamp1 = StampFactory.create()
+        # Objects for pagination.
+        PrintyFactory.create_batch(cls.AMOUNT_OF_GROUPS - 1)
+        StampGroupFactory.create_batch(cls.AMOUNT_OF_GROUPS - 1)
         # ----------------------------------------------------------------Order
         cls.field1_fill = "field1_fill"
         cls.field2_fill = "field2_fill"
@@ -175,23 +81,13 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
 
     def find_element(self, element_type: str, query: str) -> WebElement:
         return self.wait.until(
-            EC.visibility_of_element_located(
-                (
-                    element_type,
-                    query,
-                )
-            ),
+            EC.visibility_of_element_located((element_type, query)),
             f"Timed out while looking for: <{element_type=}> <{query=}>",
         )
 
     def find_elements(self, element_type: str, query: str) -> list[WebElement]:
         return self.wait.until(
-            EC.presence_of_all_elements_located(
-                (
-                    element_type,
-                    query,
-                )
-            ),
+            EC.presence_of_all_elements_located((element_type, query)),
             f"Timed out while looking for: <{element_type=}> <{query=}>",
         )
 
@@ -207,16 +103,22 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
     def test_create_order(self, send_order_email: MagicMock) -> None:
         """Goes through the order process: choose stamp,
         printy, fill in information, check if email was sent."""
-        group_cards = self.get_cards()
-        self.assertTrue(len(group_cards) == settings.PAGINATION_AMOUNT)
-        self.click_button(group_cards[0])
-        pagination_element = self.find_element(By.CLASS_NAME, "pagination")
-        page_buttons = pagination_element.find_elements(
-            By.CLASS_NAME, "page-item"
+        # Select stamp group.
+        self.utils.scroll_to_bottom_with_sleep()
+        stamp_group_cards = self.get_cards()
+        self.assertEqual(len(stamp_group_cards), self.AMOUNT_OF_GROUPS)
+        stamp_group = stamp_group_cards[-1]
+        self.utils.scroll_to_element(stamp_group)
+        stamp_group_title = stamp_group.find_element(
+            By.CLASS_NAME, "fw-bolder"
         )
-        page_buttons[-1].click()
-        stamps_cards = self.find_elements(By.CLASS_NAME, "card")
-        self.click_button(stamps_cards[-1])
+        self.assertEqual(stamp_group_title.text, self.stamp_group1.title)
+        self.click_button(stamp_group)
+
+        # Select stamp.
+        self.utils.scroll_to_bottom_with_sleep()
+        last_stamp = self.get_cards()[-1]
+        self.click_button(last_stamp)
         self.click_button()
         printy_group_cards = self.get_cards()
         self.assertTrue(len(printy_group_cards), 1)
@@ -225,6 +127,8 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
         self.assertTrue(len(printy_cards), 1)
         self.click_button(printy_cards[0])
         self.click_button()
+
+        # Fill order.
         self.find_element(By.ID, f"id_{self.stamp_field1}").send_keys(
             self.field1_fill
         )
@@ -241,6 +145,7 @@ class SeleniumMainAppTestCase(LiveServerTestCase):
         self.find_element(By.CLASS_NAME, "btn").submit()
         send_order_email.assert_called_once()
 
+        # Check order.
         order = Order.objects.first()
         self.assertTrue(order.email, self.email)
         self.assertTrue(order.phone, self.phone)
