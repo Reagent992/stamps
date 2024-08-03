@@ -27,8 +27,11 @@ class PrintyGroupFactory(factory.django.DjangoModelFactory):
 
 
 class PrintyFactory(factory.django.DjangoModelFactory):
-    """Factory for Printy objects.
-    It is required that PrintyGroups already exists."""
+    """Factory for generating Printy objects.
+
+    By default, it generates a new PrintyGroup for each Printy. You can pass
+    an existing PrintyGroup to attach the Printy to it.
+    """
 
     class Meta:
         model = Printy
@@ -40,4 +43,4 @@ class PrintyFactory(factory.django.DjangoModelFactory):
     description = factory.Faker("paragraph", locale=LOCALE)
     price = factory.Faker("random_int", min=MIX_PRICE, max=MAX_PRICE)
     published = True
-    group = factory.Iterator(PrintyGroup.objects.all())
+    group = factory.SubFactory(PrintyGroupFactory)
