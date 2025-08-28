@@ -240,3 +240,4 @@ django.log.4
 django.log.5
 collected_static
 celery.logs
+.backup_from_vps

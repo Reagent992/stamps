@@ -59,3 +59,33 @@ def dwc():
                 "info",
             ],
         )
+
+
+def docker_dev_up():
+    """Запуск dev докера."""
+    cmd = [
+        "docker",
+        "compose",
+        "-f",
+        "./compose.yml",
+        "-f",
+        "./compose.override.yml",
+        "--env-file=../.env",
+        "up",
+        "-d",
+    ]
+    subprocess.run(cmd, cwd="infra")
+
+
+def docker_dev_stop():
+    """Остановка dev контейнеров."""
+    cmd = [
+        "docker",
+        "compose",
+        "-f",
+        "./compose.yml",
+        "-f",
+        "./compose.override.yml",
+        "stop",
+    ]
+    subprocess.run(cmd, cwd="infra")
