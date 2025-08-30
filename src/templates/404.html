@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+    <title>404 - Страница не найдена - {{ extend_title }}</title>
+{% endblock extra_head %}
+{% block content %}
+    <section class="py-5">
+        <div class="container px-4 px-lg-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="text-center">
+                        <!-- 404 Error Display -->
+                        <div class="display-1 fw-bold text-muted mb-4">404</div>
+                        <h1 class="display-5 fw-bolder mb-4">Страница не найдена</h1>
+                        <div class="card shadow-sm mb-5">
+                            <div class="card-body p-4">
+                                <p class="lead mb-4">К сожалению, запрашиваемая страница не найдена на нашем сайте.</p>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <h5 class="fw-bold mb-3">Возможные причины:</h5>
+                                        <ul class="list-unstyled text-start">
+                                            <li class="mb-2">
+                                                <i class="bi bi-arrow-right text-muted me-2"></i>
+                                                Ссылка устарела или была удалена
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="bi bi-arrow-right text-muted me-2"></i>
+                                                Страница была перемещена
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="bi bi-arrow-right text-muted me-2"></i>
+                                                Ошибка в адресе страницы
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h5 class="fw-bold mb-3">Что делать:</h5>
+                                        <ul class="list-unstyled text-start">
+                                            <li class="mb-2">
+                                                <i class="bi bi-house text-muted me-2"></i>
+                                                Вернуться на главную страницу
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="bi bi-search text-muted me-2"></i>
+                                                Использовать поиск по сайту
+                                            </li>
+                                            <li class="mb-2">
+                                                <i class="bi bi-envelope text-muted me-2"></i>
+                                                Связаться с нашей поддержкой
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Navigation Buttons -->
+                        <div class="row g-3 justify-content-center">
+                            <div class="col-auto">
+                                <a href="{% url 'mainapp:index' %}" class="btn btn-outline-dark btn-lg">
+                                    <i class="bi bi-house me-2"></i>
+                                    На главную
+                                </a>
+                            </div>
+                            <!-- <div class="col-auto"> -->
+                            <!--     <a href="{% url 'printy:printy_index' %}"
+        class="btn btn-outline-dark btn-lg"> -->
+                            <!--         <i class="bi bi-grid me-2"></i> -->
+                            <!--         Оснастки -->
+                            <!--     </a> -->
+                            <!-- </div> -->
+                            <!-- <div class="col-auto"> -->
+                            <!--     <a href="{% url 'orders:create_order' %}"
+        class="btn btn-outline-dark btn-lg"> -->
+                            <!--         <i class="bi bi-cart me-2"></i> -->
+                            <!--         Сделать заказ -->
+                            <!--     </a> -->
+                            <!-- </div> -->
+                        </div>
+                        <!-- Contact Information -->
+                        <!-- <div class="mt-5 pt-4 border-top"> -->
+                        <!--     <p class="text-muted mb-2">Нужна помощь?</p> -->
+                        <!--     <p class="mb-0"> -->
+                        <!--         <i class="bi bi-telephone text-muted me-2"></i> -->
+                        <!--         Свяжитесь с нами для получения дополнительной информации -->
+                        <!--     </p> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

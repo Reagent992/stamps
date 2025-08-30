@@ -115,6 +115,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 TEST_RUNNER = "django_rich.test.RichRunner"
 
+# Custom error handlers
+handler404 = 'core.views.page_not_found'
+
 STATICFILES_DIRS = ((BASE_DIR / "static"),)
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "collected_static"

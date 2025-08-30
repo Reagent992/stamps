@@ -1,6 +1,6 @@
 from pathlib import Path
 
-BASE_DIR = BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 PAGINATION_AMOUNT = 8
 BREADCRUMBS_HOME_LABEL = "Главная страница"
@@ -47,6 +47,7 @@ ITEM_DETAIL_TEMPLATE = "mainapp/item_details.html"
 ORDER_FORM_TEMPLATE = "mainapp/order_form.html"
 ORDER_SUCCESS_TEMPLATE = "mainapp/order_success.html"
 NEW_ORDER_EMAIL_TEMPLATE = "email/admin_new_order_info.html"
+ERROR_404_TEMPLATE = "404.html"
 # -----------------------------------------------------------------CRISPY-FORMS
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
