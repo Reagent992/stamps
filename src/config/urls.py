@@ -16,6 +16,9 @@ sitemaps = {
     "Pages": FlatPageSitemap,
 }
 
+handler403 = "core.views.permission_denied"
+handler404 = "core.views.page_not_found"
+
 urlpatterns = [
     path(
         "sitemap.xml",

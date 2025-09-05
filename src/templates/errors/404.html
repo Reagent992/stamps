@@ -1,0 +1,51 @@
+{% extends "errors/base_errors.html" %}
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+    <title>{{ title }} - Страница не найдена</title>
+{% endblock extra_head %}
+{% block error %}
+    <!-- 404 Error Display -->
+    <div class="display-1 fw-bold text-muted mb-4">404</div>
+    <h1 class="display-5 fw-bolder mb-4">Страница не найдена</h1>
+    <div class="card shadow-sm mb-5">
+        <div class="card-body p-4">
+            <p class="lead mb-4">К сожалению, запрашиваемая страница не найдена на нашем сайте.</p>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold mb-3">Возможные причины:</h5>
+                    <ul class="list-unstyled text-start">
+                        <li class="mb-2">
+                            <i class="bi bi-arrow-right text-muted me-2"></i>
+                            Ссылка устарела или была удалена
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-arrow-right text-muted me-2"></i>
+                            Страница была перемещена
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-arrow-right text-muted me-2"></i>
+                            Ошибка в адресе страницы
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold mb-3">Что делать:</h5>
+                    <ul class="list-unstyled text-start">
+                        <li class="mb-2">
+                            <i class="bi bi-house text-muted me-2"></i>
+                            Вернуться на главную страницу
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-search text-muted me-2"></i>
+                            Использовать поиск по сайту
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-envelope text-muted me-2"></i>
+                            Связаться с нашей поддержкой
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock error %}

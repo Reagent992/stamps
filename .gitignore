@@ -231,6 +231,7 @@ idea/
 env
 src/media/
 src/media/*
+sandbox.py
 sandbox.ipynb
 django.log
 django.log.1

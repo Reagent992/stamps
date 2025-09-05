@@ -115,8 +115,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 TEST_RUNNER = "django_rich.test.RichRunner"
 
-# Custom error handlers
-handler404 = 'core.views.page_not_found'
 
 STATICFILES_DIRS = ((BASE_DIR / "static"),)
 STATIC_URL = "/static/"
@@ -142,7 +140,7 @@ if not TESTING and DEBUG is True:
         return True
 
     DEBUG_TOOLBAR_CONFIG = {
-        'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+        "SHOW_TOOLBAR_CALLBACK": show_toolbar,
     }
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
