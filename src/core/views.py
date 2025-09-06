@@ -9,7 +9,7 @@ def permission_denied(request: HttpRequest, _):
 
 
 def page_not_found(request: HttpRequest, _):
-    """Custom 404 error handler that renders our custom 404 template."""
+    """Page for 404(Not Found) error."""
     return render(
         request,
         settings.ERROR_404_TEMPLATE,

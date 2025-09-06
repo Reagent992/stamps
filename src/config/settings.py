@@ -122,6 +122,7 @@ STATIC_ROOT = BASE_DIR / "collected_static"
 MEDIA_URL = "media/"
 MEDIA_ROOT = str(BASE_DIR / "media")
 # ---------------------------------------------------------DJANGO DEBUG TOOLBAR
+# Turn off debug_toolbar for tests.
 TESTING = "test" in sys.argv
 
 if not TESTING and DEBUG is True:
