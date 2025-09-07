@@ -4,6 +4,7 @@ from pathlib import Path
 from environs import Env
 from split_settings.tools import include
 
+TESTING = "test" in sys.argv
 env = Env()
 env.read_env()
 # Most settings moved to splitted_settings folder.
@@ -123,7 +124,7 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = str(BASE_DIR / "media")
 # ---------------------------------------------------------DJANGO DEBUG TOOLBAR
 # Turn off debug_toolbar for tests.
-TESTING = "test" in sys.argv
+
 
 if not TESTING and DEBUG is True:
     INSTALLED_APPS = [

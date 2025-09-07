@@ -5,7 +5,12 @@ from django.shortcuts import render
 
 def permission_denied(request: HttpRequest, exception):
     """Custom template for 403(Forbiden) error."""
-    return render(request, settings.ERROR_403_TEMPLATE, status=403)
+    return render(
+        request,
+        settings.ERROR_403_TEMPLATE,
+        {"title": settings.ERROR_403_TITLE},
+        status=403,
+    )
 
 
 def page_not_found(request: HttpRequest, exception):

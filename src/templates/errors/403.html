@@ -1,0 +1,60 @@
+{% extends "errors/base_errors.html" %}
+{% block extra_head %}
+    <meta name="robots" content="noindex, nofollow">
+    <title>{{ title }}</title>
+{% endblock extra_head %}
+{% block error %}
+    <!-- 403 Error Display -->
+    <div class="display-1 fw-bold text-muted mb-4">403</div>
+    <h1 class="display-5 fw-bolder mb-4">Доступ запрещен</h1>
+    <div class="card shadow-sm mb-5">
+        <div class="card-body p-4">
+            <p class="lead mb-4">У вас нет прав для доступа к этой странице.</p>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold mb-3">Возможные причины:</h5>
+                    <ul class="list-unstyled text-start">
+                        <li class="mb-2">
+                            <i class="bi bi-arrow-right text-muted me-2"></i>
+                            Недостаточно прав доступа
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-arrow-right text-muted me-2"></i>
+                            Требуется авторизация
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-arrow-right text-muted me-2"></i>
+                            Страница доступна только для определенных пользователей
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold mb-3">Что делать:</h5>
+                    <ul class="list-unstyled text-start">
+                        <li class="mb-2">
+                            <i class="bi bi-house text-muted me-2"></i>
+                            Вернуться на главную страницу
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-box-arrow-in-right text-muted me-2"></i>
+                            Войти в систему
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-envelope text-muted me-2"></i>
+                            Связаться с нашей поддержкой
+                        </li>
+                    </ul>
+                </div>
+                <!-- Navigation Buttons -->
+                <div class="row g-3 justify-content-center">
+                    <div class="col-auto">
+                        <a href="{% url 'mainapp:index' %}" class="btn btn-outline-dark btn-lg">
+                            <i class="bi bi-house me-2"></i>
+                            На главную
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock error %}
