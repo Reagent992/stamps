@@ -8,8 +8,7 @@ def dr():
     subprocess.run(cmd, cwd="src")
 
 
-def dt():
-    """Запуск Django Test."""
+def run_tests():
     cmd = ["python", "manage.py", "test"]
     subprocess.run(cmd, cwd="src")
 
