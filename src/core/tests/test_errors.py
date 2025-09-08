@@ -11,8 +11,16 @@ from django.urls import path, reverse
 from config.urls import urlpatterns
 
 
+class TestInternalServerError(Exception):
+    ...
+
+
 def view_403(_: HttpRequest):
     raise PermissionDenied
+
+
+def view_500(_: HttpRequest):
+    raise TestInternalServerError
 
 
 """
@@ -23,6 +31,9 @@ urlpatterns to `reverse()`.
 
 PATHNAME_403 = "test_403"
 urlpatterns.insert(0, path(uuid4().hex, view_403, name=PATHNAME_403))
+
+PATHNAME_500 = "test_500"
+urlpatterns.insert(1, path(uuid4().hex, view_500, name=PATHNAME_500))
 
 
 class TestErrors(TestCase):
@@ -53,3 +64,16 @@ class TestErrors(TestCase):
         )
         self.assertEqual(response.status_code, HTTPStatus.FORBIDDEN)
         self.assertTemplateUsed(response, settings.ERROR_403_TEMPLATE)
+
+    def test_500_error(self) -> None:
+        with self.assertRaises(TestInternalServerError):
+            response = self.guest_user.get(
+                reverse(
+                    PATHNAME_500,
+                    __name__,
+                )
+            )
+            self.assertEqual(
+                response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR
+            )
+            self.assertTemplateUsed(response, settings.ERROR_500_TEMPLATE)

@@ -23,7 +23,7 @@ def page_not_found(request: HttpRequest, exception):
     )
 
 
-def server_error(request: HttpRequest, exception):
+def server_error(request: HttpRequest):
     """Custom template for 500(Internal Server Error) error."""
     return render(
         request,

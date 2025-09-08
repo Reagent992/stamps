@@ -35,7 +35,6 @@ urlpatterns = [
     path("pages/", include("django.contrib.flatpages.urls")),
     path("orders/", include("orders.urls", namespace="orders")),
     path("printy/", include("printy.urls", namespace="printy")),
-    path("", include("core.urls", namespace="core")),
     path("", include("mainapp.urls", namespace="mainapp")),
 ]
 
