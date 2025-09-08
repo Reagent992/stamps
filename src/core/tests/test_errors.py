@@ -22,7 +22,7 @@ urlpatterns to `reverse()`.
 """
 
 PATHNAME_403 = "test_403"
-urlpatterns.insert(0, path("test_403/", view_403, name=PATHNAME_403))
+urlpatterns.insert(0, path(uuid4().hex, view_403, name=PATHNAME_403))
 
 
 class TestErrors(TestCase):
